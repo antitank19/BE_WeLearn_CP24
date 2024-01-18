@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using DataLayer.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLayer.DBObject
+namespace DataLayer.DbObject
 {
     public class GroupMember
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataLayer.DBObject
+namespace DataLayer.DbObject
 {
     [Table("JoinInvites")]
     public class Invite

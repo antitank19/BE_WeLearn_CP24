@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataLayer.DBObject
+namespace DataLayer.DbObject
 {
     public class Role
     {

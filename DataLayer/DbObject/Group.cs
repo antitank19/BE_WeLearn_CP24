@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System;
 
-namespace DataLayer.DBObject
+namespace DataLayer.DbObject
 {
     public class Group
     {

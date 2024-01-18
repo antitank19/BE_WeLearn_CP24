@@ -1,4 +1,4 @@
-﻿using DataLayer.DBObject;
+﻿using DataLayer.DbObject;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

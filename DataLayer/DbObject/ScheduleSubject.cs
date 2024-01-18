@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLayer.DBObject
+namespace DataLayer.DbObject
 {
     public class ScheduleSubject
     {

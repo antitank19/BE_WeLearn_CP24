@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using DataLayer.Enums;
 
-namespace DataLayer.DBObject
+namespace DataLayer.DbObject
 {
     [Table("JoinRequests")]
     public class Request

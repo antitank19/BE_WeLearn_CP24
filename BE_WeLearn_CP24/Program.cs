@@ -1,6 +1,16 @@
+using APIExtension.Auth;
+using APIExtension.Validator;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+using RepositoryLayer.ClassImplement;
+using RepositoryLayer.Interface;
+using ServiceLayer.DbSeeding;
+using ServiceLayer.Implementation;
+using ServiceLayer.Interface;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +28,17 @@ builder.Services.AddControllers()
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddJwtAuthService(configuration);
+builder.Services.AddSwaggerGen(options =>
+{
+    options.EnableAnnotations();
+    options.MapType<TimeSpan>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Example = new OpenApiString("00:00:00")
+    });
+    options.AddJwtAuthUi();
+});
 #region dbContext
 builder.Services.AddDbContext<WeLearnContext>(options =>
 {
@@ -34,8 +54,25 @@ builder.Services.AddDbContext<WeLearnContext>(options =>
     }
 });
 #endregion
+#region service and repo
+//builder.Services.AddSingleton<PresenceTracker>();
+builder.Services.AddScoped<IRepoWrapper, RepoWrapper>();
+builder.Services.AddScoped<IServiceWrapper, ServiceWrapper>();
+//builder.Services.AddScoped<IAutoMailService, AutoMailService>();
+#endregion
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+#region AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+#endregion
+#region validator
+builder.Services.AddScoped<IValidatorWrapper, ValidatorWrapper>();
+#endregion
 var app = builder.Build();
-
+if (IsInMemory)
+{
+    Console.WriteLine("++++++++++================+++++++++++++++InMemory++++++++++++=============++++++++++");
+    app.SeedInMemoryDb();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -43,6 +80,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

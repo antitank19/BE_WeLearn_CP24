@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="DbObject\" />
-    <Folder Include="DbSeeding\" />
   </ItemGroup>
 
   <ItemGroup>

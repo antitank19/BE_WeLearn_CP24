@@ -57,8 +57,6 @@ namespace DataLayer.DbObject
         public virtual ICollection<Request> JoinRequests { get; set; } = new Collection<Request>();
         #endregion
 
-        #region Supervision
-        #endregion
 
     }
 

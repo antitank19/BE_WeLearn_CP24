@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APIExtension.HttpContext
+namespace API.Extension.HttpContext
 {
     public static class HttpContextExtension
     {

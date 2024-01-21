@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using ServiceLayer.Implementation.Db;
+using ServiceLayer.Implemention.Mail;
+using ServiceLayer.Interface.Mail;
 
 namespace ServiceLayer.Implementation
 {
@@ -32,7 +34,7 @@ namespace ServiceLayer.Implementation
             groupMembers = new GroupMemberSerivce(repos, mapper);
             documentFiles = new DocumentFileService(repos);
             stats = new StatService(repos, mapper);
-            //mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
+            mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
         }
 
         private IAccountService accounts;
@@ -136,6 +138,18 @@ namespace ServiceLayer.Implementation
                     stats = new StatService(repos, mapper);
                 }
                 return stats;
+            }
+        }
+        private IAutoMailService mails;
+        public IAutoMailService Mails
+        {
+            get
+            {
+                if (mails is null)
+                {
+                    mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
+                }
+                return mails;
             }
         }
     }

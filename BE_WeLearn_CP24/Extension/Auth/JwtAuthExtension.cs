@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 
-namespace APIExtension.Auth
+namespace API.Extension.Auth
 {
     public static class JwtAuthExtension
     {

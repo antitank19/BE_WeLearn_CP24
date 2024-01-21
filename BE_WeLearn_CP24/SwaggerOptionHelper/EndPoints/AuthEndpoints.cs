@@ -1,6 +1,6 @@
-﻿using APIExtension.Const;
+﻿using API.SwaggerOption.Const;
 
-namespace API.Endpoints
+namespace API.SwaggerOption.Endpoints
 {
     public class AuthEndpoints
     {

@@ -1,9 +1,7 @@
-using APIExtension.Auth;
+using API.Extension.Auth;
 using APIExtension.Validator;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using RepositoryLayer.ClassImplement;

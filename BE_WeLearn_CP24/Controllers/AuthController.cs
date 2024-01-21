@@ -1,14 +1,9 @@
-﻿using API.Descriptions;
-using API.Endpoints;
-using APIExtension.Const;
-using APIExtension.HttpContext;
-using APIExtension.Validator;
+﻿using APIExtension.Validator;
 using AutoMapper;
 using DataLayer.DbObject;
 using DataLayer.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ServiceLayer.DTOs;
@@ -16,9 +11,12 @@ using ServiceLayer.Interface;
 using ServiceLayer.DTO;
 using ServiceLayer.Utils;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using API.SwaggerOption.Endpoints;
+using API.SwaggerOption.Descriptions;
+using API.Extension.HttpContext;
+using API.SwaggerOption.Const;
 
 namespace API.Controllers
 {

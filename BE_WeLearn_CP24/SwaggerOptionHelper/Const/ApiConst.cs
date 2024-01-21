@@ -1,4 +1,4 @@
-﻿namespace APIExtension.Const
+﻿namespace API.SwaggerOption.Const
 
 {
     /// <summary>

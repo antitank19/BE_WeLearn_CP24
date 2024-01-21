@@ -1,5 +1,6 @@
 ﻿using ServiceLayer.Interface.Auth;
 using ServiceLayer.Interface.Db;
+using ServiceLayer.Interface.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace ServiceLayer.Interface
     {
         public IAccountService Accounts { get; }
         public IAuthService Auth { get; }
+        public IAutoMailService Mails { get; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using APIExtension.Const;
+﻿using API.SwaggerOption.Const;
 
-namespace API.Descriptions
+namespace API.SwaggerOption.Descriptions
 {
     public class AuthDescriptions
     {

@@ -79,7 +79,7 @@ namespace API.Controllers
            Description = AuthDescriptions.LoginWithGGAcessToken
        )]
         //[CustomGoogleIdTokenAuthFilter]
-        [HttpPost("Login/Google/Access")]
+        [HttpPost("Login/Google/Access-Token")]
         public async Task<IActionResult> LoginWithGoogleAccessTokenAsync(string? accessToken, bool rememberMe = true)
         {
             if (accessToken is null || accessToken.Length == 0)

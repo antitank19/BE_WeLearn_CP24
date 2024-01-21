@@ -67,6 +67,17 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #region validator
 builder.Services.AddScoped<IValidatorWrapper, ValidatorWrapper>();
 #endregion
+#region cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allcors", builder => builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .SetIsOriginAllowed(hostName => true));
+
+});
+#endregion
 var app = builder.Build();
 if (IsInMemory)
 {
@@ -75,7 +86,7 @@ if (IsInMemory)
 }
 // Configure the HTTP request pipeline.
 app.UseStaticFiles();
-
+app.UseCors("allcors");
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {

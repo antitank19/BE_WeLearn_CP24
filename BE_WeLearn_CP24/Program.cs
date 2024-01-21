@@ -37,7 +37,7 @@ builder.Services.AddSwaggerGen(options =>
         Type = "string",
         Example = new OpenApiString("00:00:00")
     });
-    options.AddJwtAuthUi();
+    options.AddJwtAuthUi(configuration);
 });
 #region dbContext
 builder.Services.AddDbContext<WeLearnContext>(options =>
@@ -74,11 +74,15 @@ if (IsInMemory)
     app.SeedInMemoryDb();
 }
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseStaticFiles();
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.OAuthClientId(configuration["Authentication:Google:Web:client_id"]);
+    options.InjectJavascript("/googleSwaggerUi.js");
+
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

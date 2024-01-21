@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
@@ -16,11 +20,9 @@ namespace APIExtension.Auth
         {
             services.AddAuthentication(options =>
             {
-                #region google id token
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                #endregion
             })
             .AddJwtBearer(o =>
             {
@@ -43,7 +45,7 @@ namespace APIExtension.Auth
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(configuration["Authentication:JwtToken:TokenKey"])),
                     ClockSkew = TimeSpan.Zero,
-                    ValidIssuer = configuration["Authentication:JwtToken:Issuer"],
+                    //ValidIssuer = configuration["Authentication:JwtToken:Issuer"],
                     ValidAudience = configuration["Authentication:JwtToken:Audience"]
                 };
                 #region auth event (removed)
@@ -69,10 +71,24 @@ namespace APIExtension.Auth
                 //};
                 #endregion
                 #endregion
-            });
+            })
+            //.AddGoogle(googleOptions =>
+            //{
+            //    googleOptions.ClientId = configuration["Authentication:Google:Web:client_id"];
+            //    googleOptions.ClientSecret = configuration["Authentication:Google:Web:client_secret"];
+            //}); 
+            .AddIdTokenBasedGoogle(configuration);
             return services;
         }
-        public static SwaggerGenOptions AddJwtAuthUi(this SwaggerGenOptions options)
+        private static AuthenticationBuilder AddIdTokenBasedGoogle(this AuthenticationBuilder builder, IConfiguration configuration)
+        {
+            return builder.AddGoogle(googleOptions =>
+             {
+                 googleOptions.ClientId = configuration["Authentication:Google:Web:client_id"];
+                 googleOptions.ClientSecret = configuration["Authentication:Google:Web:client_secret"];
+             });
+        }
+        public static SwaggerGenOptions AddJwtAuthUi(this SwaggerGenOptions options, IConfiguration configuration)
         {
             options.AddSecurityDefinition(SecurityId, new OpenApiSecurityScheme
             {
@@ -99,6 +115,85 @@ namespace APIExtension.Auth
                     }
                 }
             );
+            //options.AddSecurityDefinition("GoogleOAuth2", new OpenApiSecurityScheme
+            //{
+            //    Name = "Google Authorization",
+            //    In = ParameterLocation.Header,
+            //    Type = SecuritySchemeType.OAuth2,
+            //    Description = "Google Authorization",
+            //    Flows = new OpenApiOAuthFlows
+            //    {
+            //        Implicit = new OpenApiOAuthFlow
+            //        {
+            //            AuthorizationUrl = new Uri(configuration["Authentication:Google:Web:auth_uri"]/*, UriKind.Relative*/),
+            //            Scopes = new Dictionary<string, string>
+            //                {
+            //                    { "openid", "Allow this app to get some basic account info" },
+            //                    //{ "writeAccess", "Access write operations" }
+            //                }
+            //        }
+            //    }
+            //});
+            //options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //{
+            //    {
+            //        new OpenApiSecurityScheme
+            //        {
+            //            Reference = new OpenApiReference
+            //            {
+            //                Type = ReferenceType.SecurityScheme,
+            //                Id = "googleOAuth2"
+            //            }
+            //        },
+            //        new string[]{
+            //            "openid", 
+            //            //"WriteAccess" 
+            //        }
+            //    }
+            //});
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows()
+                {
+                    Implicit = new OpenApiOAuthFlow()
+                    {
+                        AuthorizationUrl = new Uri(configuration["Authentication:Google:Web:auth_uri"]/*"https://accounts.google.com/o/oauth2/v2/auth"*/),
+                        Scopes = new Dictionary<string, string> {
+                    { "openid", "Allow this app to get some basic account info" },
+                    { "email", "email" },
+                    { "profile", "profile" }
+                },
+
+                        TokenUrl = new Uri(configuration["Authentication:Google:Web:token_uri"])
+                    }
+                },
+                Extensions = new Dictionary<string, IOpenApiExtension>
+        {
+            {"x-tokenName", new OpenApiString("id_token")}
+        },
+            };
+
+            options.AddSecurityDefinition("abc", securityScheme);
+
+            var securityRequirements = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "abc"
+                }
+            },
+            new List<string> {"openid", "email", "profile"}
+        }
+    };
+
+            options.AddSecurityRequirement(securityRequirements);
             return options;
         }
     }

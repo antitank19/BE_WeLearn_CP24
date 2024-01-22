@@ -21,8 +21,4 @@
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validation\" />
-  </ItemGroup>
-
 </Project>

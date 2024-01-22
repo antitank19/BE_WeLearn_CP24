@@ -1,5 +1,6 @@
 ﻿using DataLayer.DbObject;
 using Microsoft.EntityFrameworkCore;
+using Connection = DataLayer.DbObject.Connection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace DataLayer.DbContext
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<ScheduleSubject> ScheduleSubjects { get; set; }
+        public virtual DbSet<Connection> Connections { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
+        public virtual DbSet<ReviewDetail> ReviewDetails { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

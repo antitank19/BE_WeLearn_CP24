@@ -54,7 +54,87 @@ namespace ServiceLayer.DbSeeding
                 }
                 #endregion
 
-               
+                #region seed subject
+                if (!context.Subjects.Any())
+                {
+                    context.Subjects.AddRange(DbSeed.Subjects);
+                }
+                #endregion
+
+                #region seed group
+                if (!context.Groups.Any())
+                {
+                    context.Groups.AddRange(DbSeed.Groups);
+                }
+                #endregion
+
+                #region seed group member
+                if (!context.GroupMembers.Any())
+                {
+                    context.GroupMembers.AddRange(DbSeed.GroupMembers);
+                }
+                #endregion
+
+                #region seed group subject
+                if (!context.GroupSubjects.Any())
+                {
+                    context.GroupSubjects.AddRange(DbSeed.GroupSubjects);
+                }
+                #endregion
+
+                #region seed invite
+                if (!context.Invites.Any())
+                {
+                    context.Invites.AddRange(DbSeed.Invites);
+                }
+                #endregion
+
+                #region seed request
+                if (!context.Requests.Any())
+                {
+                    context.Requests.AddRange(DbSeed.Requests);
+                }
+                #endregion
+
+                #region seed meeting and schedule
+                if (!context.Schedules.Any())
+                {
+                    context.Schedules.AddRange(DbSeed.Schedules);
+                }
+                if (!context.Meetings.Any())
+                {
+                    context.Meetings.AddRange(DbSeed.Meetings);
+                }
+                #endregion
+
+                #region seed Connection
+                if (!context.Connections.Any())
+                {
+                    context.Connections.AddRange(DbSeed.Connections);
+                }
+                #endregion
+
+                #region seed Review
+                if (!context.Reviews.Any())
+                {
+                    context.Reviews.AddRange(DbSeed.Reviews);
+                }
+                #endregion
+
+                #region seed ReviewDetail
+                if (!context.ReviewDetails.Any())
+                {
+                    context.ReviewDetails.AddRange(DbSeed.ReviewDetails);
+                }
+                #endregion
+
+                #region seed Chat
+                if (!context.Chats.Any())
+                {
+                    context.Chats.AddRange(DbSeed.Chats);
+                }
+                #endregion
+
                 context.SaveChanges();
             }
         }

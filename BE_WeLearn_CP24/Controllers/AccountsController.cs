@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
-using ServiceLayer.DTO;
+using ServiceLayer.DTOs;
 using ServiceLayer.Interface;
 using ServiceLayer.Utils;
 using Swashbuckle.AspNetCore.Annotations;

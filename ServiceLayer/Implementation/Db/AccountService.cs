@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Interface;
 using ServiceLayer.Interface.Db;
 using ServiceLayer.Utils;
-using ServiceLayer.DTO;
+using ServiceLayer.DTOs;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;

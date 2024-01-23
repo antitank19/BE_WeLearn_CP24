@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceLayer.Utils;
 
-namespace ServiceLayer.DTO
+namespace ServiceLayer.DTOs
 {
     public class StudentRegisterDto : BaseCreateDto
     {

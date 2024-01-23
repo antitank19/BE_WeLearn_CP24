@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ServiceLayer.DTOs;
 using ServiceLayer.Interface;
-using ServiceLayer.DTO;
+using ServiceLayer.DTOs;
 using ServiceLayer.Utils;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Http.Headers;
@@ -59,11 +59,14 @@ namespace API.Controllers
         )]
         //[CustomGoogleIdTokenAuthFilter]
         [HttpPost("Login/Google/Id-Token")]
-        public async Task<IActionResult> LoginWithGoogleIdTokenAsync(bool rememberMe = true)
+        public async Task<IActionResult> LoginWithGoogleIdTokenAsync(string? idToken, bool rememberMe = true)
         {
             //var idToken = await HttpContext.GetTokenAsync("access_token");
-            var idToken = HttpContext.GetGoogleIdToken();
-            Account logined = await services.Auth.LoginWithGoogle(idToken);
+            if (idToken is null || idToken.Length == 0)
+            {
+                idToken = HttpContext.GetGoogleIdToken();
+            }
+            Account logined = await services.Auth.LoginWithGoogleIdToken(idToken);
             if (logined is null)
             {
                 return Unauthorized("Username or password is wrong");
@@ -88,6 +91,10 @@ namespace API.Controllers
             var hc = new HttpClient();
             hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = hc.GetAsync(userInfoUrl).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest(response);
+            }
             var userInfoString = response.Content.ReadAsStringAsync().Result;
             GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
             Account logined = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);

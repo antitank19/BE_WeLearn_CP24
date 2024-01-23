@@ -33,7 +33,7 @@ namespace ServiceLayer.Implementation.Auth
             return await repos.Accounts.GetByUsernameOrEmailAndPasswordAsync(loginModel.UsernameOrEmail, loginModel.Password);
         }
 
-        public Task<Account> LoginWithGoogle(string googleIdToken)
+        public Task<Account> LoginWithGoogleIdToken(string googleIdToken)
         {
             JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
 

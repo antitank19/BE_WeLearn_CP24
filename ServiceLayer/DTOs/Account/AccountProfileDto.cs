@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace ServiceLayer.DTO
+namespace ServiceLayer.DTOs
 {
     public class AccountProfileDto
     {

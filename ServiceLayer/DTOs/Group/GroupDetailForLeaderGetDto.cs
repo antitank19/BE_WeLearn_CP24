@@ -1,4 +1,4 @@
-﻿namespace ServiceLayer.DTO
+﻿namespace ServiceLayer.DTOs
 {
     public class GroupDetailForLeaderGetDto
     {

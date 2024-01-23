@@ -1,6 +1,6 @@
 ﻿using DataLayer.Enums;
 
-namespace ServiceLayer.DTO
+namespace ServiceLayer.DTOs
 {
     public class GroupUpdateDto : BaseUpdateDto
     {

@@ -14,5 +14,6 @@ namespace ServiceLayer.Interface
         public IAccountService Accounts { get; }
         public IAuthService Auth { get; }
         public IAutoMailService Mails { get; }
+        public IGroupService Groups { get; }
     }
 }

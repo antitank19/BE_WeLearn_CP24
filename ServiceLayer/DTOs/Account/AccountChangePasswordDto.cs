@@ -1,7 +1,7 @@
 ﻿using ServiceLayer.Utils;
 using System.ComponentModel.DataAnnotations;
 
-namespace ServiceLayer.DTO
+namespace ServiceLayer.DTOs
 {
     public class AccountChangePasswordDto : BaseUpdateDto
     {

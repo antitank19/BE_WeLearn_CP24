@@ -1,5 +1,5 @@
 ﻿using ServiceLayer.Interface;
-using ServiceLayer.DTO;
+using ServiceLayer.DTOs;
 
 namespace APIExtension.Validator
 {

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using DataLayer.DbObject;
 using ServiceLayer.Interface.Db;
 using ServiceLayer.Utils;
-using ServiceLayer.DTO;
+using ServiceLayer.DTOs;
 using DataLayer.Enums;
 using ServiceLayer.Interface.Mail;
 

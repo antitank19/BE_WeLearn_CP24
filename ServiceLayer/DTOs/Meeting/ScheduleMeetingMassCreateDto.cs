@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.DTO
+namespace ServiceLayer.DTOs
 {
     public class ScheduleMeetingMassCreateDto: BaseCreateDto
     {

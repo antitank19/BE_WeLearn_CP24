@@ -22,7 +22,7 @@ namespace ServiceLayer.Interface.Auth
         /// </summary>
         /// <param name="googleIdToken"></param>
         /// <returns>jwtToken: String</returns>
-        public Task<Account> LoginWithGoogle(string googleIdToken);
+        public Task<Account> LoginWithGoogleIdToken(string googleIdToken);
         public Task<string> GenerateJwtAsync(Account logined, bool rememberMe=true);
         public Task Register(Account register, RoleNameEnum role);
     }

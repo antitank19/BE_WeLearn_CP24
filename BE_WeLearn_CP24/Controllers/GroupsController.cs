@@ -1,0 +1,336 @@
+﻿using API.Extension.ClaimsPrinciple;
+using API.SwaggerOption.Const;
+using API.SwaggerOption.Descriptions;
+using API.SwaggerOption.Endpoints;
+using APIExtension.Validator;
+using DataLayer.DbObject;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.DTOs;
+using ServiceLayer.Interface;
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GroupsController : ControllerBase
+    {
+        private readonly IServiceWrapper services;
+        //private readonly IMapper mapper;
+        private readonly IValidatorWrapper validators;
+
+        public GroupsController(IServiceWrapper services, IValidatorWrapper validators)
+        {
+            this.services = services;
+            this.validators = validators;
+        }
+
+        // GET: api/Groups/Join
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.SearchGroup,
+           Description = GroupsDescriptions.SearchGroup
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchGroup(string search, bool newGroup = true)
+        {
+            int studentId = HttpContext.User.GetUserId();
+            //IQueryable<Group> list = await services.Groups.SearchGroups(search, studentId, newGroup);
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            IQueryable<GroupGetListDto> mapped = await services.Groups.SearchGroups<GroupGetListDto>(search, studentId, newGroup);
+            return Ok(mapped);
+        }
+
+      //  [SwaggerOperation(
+      //    Summary = GroupsEndpoints.SearchGroupByClass,
+      //    Description = GroupsDescriptions.SearchGroupByClassa
+      //)]
+      //  [Authorize(Roles = Actor.Student)]
+      //  [HttpGet("Search/Class")]
+      //  public async Task<IActionResult> SearchGroupByClass(string Class, bool newGroup = true)
+      //  {
+      //      int studentId = HttpContext.User.GetUserId();
+      //      //IQueryable<Group> list = await services.Groups.SearchGroupsByClass(Class, studentId, newGroup);
+      //      //if (list == null || !list.Any())
+      //      //{
+      //      //    return NotFound();
+      //      //}
+      //      //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+      //      IQueryable<GroupGetListDto> mapped = await services.Groups.SearchGroupsByClass<GroupGetListDto>(Class, studentId, newGroup);
+      //      return Ok(mapped);
+      //  }
+
+        [SwaggerOperation(
+          Summary = GroupsEndpoints.SearchGroupBySubject,
+          Description = GroupsDescriptions.SearchGroupBySubject
+      )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Search/Subject")]
+        public async Task<IActionResult> SearchGroupBySubject(string subject, bool newGroup = true)
+        {
+            int studentId = HttpContext.User.GetUserId();
+            //IQueryable<Group> list = await services.Groups.SearchGroupsBySubject(subject, studentId, newGroup);
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            IQueryable<GroupGetListDto> mapped = await services.Groups.SearchGroupsBySubject<GroupGetListDto>(subject, studentId, newGroup);
+            return Ok(mapped);
+        }
+
+        // GET: api/Groups/Join
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.GetJoinedGroups,
+           Description = GroupsDescriptions.GetJoinedGroups
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Join")]
+        public async Task<IActionResult> GetJoinedGroups()
+        {
+            int studentId = HttpContext.User.GetUserId();
+            //IQueryable<Group> list = await services.Groups.GetJoinGroupsOfStudentAsync(studentId);
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            IQueryable<GroupGetListDto> mapped = await services.Groups.GetJoinGroupsOfStudentAsync<GroupGetListDto>(studentId);
+            return Ok(mapped);
+        }
+
+        // GET: api/Groups/Member
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.GetMemberGroups,
+           Description = GroupsDescriptions.GetMemberGroups
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Member")]
+        public async Task<IActionResult> GetMemberGroups()
+        {
+            int studentId = HttpContext.User.GetUserId();
+            //IQueryable<Group> list = await services.Groups.GetMemberGroupsOfStudentAsync(studentId);
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            IQueryable<GroupGetListDto> mapped = await services.Groups.GetMemberGroupsOfStudentAsync<GroupGetListDto>(studentId);
+            return Ok(mapped);
+        }
+
+        // GET: api/Groups/Member
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.GetGroupDetailForMember,
+           Description = GroupsDescriptions.GetGroupDetailForMember
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Member/{groupId}")]
+        public async Task<IActionResult> GetGroupDetailForMember(int groupId)
+        {
+            int studentId = HttpContext.User.GetUserId();
+            bool isLeader = await services.Groups.IsStudentMemberGroupAsync(studentId, groupId);
+            if (!isLeader)
+            {
+                return Unauthorized("Bạn không phải là thành viên nhóm này");
+            }
+            //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
+            GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
+
+            if (group == null)
+            {
+                return NotFound();
+            }
+            //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
+            return Ok(group);
+        }
+
+        // GET: api/Groups/Lead
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.GetLeadGroups,
+           Description = GroupsDescriptions.GetLeadGroups
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Lead")]
+        public async Task<IActionResult> GetLeadGroups()
+        {
+            int studentId = HttpContext.User.GetUserId();
+            //IQueryable<Group> list = await services.Groups.GetLeaderGroupsOfStudentAsync(studentId);
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            IQueryable<GroupGetListDto> mapped = await services.Groups.GetLeaderGroupsOfStudentAsync<GroupGetListDto>(studentId);
+            return Ok(mapped);
+        }
+
+        // GET: api/Groups/Lead/5
+        [SwaggerOperation(
+            Summary = GroupsEndpoints.GetGroupDetailForLeader,
+           Description = GroupsDescriptions.GetGroupDetailForLeader
+        )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Lead/{id}")]
+        public async Task<IActionResult> GetGroupDetailForLeader(int id)
+        {
+            int studentId = HttpContext.User.GetUserId();
+            bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, id);
+            //if (!isLeader)
+            //{
+            //     return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+            //}
+            bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, id);
+            if (!isJoining)
+            {
+                return Unauthorized("Bạn không phải thành viên của nhóm này");
+            }
+            //Group group = await services.Groups.GetFullByIdAsync(id);
+
+            if (isLeader)
+            {
+                //GroupDetailForLeaderGetDto dto = mapper.Map<GroupDetailForLeaderGetDto>(group);
+                GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
+                if (group == null)
+                {
+                    return NotFound();
+                }
+                return Ok(group);
+            }
+            else
+            {
+                //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
+                GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
+                if (group == null)
+                {
+                    return NotFound();
+                }
+                return Ok(group);
+            }
+
+        }
+
+        // POST: api/Groups
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.CreateGroup,
+           Description = GroupsDescriptions.CreateGroup
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpPost]
+        public async Task<ActionResult<Group>> CreateGroup(GroupCreateDto dto)
+        {
+            int creatorId = HttpContext.User.GetUserId();
+            ValidatorResult valResult = await validators.Groups.ValidateParams(dto);
+            if (!valResult.IsValid)
+            {
+                return BadRequest(valResult.Failures);
+            }
+            //Group group = mapper.Map<Group>(dto);
+            await services.Groups.CreateAsync(dto, creatorId);
+
+            return Ok();
+        }
+
+        // PUT: api/Groups/5
+        [SwaggerOperation(
+         Summary = GroupsEndpoints.UpdateGroup,
+         Description = GroupsDescriptions.UpdateGroup
+        )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpPut("{groupId}")]
+        public async Task<IActionResult> UpdateGroup(int groupId, GroupUpdateDto dto)
+        {
+            if (groupId != dto.Id)
+            {
+                return BadRequest();
+            }
+            int studentId = HttpContext.User.GetUserId();
+            //List<int> leadGroupIds = (await services.Groups.GetLeaderGroupsIdAsync(studentId));
+
+            if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId))
+            {
+                return Unauthorized("You can't update other's group");
+            }
+            ValidatorResult valResult = await validators.Groups.ValidateParams(dto);
+            if (!valResult.IsValid)
+            {
+                return BadRequest(valResult.Failures);
+            }
+
+            //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
+            GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
+            if (group == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+
+                await services.Groups.UpdateAsync(dto);
+                //var mapped = mapper.Map<GroupDetailForLeaderGetDto>(group);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (!await GroupExists(groupId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        // GET: api/Groups
+        [Tags(Actor.Test)]
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.GetGroups,
+           Description = GroupsDescriptions.GetGroups
+       )]
+        [HttpGet]
+        public async Task<IActionResult> GetGroups()
+        {
+            //IQueryable<Group> list = services.Groups.GetList();
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            var mapped = services.Groups.GetList<GroupGetListDto>();
+            return Ok(mapped);
+        }
+
+        [Tags(Actor.Test)]
+        [SwaggerOperation(
+        Summary = GroupsEndpoints.GetGroup,
+        Description = GroupsDescriptions.GetGroup
+    )]
+        // GET: api/Groups/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetGroup(int id)
+        {
+            //Group group = await services.Groups.GetFullByIdAsync<Group>(id);
+
+            //if (group == null)
+            //{
+            //    return NotFound();
+            //}
+            //GroupDetailForLeaderGetDto dto = mapper.Map<GroupDetailForLeaderGetDto>(group);
+            GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
+            return Ok(group);
+        }
+
+        private async Task<bool> GroupExists(int id)
+        {
+            return (await services.Groups.GetFullByIdAsync<Group>(id)) is not null;
+        }
+    }
+}

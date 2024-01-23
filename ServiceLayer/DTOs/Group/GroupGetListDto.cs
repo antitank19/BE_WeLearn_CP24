@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace ServiceLayer.DTO
+namespace ServiceLayer.DTOs
 {
     public class GroupGetListDto
     {

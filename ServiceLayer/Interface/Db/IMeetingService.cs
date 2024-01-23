@@ -1,5 +1,5 @@
 ﻿using DataLayer.DbObject;
-using ServiceLayer.DTO;
+using ServiceLayer.DTOs;
 
 namespace ServiceLayer.Interface.Db
 {

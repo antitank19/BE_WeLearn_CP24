@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
-using ServiceLayer.Interface;
 using ServiceLayer.Utils;
 using Swashbuckle.AspNetCore.Annotations;
 using API.SwaggerOption.Endpoints;
 using API.SwaggerOption.Const;
 using API.SwaggerOption.Descriptions;
 using API.Extension.ClaimsPrinciple;
+using ServiceLayer.Services.Interface;
 
 namespace API.Controllers
 {

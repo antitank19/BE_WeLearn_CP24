@@ -1,8 +1,8 @@
 ﻿using DataLayer.DbObject;
-using ServiceLayer.Interface;
 using ServiceLayer.DTOs;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using ServiceLayer.Services.Interface;
 
 namespace APIExtension.Validator
 {

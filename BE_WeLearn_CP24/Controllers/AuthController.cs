@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ServiceLayer.DTOs;
-using ServiceLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Utils;
 using Swashbuckle.AspNetCore.Annotations;
@@ -17,6 +16,7 @@ using API.SwaggerOption.Endpoints;
 using API.SwaggerOption.Descriptions;
 using API.Extension.HttpContext;
 using API.SwaggerOption.Const;
+using ServiceLayer.Services.Interface;
 
 namespace API.Controllers
 {

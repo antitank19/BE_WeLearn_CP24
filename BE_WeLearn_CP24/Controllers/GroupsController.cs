@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
-using ServiceLayer.Interface;
+using ServiceLayer.Services.Interface;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers

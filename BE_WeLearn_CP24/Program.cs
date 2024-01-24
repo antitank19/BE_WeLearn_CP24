@@ -7,8 +7,8 @@ using Microsoft.OpenApi.Models;
 using RepositoryLayer.ClassImplement;
 using RepositoryLayer.Interface;
 using ServiceLayer.DbSeeding;
-using ServiceLayer.Implementation;
-using ServiceLayer.Interface;
+using ServiceLayer.Services.Implementation;
+using ServiceLayer.Services.Interface;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);

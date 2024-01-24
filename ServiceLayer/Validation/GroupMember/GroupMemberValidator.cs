@@ -1,6 +1,6 @@
 ﻿using DataLayer.DbObject;
-using ServiceLayer.Interface;
 using ServiceLayer.DTOs;
+using ServiceLayer.Services.Interface;
 
 namespace APIExtension.Validator
 {

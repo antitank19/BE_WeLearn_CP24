@@ -102,8 +102,8 @@ namespace ServiceLayer.Services.Implementation
             }
         }
 
-        private IGroupMemberSerivce groupMembers;
-        public IGroupMemberSerivce GroupMembers
+        private IGroupMemberService groupMembers;
+        public IGroupMemberService GroupMembers
         {
             get
             {

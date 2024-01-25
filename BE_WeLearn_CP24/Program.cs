@@ -1,4 +1,5 @@
 using API.Extension.Auth;
+using API.SignalR;
 using APIExtension.Validator;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,8 @@ builder.Services.AddCors(options =>
 
 });
 #endregion
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 if (IsInMemory)
 {
@@ -95,6 +98,10 @@ app.UseSwaggerUI(options =>
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<GroupHub>("hubs/grouphub");
+//app.MapHub<DrawHub>("hubs/drawhub");
+//app.MapHub<MeetingHub>("hubs/meetinghub");
 
 app.MapControllers();
 

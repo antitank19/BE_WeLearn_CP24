@@ -12,5 +12,7 @@ namespace ServiceLayer.DTOs
         public string GroupName { get; set; }
         public int AccountId { get; set; }
         public string Username { get; set; }
+        public bool IsActive { get; set; }
+        public GroupMemberRole MemberRole { get; set; }
     }
 }

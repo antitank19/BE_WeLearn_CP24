@@ -29,7 +29,7 @@ namespace ServiceLayer.Services.Implementation
             accounts = new AccountService(repos, mapper);
             auth = new AuthService(repos, configuration);
             groups = new GroupService(repos, mapper);
-            subjects = new SubjectService(repos);
+            subjects = new SubjectService(repos, mapper);
             meetings = new MeetingService(repos, mapper);
             groupMembers = new GroupMemberSerivce(repos, mapper);
             documentFiles = new DocumentFileService(repos);
@@ -83,7 +83,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (subjects is null)
                 {
-                    subjects = new SubjectService(repos);
+                    subjects = new SubjectService(repos, mapper);
                 }
                 return subjects;
             }

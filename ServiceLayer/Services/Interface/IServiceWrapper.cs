@@ -17,5 +17,6 @@ namespace ServiceLayer.Services.Interface
         public IGroupService Groups { get; }
         public IGroupMemberService GroupMembers { get; }
         public IMeetingService Meetings { get; }
+        public IStatService Stats { get; }
     }
 }

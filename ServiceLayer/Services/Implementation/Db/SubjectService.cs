@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DataLayer.DbObject;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using ServiceLayer.Services.Interface.Db;
 
 namespace ServiceLayer.Services.Implementation.Db

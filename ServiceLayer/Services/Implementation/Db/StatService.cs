@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using DataLayer.DbObject;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
 

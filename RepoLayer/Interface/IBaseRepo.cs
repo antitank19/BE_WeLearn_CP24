@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoryLayer.Interface
+namespace RepoLayer.Interface
 {
     public interface IBaseRepo<T>
     {

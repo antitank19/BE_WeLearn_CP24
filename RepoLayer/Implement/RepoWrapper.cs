@@ -1,13 +1,13 @@
 ﻿using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoryLayer.ClassImplement
+namespace RepoLayer.Implemention
 {
     public class RepoWrapper : IRepoWrapper
     {
@@ -19,6 +19,7 @@ namespace RepositoryLayer.ClassImplement
             users = new AccountRepo(dbContext);
             meeting = new MeetingRepository(dbContext);
             groupMembers = new GroupMemberReposity(dbContext);
+            connections = new ConnectionRepository(dbContext);
         }
 
         private IAccountRepo users;
@@ -33,19 +34,6 @@ namespace RepositoryLayer.ClassImplement
                 return users;
             }
         }
-
-        //private IMeetingRepository meetingRooms;
-        //public IMeetingRepository Meetings
-        //{
-        //    get
-        //    {
-        //        if (meetingRooms is null)
-        //        {
-        //            meetingRooms = new MeetingRepository(dbContext, mapper);
-        //        }
-        //        return meetingRooms;
-        //    }
-        //}
 
         private IMeetingRepository meeting;
         public IMeetingRepository Meetings
@@ -137,6 +125,48 @@ namespace RepositoryLayer.ClassImplement
                     requests = new RequestReposity(dbContext);
                 }
                 return requests;
+            }
+
+        }
+
+        private IConnectionRepository connections; 
+        public IConnectionRepository Connections
+        {
+            get
+            {
+                if (connections is null)
+                {
+                    connections = new ConnectionRepository(dbContext);
+                }
+                return connections;
+            }
+
+        }
+
+        private IChatRepository chats;
+        public IChatRepository Chats
+        {
+            get
+            {
+                if (chats is null)
+                {
+                    chats = new ChatRepository(dbContext);
+                }
+                return chats;
+            }
+
+        }
+
+        private IReviewRepository reviews;
+        public IReviewRepository Reviews
+        {
+            get
+            {
+                if (reviews is null)
+                {
+                    reviews = new ReviewRepository(dbContext);
+                }
+                return reviews;
             }
 
         }

@@ -1,4 +1,4 @@
-﻿using RepositoryLayer.Interface;
+﻿using RepoLayer.Interface;
 using ServiceLayer.Services.Interface.Db;
 
 namespace ServiceLayer.Services.Implementation.Db;

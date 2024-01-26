@@ -1,8 +1,8 @@
 ﻿using DataLayer.DbContext;
 using DataLayer.DbObject;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 
-namespace RepositoryLayer.ClassImplement
+namespace RepoLayer.Implemention
 {
     internal class SubjectRepository : ISubjectRepository
     {

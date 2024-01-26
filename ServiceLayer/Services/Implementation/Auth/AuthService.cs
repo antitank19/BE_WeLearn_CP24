@@ -6,7 +6,7 @@ using DataLayer.Enums;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Auth;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,13 +1,12 @@
 ﻿using API.Descriptions;
 using API.Extension.ClaimsPrinciple;
-using API.SignalR;
+using API.SignalRHub;
 using API.SwaggerOption.Const;
 using API.SwaggerOption.Endpoints;
 using APIExtension.Validator;
 using AutoMapper;
 using DataLayer.DbObject;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using ServiceLayer.DTOs;

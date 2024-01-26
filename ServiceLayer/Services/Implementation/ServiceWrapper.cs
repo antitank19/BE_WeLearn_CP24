@@ -1,4 +1,4 @@
-﻿using RepositoryLayer.Interface;
+﻿using RepoLayer.Interface;
 using ServiceLayer.Services.Implementation.Auth;
 using Microsoft.Extensions.Configuration;
 using AutoMapper;

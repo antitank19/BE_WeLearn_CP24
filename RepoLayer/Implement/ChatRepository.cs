@@ -4,23 +4,23 @@ using RepoLayer.Interface;
 
 namespace RepoLayer.Implemention
 {
-    internal class InviteReposity : BaseRepo<Invite>, IInviteReposity
+    internal class ChatRepository : BaseRepo<Chat>, IChatRepository
     {
-        public InviteReposity(WeLearnContext dbContext) : base(dbContext)
+        public ChatRepository(WeLearnContext dbContext) : base(dbContext)
         {
         }
 
-        public override Task CreateAsync(Invite entity)
+        public override Task CreateAsync(Chat entity)
         {
             return base.CreateAsync(entity);
         }
 
-        public override Task<Invite> GetByIdAsync(int id)
+        public override Task<Chat> GetByIdAsync(int id)
         {
             return base.GetByIdAsync(id);
         }
 
-        public override IQueryable<Invite> GetList()
+        public override IQueryable<Chat> GetList()
         {
             return base.GetList();
         }
@@ -30,7 +30,7 @@ namespace RepoLayer.Implemention
             return base.RemoveAsync(id);
         }
 
-        public override Task UpdateAsync(Invite entity)
+        public override Task UpdateAsync(Chat entity)
         {
             return base.UpdateAsync(entity);
         }

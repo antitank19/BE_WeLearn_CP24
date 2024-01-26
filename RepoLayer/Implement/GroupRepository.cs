@@ -1,6 +1,6 @@
 ﻿using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataLayer.DbObject;
 
-namespace RepositoryLayer.ClassImplement
+namespace RepoLayer.Implemention
 {
     public class GroupRepository : BaseRepo<Group>, IGroupRepository
     {

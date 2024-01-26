@@ -1,4 +1,4 @@
-﻿using RepositoryLayer.Interface;
+﻿using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using DataLayer.DbContext;
 
-namespace RepositoryLayer.ClassImplement
+namespace RepoLayer.Implemention
 {
     public abstract class BaseRepo<T> : IBaseRepo<T> where T: class
     {

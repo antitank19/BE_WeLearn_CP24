@@ -3,7 +3,7 @@ using AutoMapper.QueryableExtensions;
 using DataLayer.DbObject;
 using DataLayer.Enums;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using ServiceLayer.Utils;
 using ServiceLayer.DTOs;
 using System.Collections;

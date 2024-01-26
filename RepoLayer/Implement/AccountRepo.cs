@@ -1,14 +1,14 @@
 ﻿using DataLayer.DbContext;
 using DataLayer.DbObject;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoryLayer.ClassImplement
+namespace RepoLayer.Implemention
 {
     public class AccountRepo : BaseRepo<Account>, IAccountRepo
     {
@@ -75,7 +75,21 @@ namespace RepositoryLayer.ClassImplement
         {
             return base.UpdateAsync(entity);
         }
+        //SignalR
+        //////////////////////////////////////////////////////////////////////
+        public async Task<Account> GetUserByUsernameSignalrAsync(string username)
+        {
+            return await dbContext.Accounts.SingleOrDefaultAsync(u => u.Username == username);
+        }
 
-        
+        public async Task<Account> GetMemberSignalrAsync(string username)
+        {
+
+            return  await dbContext.Accounts.SingleOrDefaultAsync(x => x.Username == username);
+            //.ProjectTo<MemberSignalrDto>(mapper.ConfigurationProvider);
+            //add CreateMap<AppUser, MemberDto>(); in AutoMapperProfiles
+            //.SingleOrDefaultAsync();
+        }
+
     }
 }

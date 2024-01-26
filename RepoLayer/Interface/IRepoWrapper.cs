@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace RepositoryLayer.Interface
+namespace RepoLayer.Interface
 {
     public interface IRepoWrapper
     {
@@ -18,5 +18,8 @@ namespace RepositoryLayer.Interface
         public IRequestReposity Requests { get; }
         public ISubjectRepository Subjects { get; }
         public IScheduleRepository Schedules { get; }
+        public IConnectionRepository Connections { get; }
+        public IChatRepository Chats { get; }
+        public IReviewRepository Reviews { get; }
     }
 }

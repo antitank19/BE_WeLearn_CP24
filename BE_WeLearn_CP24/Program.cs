@@ -1,12 +1,12 @@
 using API.Extension.Auth;
-using API.SignalR;
+using API.SignalRHub;
 using APIExtension.Validator;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using RepositoryLayer.ClassImplement;
-using RepositoryLayer.Interface;
+using RepoLayer.Implemention;
+using RepoLayer.Interface;
 using ServiceLayer.DbSeeding;
 using ServiceLayer.Services.Implementation;
 using ServiceLayer.Services.Interface;
@@ -100,8 +100,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHub<GroupHub>("hubs/grouphub");
-//app.MapHub<DrawHub>("hubs/drawhub");
-//app.MapHub<MeetingHub>("hubs/meetinghub");
+app.MapHub<DrawHub>("hubs/drawhub");
+app.MapHub<MeetingHub>("hubs/meetinghub");
 
 app.MapControllers();
 

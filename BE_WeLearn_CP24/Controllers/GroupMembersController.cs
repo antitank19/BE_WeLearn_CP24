@@ -1,5 +1,5 @@
 ﻿using API.Extension.ClaimsPrinciple;
-using API.SignalR;
+using API.SignalRHub;
 using API.SwaggerOption.Const;
 using API.SwaggerOption.Descriptions;
 using API.SwaggerOption.Endpoints;
@@ -8,7 +8,6 @@ using AutoMapper;
 using DataLayer.DbObject;
 using DataLayer.Enums;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using ServiceLayer.DTOs;

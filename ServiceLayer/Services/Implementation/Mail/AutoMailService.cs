@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using RepositoryLayer.Interface;
+using RepoLayer.Interface;
 using MimeKit;
 using MailContentType = MimeKit.ContentType;
 using MimeKit.Utils;

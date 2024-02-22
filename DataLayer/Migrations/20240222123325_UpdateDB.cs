@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class Init : Migration
+    public partial class UpdateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -258,6 +258,178 @@ namespace DataLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    MeetingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chats_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Chats_Meetings_MeetingId",
+                        column: x => x.MeetingId,
+                        principalTable: "Meetings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MeetingParticipations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MeetingId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeetingParticipations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MeetingParticipations_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MeetingParticipations_Meetings_MeetingId",
+                        column: x => x.MeetingId,
+                        principalTable: "Meetings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RevieweeId = table.Column<int>(type: "int", nullable: false),
+                    MeetingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Accounts_RevieweeId",
+                        column: x => x.RevieweeId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Meetings_MeetingId",
+                        column: x => x.MeetingId,
+                        principalTable: "Meetings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnswerPosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupMemberId = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnswerPosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnswerPosts_GroupMembers_GroupMemberId",
+                        column: x => x.GroupMemberId,
+                        principalTable: "GroupMembers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupMemberId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupTasks_GroupMembers_GroupMemberId",
+                        column: x => x.GroupMemberId,
+                        principalTable: "GroupMembers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupMemberId = table.Column<int>(type: "int", nullable: false),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileHttpLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_GroupMembers_GroupMemberId",
+                        column: x => x.GroupMemberId,
+                        principalTable: "GroupMembers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReviewDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Result = table.Column<int>(type: "int", nullable: false),
+                    ReviewId = table.Column<int>(type: "int", nullable: false),
+                    ReviewerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReviewDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReviewDetails_Accounts_ReviewerId",
+                        column: x => x.ReviewerId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ReviewDetails_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_Email",
                 table: "Accounts",
@@ -274,6 +446,21 @@ namespace DataLayer.Migrations
                 table: "Accounts",
                 column: "Username",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnswerPosts_GroupMemberId",
+                table: "AnswerPosts",
+                column: "GroupMemberId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_AccountId",
+                table: "Chats",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_MeetingId",
+                table: "Chats",
+                column: "MeetingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupMembers_AccountId_GroupId",
@@ -297,6 +484,11 @@ namespace DataLayer.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupTasks_GroupMemberId",
+                table: "GroupTasks",
+                column: "GroupMemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JoinInvites_AccountId",
                 table: "JoinInvites",
                 column: "AccountId");
@@ -317,9 +509,44 @@ namespace DataLayer.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MeetingParticipations_AccountId",
+                table: "MeetingParticipations",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MeetingParticipations_MeetingId",
+                table: "MeetingParticipations",
+                column: "MeetingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Meetings_ScheduleId",
                 table: "Meetings",
                 column: "ScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_GroupMemberId",
+                table: "Posts",
+                column: "GroupMemberId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReviewDetails_ReviewerId",
+                table: "ReviewDetails",
+                column: "ReviewerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReviewDetails_ReviewId",
+                table: "ReviewDetails",
+                column: "ReviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_MeetingId",
+                table: "Reviews",
+                column: "MeetingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_RevieweeId",
+                table: "Reviews",
+                column: "RevieweeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedules_GroupId",
@@ -340,10 +567,16 @@ namespace DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupMembers");
+                name: "AnswerPosts");
+
+            migrationBuilder.DropTable(
+                name: "Chats");
 
             migrationBuilder.DropTable(
                 name: "GroupSubjects");
+
+            migrationBuilder.DropTable(
+                name: "GroupTasks");
 
             migrationBuilder.DropTable(
                 name: "JoinInvites");
@@ -352,22 +585,37 @@ namespace DataLayer.Migrations
                 name: "JoinRequests");
 
             migrationBuilder.DropTable(
-                name: "Meetings");
+                name: "MeetingParticipations");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "ReviewDetails");
 
             migrationBuilder.DropTable(
                 name: "ScheduleSubjects");
 
             migrationBuilder.DropTable(
-                name: "Accounts");
+                name: "GroupMembers");
 
             migrationBuilder.DropTable(
-                name: "Schedules");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Subjects");
 
             migrationBuilder.DropTable(
+                name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "Meetings");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Groups");

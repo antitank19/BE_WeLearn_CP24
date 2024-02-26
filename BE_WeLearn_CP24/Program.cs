@@ -1,5 +1,6 @@
 using API.Extension.Auth;
 using API.SignalRHub;
+using API.SignalRHub.Tracker;
 using APIExtension.Validator;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,7 @@ builder.Services.AddCors(options =>
 
 });
 #endregion
+builder.Services.AddSingleton<PresenceTracker>();
 builder.Services.AddSignalR();
 
 var app = builder.Build();

@@ -53,12 +53,17 @@ namespace RepoLayer.Implemention
         ////////////////////////////////////////////////////////////
         public async Task<Meeting> GetMeetingByIdSignalr(int meetingId)
         {
-            return await dbContext.Meetings.Include(x => x.Connections).FirstOrDefaultAsync(x => x.Id == meetingId);
+            return await dbContext.Meetings
+                .Include(x => x.Connections)
+                .Include(x => x.Schedule)
+                .FirstOrDefaultAsync(x => x.Id == meetingId);
         }
 
         public async Task<Meeting> GetMeetingForConnectionSignalr(string connectionId)
         {
-            return await dbContext.Meetings.Include(x => x.Connections)
+            return await dbContext.Meetings
+                .Include(x => x.Connections)
+                .Include(x => x.Schedule)
                 .Where(x => x.Connections.Any(c => c.Id == connectionId))
                 .FirstOrDefaultAsync();
         }

@@ -522,6 +522,9 @@ namespace API.SignalRHub
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             //await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-joined", new{ roomId = roomId, peerId = peerId });
             //await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-joined", peer);
+
+            //Help stablize fe
+            System.Threading.Thread.Sleep(1000);
             await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-joined", peer);
             await Clients.Group(roomId).SendAsync("get-users", new { roomId = roomId, participants = Rooms[roomId] });
             await Clients.Group(roomId).SendAsync("get-messages", Chats[roomId]);

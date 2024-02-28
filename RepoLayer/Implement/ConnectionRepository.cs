@@ -5,7 +5,7 @@ using RepoLayer.Interface;
 
 namespace RepoLayer.Implemention
 {
-    internal class ConnectionRepository : IConnectionRepository
+    public class ConnectionRepository : IConnectionRepository
     {
         private readonly WeLearnContext dbContext;
         public ConnectionRepository(WeLearnContext dbContext) 
@@ -41,9 +41,10 @@ namespace RepoLayer.Implemention
             dbContext.SaveChanges();
         }
 
-        public Task UpdateAsync(Connection entity)
+        public async Task UpdateAsync(Connection entity)
         {
-            throw new NotImplementedException();
+            dbContext.Connections.Update(entity);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task CreateConnectionSignalrAsync(Connection connection)

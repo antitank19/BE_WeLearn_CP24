@@ -26,7 +26,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "trankhaiminhkhoi10a3@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },
@@ -38,7 +38,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student2@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },
@@ -50,7 +50,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student3@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },
@@ -62,7 +62,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student4@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },
@@ -85,7 +85,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student6@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },
@@ -97,7 +97,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student7@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },
@@ -120,7 +120,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student9@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             }, new Account
@@ -131,7 +131,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student10@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Schhool="THCS Minh Đức",
+                Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2
             },

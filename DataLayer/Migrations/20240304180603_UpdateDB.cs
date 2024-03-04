@@ -84,7 +84,7 @@ namespace DataLayer.Migrations
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Schhool = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Career = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Dob = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -172,6 +172,47 @@ namespace DataLayer.Migrations
                         name: "FK_ScheduleSubjects_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnswerDiscussions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnswerDiscussions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnswerDiscussions_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Discussions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileHttpLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Discussions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Discussions_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -341,69 +382,6 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AnswerPosts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupMemberId = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AnswerPosts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AnswerPosts_GroupMembers_GroupMemberId",
-                        column: x => x.GroupMemberId,
-                        principalTable: "GroupMembers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GroupTasks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupMemberId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupTasks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GroupTasks_GroupMembers_GroupMemberId",
-                        column: x => x.GroupMemberId,
-                        principalTable: "GroupMembers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupMemberId = table.Column<int>(type: "int", nullable: false),
-                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileHttpLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Posts_GroupMembers_GroupMemberId",
-                        column: x => x.GroupMemberId,
-                        principalTable: "GroupMembers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ReviewDetails",
                 columns: table => new
                 {
@@ -448,9 +426,9 @@ namespace DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AnswerPosts_GroupMemberId",
-                table: "AnswerPosts",
-                column: "GroupMemberId");
+                name: "IX_AnswerDiscussions_AccountId",
+                table: "AnswerDiscussions",
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chats_AccountId",
@@ -461,6 +439,11 @@ namespace DataLayer.Migrations
                 name: "IX_Chats_MeetingId",
                 table: "Chats",
                 column: "MeetingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Discussions_AccountId",
+                table: "Discussions",
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupMembers_AccountId_GroupId",
@@ -482,11 +465,6 @@ namespace DataLayer.Migrations
                 name: "IX_GroupSubjects_SubjectId",
                 table: "GroupSubjects",
                 column: "SubjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupTasks_GroupMemberId",
-                table: "GroupTasks",
-                column: "GroupMemberId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JoinInvites_AccountId",
@@ -522,11 +500,6 @@ namespace DataLayer.Migrations
                 name: "IX_Meetings_ScheduleId",
                 table: "Meetings",
                 column: "ScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_GroupMemberId",
-                table: "Posts",
-                column: "GroupMemberId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReviewDetails_ReviewerId",
@@ -567,16 +540,19 @@ namespace DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnswerPosts");
+                name: "AnswerDiscussions");
 
             migrationBuilder.DropTable(
                 name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "GroupSubjects");
+                name: "Discussions");
 
             migrationBuilder.DropTable(
-                name: "GroupTasks");
+                name: "GroupMembers");
+
+            migrationBuilder.DropTable(
+                name: "GroupSubjects");
 
             migrationBuilder.DropTable(
                 name: "JoinInvites");
@@ -588,16 +564,10 @@ namespace DataLayer.Migrations
                 name: "MeetingParticipations");
 
             migrationBuilder.DropTable(
-                name: "Posts");
-
-            migrationBuilder.DropTable(
                 name: "ReviewDetails");
 
             migrationBuilder.DropTable(
                 name: "ScheduleSubjects");
-
-            migrationBuilder.DropTable(
-                name: "GroupMembers");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

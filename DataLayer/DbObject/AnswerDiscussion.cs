@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace DataLayer.DbObject
 {
-    public class AnswerPost
+    public class AnswerDiscussion
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         //Student
-        [ForeignKey("GroupMemberId")]
-        public int GroupMemberId { get; set; }
-        public virtual GroupMember GroupMember { get; set; }
+        [ForeignKey("AccountId")]
+        public int AccountId { get; set; }
+        public virtual Account Account { get; set; }
         public string Content { get; set; }
     }
 }

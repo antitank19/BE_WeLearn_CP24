@@ -8,7 +8,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using GroupTask = DataLayer.DbObject.GroupTask;
 
 namespace DataLayer.DbContext
 {
@@ -31,9 +30,8 @@ namespace DataLayer.DbContext
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<ReviewDetail> ReviewDetails { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
-        public virtual DbSet<Post> Posts { get; set; }
-        public virtual DbSet<AnswerPost> AnswerPosts { get; set; }
-        public virtual DbSet<GroupTask> GroupTasks { get; set; }
+        public virtual DbSet<Discussion> Discussions{ get; set; }
+        public virtual DbSet<AnswerDiscussion> AnswerDiscussions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

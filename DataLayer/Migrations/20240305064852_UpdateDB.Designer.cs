@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(WeLearnContext))]
-    [Migration("20240304180603_UpdateDB")]
+    [Migration("20240305064852_UpdateDB")]
     partial class UpdateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,9 +94,14 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DiscussionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("DiscussionId");
 
                     b.ToTable("AnswerDiscussions");
                 });
@@ -172,9 +177,8 @@ namespace DataLayer.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FileHttpLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Question")
                         .IsRequired()
@@ -183,6 +187,8 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Discussions");
                 });
@@ -515,10 +521,18 @@ namespace DataLayer.Migrations
                     b.HasOne("DataLayer.DbObject.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.DbObject.Discussion", "Discussion")
+                        .WithMany("AnswerDiscussion")
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Discussion");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Chat", b =>
@@ -567,7 +581,15 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DataLayer.DbObject.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Account");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.GroupMember", b =>
@@ -730,6 +752,11 @@ namespace DataLayer.Migrations
                     b.Navigation("JoinInvites");
 
                     b.Navigation("JoinRequests");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.Discussion", b =>
+                {
+                    b.Navigation("AnswerDiscussion");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Group", b =>

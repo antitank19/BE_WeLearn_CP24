@@ -13,10 +13,15 @@ namespace DataLayer.DbObject
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        //Student
+
+        // Student
         [ForeignKey("AccountId")]
         public int AccountId { get; set; }
         public virtual Account Account { get; set; }
+
+        public int DiscussionId { get; set; }
+        public virtual Discussion Discussion { get; set; }
+
         public string Content { get; set; }
     }
 }

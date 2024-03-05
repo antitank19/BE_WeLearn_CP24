@@ -34,6 +34,18 @@ namespace DataLayer.DbContext
         public virtual DbSet<AnswerDiscussion> AnswerDiscussions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AnswerDiscussion>()
+            .HasOne(ad => ad.Account)
+            .WithMany()
+            .HasForeignKey(ad => ad.AccountId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AnswerDiscussion>()
+                .HasOne(ad => ad.Discussion)
+                .WithMany(d => d.AnswerDiscussion)
+                .HasForeignKey(ad => ad.DiscussionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<Account>()
             //    .HasIndex(a => a.Username).IsUnique();

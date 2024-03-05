@@ -177,34 +177,14 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AnswerDiscussions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AnswerDiscussions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AnswerDiscussions_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Discussions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileHttpLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,6 +193,12 @@ namespace DataLayer.Migrations
                         name: "FK_Discussions_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Discussions_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -382,6 +368,33 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnswerDiscussions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    DiscussionId = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnswerDiscussions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnswerDiscussions_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AnswerDiscussions_Discussions_DiscussionId",
+                        column: x => x.DiscussionId,
+                        principalTable: "Discussions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ReviewDetails",
                 columns: table => new
                 {
@@ -431,6 +444,11 @@ namespace DataLayer.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnswerDiscussions_DiscussionId",
+                table: "AnswerDiscussions",
+                column: "DiscussionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Chats_AccountId",
                 table: "Chats",
                 column: "AccountId");
@@ -444,6 +462,11 @@ namespace DataLayer.Migrations
                 name: "IX_Discussions_AccountId",
                 table: "Discussions",
                 column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Discussions_GroupId",
+                table: "Discussions",
+                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupMembers_AccountId_GroupId",
@@ -546,9 +569,6 @@ namespace DataLayer.Migrations
                 name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "Discussions");
-
-            migrationBuilder.DropTable(
                 name: "GroupMembers");
 
             migrationBuilder.DropTable(
@@ -568,6 +588,9 @@ namespace DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ScheduleSubjects");
+
+            migrationBuilder.DropTable(
+                name: "Discussions");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

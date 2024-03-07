@@ -11,5 +11,7 @@ namespace RepoLayer.Interface
         public Task RemoveAsync(string id);
         public Task<bool> IdExistAsync(string id);
         public Task CreateConnectionSignalrAsync(Connection connection);
+        public Task<int> CountMemberInMeeting(int meetingId);
+
     }
 }

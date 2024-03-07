@@ -80,7 +80,7 @@ namespace API.SignalRHub
 
         IMapper mapper;
         IHubContext<GroupHub> groupHub;
-        PresenceTracker presenceTracker;
+        //PresenceTracker presenceTracker;
         IRepoWrapper repos;
 
         public MeetingHub(IRepoWrapper repos, PresenceTracker presenceTracker, IHubContext<GroupHub> presenceHubContext, IMapper mapper)
@@ -89,7 +89,7 @@ namespace API.SignalRHub
             //Console.WriteLine("2.   Hub/Chat: ctor(IUnitOfWork, UserShareScreenTracker, PresenceTracker, PresenceHub)");
 
             this.repos = repos;
-            this.presenceTracker = presenceTracker;
+            //this.presenceTracker = presenceTracker;
             this.groupHub = presenceHubContext;
             this.mapper = mapper;
         }
@@ -131,7 +131,7 @@ namespace API.SignalRHub
                 accountId = int.Parse(acoountIdString);
             }
             //Step 2: Add ContextConnection vào MeetingHub.Group(meetingId) và add (user, meeting) vào presenceTracker
-            await presenceTracker.UserConnected(new UserConnectionSignalrDto(username, meetingIdInt), Context.ConnectionId);
+            //await presenceTracker.UserConnected(new UserConnectionSignalrDto(username, meetingIdInt), Context.ConnectionId);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, meetingIdString);//khi user click vao room se join vao
                                                                                 //await AddConnectionToGroup(meetingIdInt); // luu db DbSet<Connection> de khi disconnect biet
@@ -150,7 +150,7 @@ namespace API.SignalRHub
                 UserName = username,
                 Start = DateTime.Now
             };
-            UserConnectionSignalrDto[] currentUsersInMeeting = await presenceTracker.GetOnlineUsersInMeet(meetingIdInt);
+            //UserConnectionSignalrDto[] currentUsersInMeeting = await presenceTracker.GetOnlineUsersInMeet(meetingIdInt);
             if (meeting != null)
             {
                 //meeting.Connections.Add(connection);
@@ -159,7 +159,7 @@ namespace API.SignalRHub
                 {
                     meeting.Start = DateTime.Now;
                 }
-                meeting.CountMember = currentUsersInMeeting.Length;
+                meeting.CountMember = await repos.Connections.CountMemberInMeeting(meetingIdInt);
                 await repos.Meetings.UpdateAsync(meeting);
             }
             Console.WriteLine("++==++==++++++++++++++++");
@@ -174,7 +174,7 @@ namespace API.SignalRHub
             var usersInMeeting = repos.Connections.GetList()
                 .Where(e => e.MeetingId == meetingIdInt && e.End == null)
                 .Select(e => e.UserName).ToHashSet();
-            await Clients.Group(meetingIdString).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
+            //await Clients.Group(meetingIdString).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
 
             Console.WriteLine("2.1     " + new String('+', 50));
             Console.WriteLine("2.1     Hub/ChatSend: UserOnlineInGroupMsg, MemberSignalrDto");
@@ -185,14 +185,16 @@ namespace API.SignalRHub
             //await repos.Meetings.UpdateCountMemberSignalr(meetingIdInt, currentUsersInMeeting.Length);
 
             //Test
-            await Clients.Group(meetingIdString).SendAsync(OnConnectMeetHubSuccessfullyMsg, $"Connect meethub dc r! {username} vô dc r ae ơi!!!");
+            //await Clients.Group(meetingIdString).SendAsync(OnConnectMeetHubSuccessfullyMsg, $"Connect meethub dc r! {username} vô dc r ae ơi!!!");
 
             // Step 6: Thông báo với groupHub.Group(groupId) số người ở trong phòng  
-            List<string> currentConnectionIds = await presenceTracker.GetConnectionIdsForUser(new UserConnectionSignalrDto(username, meetingIdInt));
+            //List<string> currentConnectionIds = await presenceTracker.GetConnectionIdsForUser(new UserConnectionSignalrDto(username, meetingIdInt));
             Console.WriteLine("2.1     " + new String('+', 50));
             Console.WriteLine("2.1     Hub/PresenceSend: CountMemberInGroupMsg, { meetingId, countMember }");
-            await groupHub.Clients.AllExcept(currentConnectionIds).SendAsync(GroupHub.CountMemberInGroupMsg,
-                   new { meetingId = meetingIdInt, countMember = currentUsersInMeeting.Length });
+            //await groupHub.Clients.AllExcept(currentConnectionIds).SendAsync(GroupHub.CountMemberInGroupMsg,
+                   //new { meetingId = meetingIdInt, countMember = currentUsersInMeeting.Length });
+            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.CountMemberInGroupMsg,
+                   new { meetingId = meetingIdInt, countMember = meeting.CountMember });
 
             //Console.WriteLine("_+_+_+_+__+_+_+_+_+_+_+_+_+_+_+_++++++++++++++++++++++++\nConnect dc r !!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -214,30 +216,34 @@ namespace API.SignalRHub
             Meeting meeting = await RemoveConnectionFromMeeting();
 
             //step 3: Xóa ContextConnectionId khỏi presenceTracker và check xem user còn connect nào khác với meeting ko
-            bool isOffline = await presenceTracker.UserDisconnected(new UserConnectionSignalrDto(username, meeting.Id), Context.ConnectionId);
+            //bool isOffline = await presenceTracker.UserDisconnected(new UserConnectionSignalrDto(username, meeting.Id), Context.ConnectionId);
 
             //step 5: Remove ContextConnectionId khỏi meetingHub.Group(meetingId)   chắc move ra khỏi if
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, meeting.Id.ToString());
-            if (isOffline)
-            {
-                //step 6: Nếu ko còn connect nào nữa thì Thông báo với meetingHub.Group(meetingId)
-                MemberSignalrDto offLineUser = mapper.Map<MemberSignalrDto>(
-                    await repos.Accounts.GetMemberSignalrAsync(username));
-                await Clients.Group(meeting.Id.ToString()).SendAsync(UserOfflineInMeetingMsg, offLineUser);
+            int onlineCount = await repos.Connections.CountMemberInMeeting(meeting.Id);
+            await repos.Meetings.UpdateCountMemberSignalr(meeting.Id, onlineCount);
+            await groupHub.Clients.All.SendAsync(GroupHub.CountMemberInGroupMsg,
+                   new { meetingId = meeting.Id, countMember = onlineCount });
+            //if (isOffline)
+            //{
+            //    //step 6: Nếu ko còn connect nào nữa thì Thông báo với meetingHub.Group(meetingId)
+            //    //MemberSignalrDto offLineUser = mapper.Map<MemberSignalrDto>(
+            //    //    await repos.Accounts.GetMemberSignalrAsync(username));
+            //    //await Clients.Group(meeting.Id.ToString()).SendAsync(UserOfflineInMeetingMsg, offLineUser);
 
-                //step 7: Update lại số người trong phòng
-                UserConnectionSignalrDto[] currentUsersInMeeting = await presenceTracker.GetOnlineUsersInMeet(meeting.Id);
-                await repos.Meetings.UpdateCountMemberSignalr(meeting.Id, currentUsersInMeeting.Length);
+            //    //step 7: Update lại số người trong phòng
+            //    //UserConnectionSignalrDto[] currentUsersInMeeting = await presenceTracker.GetOnlineUsersInMeet(meeting.Id);
+            //    //await repos.Meetings.UpdateCountMemberSignalr(meeting.Id, currentUsersInMeeting.Length);
 
-                //step 8: Thông báo với groupHub.Group(groupId) số người ở trong phòng
-                await groupHub.Clients.All.SendAsync(GroupHub.CountMemberInGroupMsg,
-                       new { meetingId = meeting.Id, countMember = currentUsersInMeeting.Length });
-            }
+            //    //step 8: Thông báo với groupHub.Group(groupId) số người ở trong phòng
+            //    //await groupHub.Clients.All.SendAsync(GroupHub.CountMemberInGroupMsg,
+            //    //       new { meetingId = meeting.Id, countMember = currentUsersInMeeting.Length });
+            //}
 
             var usersInMeeting = repos.Connections.GetList()
                .Where(e => e.MeetingId == meeting.Id && e.End == null)
                .Select(e => e.UserName).ToHashSet();
-            await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
+            //await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
 
             if(usersInMeeting.Count == 0)
             {
@@ -275,16 +281,17 @@ namespace API.SignalRHub
             {
                 Console.WriteLine("\n\n+++++++++++++\nEnd connection fail");
             }
+            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
 
             //step 9: Disconnect khỏi meetHub
             await base.OnDisconnectedAsync(exception);
         }
-        public async Task ShareScreenToUser(int meetingId, string receiverUsername, bool isShare)
-        {
-            var ReceiverConnectionIds = await presenceTracker.GetConnectionIdsForUser(new UserConnectionSignalrDto(receiverUsername, meetingId));
-            if (ReceiverConnectionIds.Count > 0)
-                await Clients.Clients(ReceiverConnectionIds).SendAsync(OnShareScreenMsg, isShare);
-        }
+        //public async Task ShareScreenToUser(int meetingId, string receiverUsername, bool isShare)
+        //{
+        //    var ReceiverConnectionIds = await presenceTracker.GetConnectionIdsForUser(new UserConnectionSignalrDto(receiverUsername, meetingId));
+        //    if (ReceiverConnectionIds.Count > 0)
+        //        await Clients.Clients(ReceiverConnectionIds).SendAsync(OnShareScreenMsg, isShare);
+        //}
 
         //sẽ dc gọi khi FE gọi chatHubConnection.invoke('SendMessage', { content: string })
         public async Task SendMessageOld(MessageSignalrCreateDto createMessageDto)

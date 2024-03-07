@@ -52,5 +52,13 @@ namespace RepoLayer.Implemention
             dbContext.Connections.Add(connection);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task<int> CountMemberInMeeting(int meetingId)
+        {
+            var usersInMeeting = dbContext.Connections
+              .Where(e => e.MeetingId == meetingId && e.End == null)
+              .Select(e => e.UserName).ToHashSet();
+            return usersInMeeting.Count();
+        }
     }
 }

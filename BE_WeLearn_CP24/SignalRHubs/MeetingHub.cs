@@ -440,7 +440,7 @@ namespace API.SignalRHub
             public string Username { get; set; }
             public string Author { get; set; }
         }
-        public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
+        //public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
         public static readonly Dictionary<string, List<IMessage>> Chats = new Dictionary<string, List<IMessage>> ();
         public static readonly Dictionary<string, bool> IsSharing = new Dictionary<string, bool> ();
         public class CreateRoomInput
@@ -484,11 +484,22 @@ namespace API.SignalRHub
             Console.WriteLine(peerId);
             Console.WriteLine(roomId);
             Console.WriteLine(username);
-            bool isRoomExisted = Rooms.ContainsKey(roomId);
-            if (!isRoomExisted)
-            {
-                Rooms.Add(roomId, new Dictionary<string, Peer>());
-            }
+            #region unused code
+            //bool isRoomExisted = Rooms.ContainsKey(roomId);
+            //if (!isRoomExisted)
+            //{
+            //    Rooms.Add(roomId, new Dictionary<string, Peer>());
+            //}
+            //bool isUsernameExisted = Rooms[roomId].ContainsKey(username);
+            //if (isUsernameExisted)
+            //{
+            //    Rooms[roomId][username] = peer;
+            //}
+            //else
+            //{
+            //    Rooms[roomId].Add(username, peer);
+            //}
+            #endregion
             bool isChatExisted = Chats.ContainsKey(roomId);
             if (!isChatExisted)
             {
@@ -504,20 +515,11 @@ namespace API.SignalRHub
             //{
             //    Drawings.Add(roomId, new List<Drawing>());
             //}
-            bool isUsernameExisted = Rooms[roomId].ContainsKey(username);
             Peer peer = new Peer
             {
                 peerId = peerId,
                 userName = username,
             };
-            if (isUsernameExisted)
-            {
-                Rooms[roomId][username] = peer;
-            }
-            else
-            {
-                Rooms[roomId].Add(username, peer);
-            }
             //await Groups.AddToGroupAsync(Context.ConnectionId, roomId);//khi user click vao room se join vao
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             //await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-joined", new{ roomId = roomId, peerId = peerId });
@@ -526,7 +528,7 @@ namespace API.SignalRHub
             //Help stablize fe
             System.Threading.Thread.Sleep(1000);
             await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-joined", peer);
-            await Clients.Group(roomId).SendAsync("get-users", new { roomId = roomId, participants = Rooms[roomId] });
+            //await Clients.Group(roomId).SendAsync("get-users", new { roomId = roomId, participants = Rooms[roomId] });
             await Clients.Group(roomId).SendAsync("get-messages", Chats[roomId]);
         }
 
@@ -543,7 +545,7 @@ namespace API.SignalRHub
             string roomId = input.roomId;
             string peerId = input.peerId;
             string username = Context.User.GetUsername();
-            Rooms[roomId].Remove(username);
+            //Rooms[roomId].Remove(username);
 
             await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-disconnected", peerId, username);
 
@@ -562,7 +564,7 @@ namespace API.SignalRHub
                 meeting.CountMember = usersJoined.Count;
                 meeting.End = DateTime.Now;
                 await repos.Meetings.UpdateAsync(meeting);
-                Rooms.Remove(roomId);
+                //Rooms.Remove(roomId);
                 Chats.Remove(roomId);
                 //Drawings.Remove(roomId);
                 DrawHub.Drawings.Remove(roomId);

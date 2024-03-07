@@ -719,3 +719,4 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,aspnetcore,visualstudio,visualstudiocode
 *.zip
+BE_WeLearn_CP24/appsettings.Development.json

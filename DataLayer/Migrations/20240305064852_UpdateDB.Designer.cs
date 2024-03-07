@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(WeLearnContext))]
-    [Migration("20240120054357_AddTbls")]
-    partial class AddTbls
+    [Migration("20240305064852_UpdateDB")]
+    partial class UpdateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Career")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2")
@@ -58,9 +61,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Schhool")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -77,6 +77,33 @@ namespace DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.AnswerDiscussion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DiscussionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("DiscussionId");
+
+                    b.ToTable("AnswerDiscussions");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Chat", b =>
@@ -106,7 +133,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("MeetingId");
 
-                    b.ToTable("Chat");
+                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Connection", b =>
@@ -137,6 +164,33 @@ namespace DataLayer.Migrations
                     b.HasIndex("MeetingId");
 
                     b.ToTable("MeetingParticipations");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.Discussion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Discussions");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Group", b =>
@@ -323,7 +377,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("RevieweeId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.ReviewDetail", b =>
@@ -353,7 +407,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("ReviewDetail");
+                    b.ToTable("ReviewDetails");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Role", b =>
@@ -462,6 +516,25 @@ namespace DataLayer.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("DataLayer.DbObject.AnswerDiscussion", b =>
+                {
+                    b.HasOne("DataLayer.DbObject.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.DbObject.Discussion", "Discussion")
+                        .WithMany("AnswerDiscussion")
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Discussion");
+                });
+
             modelBuilder.Entity("DataLayer.DbObject.Chat", b =>
                 {
                     b.HasOne("DataLayer.DbObject.Account", "Account")
@@ -484,7 +557,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.DbObject.Connection", b =>
                 {
                     b.HasOne("DataLayer.DbObject.Account", "Account")
-                        .WithMany()
+                        .WithMany("Connections")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -498,6 +571,25 @@ namespace DataLayer.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Meeting");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.Discussion", b =>
+                {
+                    b.HasOne("DataLayer.DbObject.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.DbObject.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.GroupMember", b =>
@@ -653,11 +745,18 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.DbObject.Account", b =>
                 {
+                    b.Navigation("Connections");
+
                     b.Navigation("GroupMembers");
 
                     b.Navigation("JoinInvites");
 
                     b.Navigation("JoinRequests");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.Discussion", b =>
+                {
+                    b.Navigation("AnswerDiscussion");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Group", b =>

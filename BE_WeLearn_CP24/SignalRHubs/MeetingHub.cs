@@ -142,7 +142,7 @@ namespace API.SignalRHub
             //Connection connection = new Connection(Context.ConnectionId, Context.User.GetUsername());
             Connection connection = new Connection
             {
-                Id = Context.ConnectionId,
+                SinganlrId = Context.ConnectionId,
                 //AccountId = Context.User.GetUserId(),
                 AccountId = accountId,
                 MeetingId = meetingIdInt,
@@ -200,7 +200,7 @@ namespace API.SignalRHub
 
             //Code xử lí db xóa duplicate connection
             IQueryable<Connection> dupCons = repos.Connections.GetList()
-                .Where(c => c.Id != Context.ConnectionId && c.AccountId == Context.User.GetUserId() && c.End == null);
+                .Where(c => c.SinganlrId != Context.ConnectionId && c.AccountId == Context.User.GetUserId() && c.End == null);
             foreach (var con in dupCons)
             {
                 con.End = DateTime.Now;
@@ -256,7 +256,7 @@ namespace API.SignalRHub
             }
             try
             {
-                Connection connection = await repos.Connections.GetList().SingleOrDefaultAsync(e => e.Id == Context.ConnectionId);
+                Connection connection = await repos.Connections.GetList().SingleOrDefaultAsync(e => e.SinganlrId == Context.ConnectionId);
                 if (connection == null)
                 {
                     Console.WriteLine("\n\n+++++++++++++\nEnd connection fail");
@@ -405,7 +405,7 @@ namespace API.SignalRHub
                     .SingleOrDefault(e => e.Id == id);
             }
             Connection? connection = repos.Connections.GetList()
-                .SingleOrDefault(x => x.Id == Context.ConnectionId);
+                .SingleOrDefault(x => x.SinganlrId == Context.ConnectionId);
             if (connection != null) { 
                 await repos.Meetings.EndConnectionSignalr(connection);
             }
@@ -414,7 +414,7 @@ namespace API.SignalRHub
             var dupConnections = repos.Connections.GetList()
                 .Where(e => e.AccountId == connection.AccountId && e.MeetingId == connection.MeetingId
                     && e.Start.Date == connection.Start.Date && e.Start.Hour == connection.Start.Hour
-                    && e.Start.Minute == connection.Start.Minute && e.Id != connection.Id);
+                    && e.Start.Minute == connection.Start.Minute && e.SinganlrId != connection.SinganlrId);
             foreach(var dupCon in dupConnections)
             {
                 dupCon.End = DateTime.Now;
@@ -486,6 +486,9 @@ namespace API.SignalRHub
             string roomId = input.roomId;
             string peerId = input.peerId;
             string username = input.username;
+            Connection connection = await repos.Connections.GetBySignalrIdAsync(Context.ConnectionId);
+            connection.PeerId = peerId;
+            repos.Connections.UpdateAsync(connection);
 
             Console.WriteLine($"\n\n==++==++===+++\n JoinRoom");
             Console.WriteLine(peerId);
@@ -582,7 +585,7 @@ namespace API.SignalRHub
                 await repos.Meetings.UpdateAsync(meeting);
             }
 
-            Connection connection = await repos.Connections.GetList().SingleOrDefaultAsync(e => e.Id == Context.ConnectionId);
+            Connection connection = await repos.Connections.GetList().SingleOrDefaultAsync(e => e.SinganlrId == Context.ConnectionId);
             if (connection == null)
             {
                 Console.WriteLine("\n\n+++++++++++++\nEnd connection fail");

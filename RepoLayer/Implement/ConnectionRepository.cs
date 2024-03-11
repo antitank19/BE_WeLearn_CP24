@@ -19,9 +19,9 @@ namespace RepoLayer.Implemention
             dbContext.SaveChanges();
         }
 
-        public Task<Connection> GetByIdAsync(string id)
+        public Task<Connection> GetBySignalrIdAsync(string id)
         {
-            return dbContext.Connections.FirstOrDefaultAsync(x => x.Id == id);
+            return dbContext.Connections.FirstOrDefaultAsync(x => x.SinganlrId == id);
         }
 
         public IQueryable<Connection> GetList()
@@ -31,12 +31,12 @@ namespace RepoLayer.Implemention
 
         public Task<bool> IdExistAsync(string id)
         {
-            return dbContext.Connections.AnyAsync(x => x.Id == id);
+            return dbContext.Connections.AnyAsync(x => x.SinganlrId == id);
         }
 
         public async Task RemoveAsync(string id)
         {
-            var entity = await dbContext.Connections.FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await dbContext.Connections.FirstOrDefaultAsync(x => x.SinganlrId == id);
             dbContext.Connections.Remove(entity);
             dbContext.SaveChanges();
         }

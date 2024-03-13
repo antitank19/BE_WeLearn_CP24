@@ -18,14 +18,31 @@ namespace APIExtension.Validator
 
         public List<string?> Failures { get; set; }
         public Dictionary<string, string> FailuresMap { get; set; }
-        public void AddError(string errorName, string error)
+        public void Add(string error, string? errorType= "Exception")
         {
             Failures.Add(error);
-            FailuresMap.Add(errorName, error);
+                FailuresMap.Add(errorType, error);
+            //if(FailuresMap.ContainsKey(errorType)) 
+            //{
+            //}
+            //else
+            //{
+            //    FailuresMap
+            //}
+
             //if (FailuresMap.ContainsKey(errorName))
             //{
             //    FailuresMap.Add(errorName, error);
             //}
         }
+    }
+    public static class ValidateErrType
+    {
+        public static string Exception = "Exception";
+        public static string Role = "Role";
+        public static string Unauthorized = "Unauthorized";
+        public static string IdNotMatch = "IdNotMatch";
+        
+        public static string NotFound = "NotFound";
     }
 }

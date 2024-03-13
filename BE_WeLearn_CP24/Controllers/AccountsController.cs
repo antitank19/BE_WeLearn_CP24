@@ -22,15 +22,20 @@ namespace API.Controllers
     {
         private readonly IServiceWrapper services;
         //private readonly IMapper mapper;
-        private readonly IValidatorWrapper validators;
+        //private readonly IValidatorWrapper validators;
         //private readonly IAutoMailService mailService;
         private readonly IServer server;
 
-        public AccountsController(IServiceWrapper services, IMapper mapper, IValidatorWrapper validators, /*IAutoMailService mailService,*/ IServer server)
+        public AccountsController(
+            IServiceWrapper services, 
+            //IMapper mapper, 
+            //IValidatorWrapper validators, 
+            /*IAutoMailService mailService,*/ 
+            IServer server)
         {
             this.services = services;
             //this.mapper = mapper;
-            this.validators = validators;
+            //this.validators = validators;
             //this.mailService = mailService;
             this.server = server;
         }
@@ -90,40 +95,54 @@ namespace API.Controllers
         [HttpPut("{accountId}")]
         public async Task<IActionResult> UpdateProfile(int accountId, AccountUpdateDto dto)
         {
-            if (accountId != HttpContext.User.GetUserId())
-            {
-                return Unauthorized("Không thể thay đổi profile của người khác");
-            }
-            if (accountId != dto.Id)
-            {
-                return BadRequest();
-            }
-
-            var existedAccount = await services.Accounts.ExistAsync(accountId);
-            if (!existedAccount)
-            {
-                return NotFound();
-            }
-            ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
-            }
+            ValidatorResult valResult =  new ValidatorResult();
             try
             {
-                await services.Accounts.UpdateAsync(dto);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                if (!await UserExists(accountId))
+                if (accountId != HttpContext.User.GetUserId())
+                {
+
+                    valResult.Add("Không thể thay đổi profile của người khác", ValidateErrType.Unauthorized);
+                    return Unauthorized(valResult);
+                }
+                if (accountId != dto.Id)
+                {
+                    valResult.Add("2 Id không trùng", ValidateErrType.IdNotMatch);
+                    return BadRequest(valResult);
+                }
+
+                var existedAccount = await services.Accounts.ExistAsync(accountId);
+                if (!existedAccount)
                 {
                     return NotFound();
                 }
-                else
+                //ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
+                await valResult.ValidateParams(services, dto);
+                if (!valResult.IsValid)
                 {
-                    throw;
+                    return BadRequest(valResult);
                 }
+                try
+                {
+                    await services.Accounts.UpdateAsync(dto);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    if (!await UserExists(accountId))
+                    {
+                        valResult.Add("Tài khoản không tồn tại", ValidateErrType.NotFound);
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.Message);
+                return BadRequest(valResult);
             }
         }
 
@@ -136,50 +155,64 @@ namespace API.Controllers
         [HttpPut("{accountId}/Password")]
         public async Task<IActionResult> ChangePassword(int accountId, AccountChangePasswordDto dto)
         {
-            if (accountId != HttpContext.User.GetUserId())
-            {
-                return Unauthorized("Không thể thay đổi mật khẩu của người khác");
-            }
-            if (accountId != dto.Id)
-            {
-                return BadRequest();
-            }
-            ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
-            }
-            //if (dto.Password != dto.ConfirmPassword)
-            //{
-            //    return BadRequest(FAIL_CONFIRM_PASSWORD_MSG);
-            //}
-
-            //var account = await services.Accounts.GetByIdAsync<Account>(accountId);
-            //if (account == null)
-            //{
-            //    return NotFound();
-            //}
-            //if(dto.OldPassword != account.Password)
-            //{
-            //    return Unauthorized("Nhập mật khẩu cũ thất bại");
-            //}
+            ValidatorResult valResult = new ValidatorResult();
             try
             {
-                //account.PatchUpdate<Account, AccountChangePasswordDto>(dto);
-                //await services.Accounts.UpdateAsync(account);
-                await services.Accounts.UpdatePasswordAsync(dto);
-                return Ok();
+                if (accountId != HttpContext.User.GetUserId())
+                {
+
+                    valResult.Add("Không thể thay đổi profile của người khác", ValidateErrType.Unauthorized);
+                    return Unauthorized(valResult);
+                }
+                if (accountId != dto.Id)
+                {
+                    valResult.Add("2 Id không trùng", ValidateErrType.IdNotMatch);
+                    return BadRequest(valResult);
+                }
+                //ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
+                await valResult.ValidateParams(services, dto);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult);
+                }
+                //if (dto.Password != dto.ConfirmPassword)
+                //{
+                //    return BadRequest(FAIL_CONFIRM_PASSWORD_MSG);
+                //}
+
+                //var account = await services.Accounts.GetByIdAsync<Account>(accountId);
+                //if (account == null)
+                //{
+                //    return NotFound();
+                //}
+                //if(dto.OldPassword != account.Password)
+                //{
+                //    return Unauthorized("Nhập mật khẩu cũ thất bại");
+                //}
+                try
+                {
+                    //account.PatchUpdate<Account, AccountChangePasswordDto>(dto);
+                    //await services.Accounts.UpdateAsync(account);
+                    await services.Accounts.UpdatePasswordAsync(dto);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    if (!await UserExists(accountId))
+                    {
+                        valResult.Add("Tài khoản không tồn tại", ValidateErrType.NotFound);
+                        return NotFound(valResult);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                if (!await UserExists(accountId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                valResult.Add(ex.Message );
+                return BadRequest(valResult);
             }
         }
 

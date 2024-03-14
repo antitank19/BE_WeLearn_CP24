@@ -19,12 +19,15 @@ namespace API.Controllers
     {
         private readonly IServiceWrapper services;
         //private readonly IMapper mapper;
-        private readonly IValidatorWrapper validators;
+        //private readonly IValidatorWrapper validators;
 
-        public GroupsController(IServiceWrapper services, IValidatorWrapper validators)
+        public GroupsController(
+            IServiceWrapper services 
+            //IValidatorWrapper validators
+        )
         {
             this.services = services;
-            this.validators = validators;
+            //this.validators = validators;
         }
 
         // GET: api/Groups/Join
@@ -225,16 +228,25 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Group>> CreateGroup(GroupCreateDto dto)
         {
-            int creatorId = HttpContext.User.GetUserId();
-            ValidatorResult valResult = await validators.Groups.ValidateParams(dto);
-            if (!valResult.IsValid)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return BadRequest(valResult.Failures);
-            }
-            //Group group = mapper.Map<Group>(dto);
-            await services.Groups.CreateAsync(dto, creatorId);
+                int creatorId = HttpContext.User.GetUserId();
+                await valResult.ValidateParams(services, dto);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult.Failures);
+                }
+                //Group group = mapper.Map<Group>(dto);
+                await services.Groups.CreateAsync(dto, creatorId);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         // PUT: api/Groups/5
@@ -246,46 +258,56 @@ namespace API.Controllers
         [HttpPut("{groupId}")]
         public async Task<IActionResult> UpdateGroup(int groupId, GroupUpdateDto dto)
         {
-            if (groupId != dto.Id)
-            {
-                return BadRequest();
-            }
-            int studentId = HttpContext.User.GetUserId();
-            //List<int> leadGroupIds = (await services.Groups.GetLeaderGroupsIdAsync(studentId));
-
-            if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId))
-            {
-                return Unauthorized("You can't update other's group");
-            }
-            ValidatorResult valResult = await validators.Groups.ValidateParams(dto);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
-            }
-
-            //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
-            GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
-            if (group == null)
-            {
-                return NotFound();
-            }
+            ValidatorResult valResult = new ValidatorResult();
             try
             {
+                if (groupId != dto.Id)
+                {
+                    return BadRequest();
+                }
+                int studentId = HttpContext.User.GetUserId();
+                //List<int> leadGroupIds = (await services.Groups.GetLeaderGroupsIdAsync(studentId));
 
-                await services.Groups.UpdateAsync(dto);
-                //var mapped = mapper.Map<GroupDetailForLeaderGetDto>(group);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                if (!await GroupExists(groupId))
+                if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId))
+                {
+                    return Unauthorized("You can't update other's group");
+                }
+                await valResult.ValidateParams(services, dto);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult.Failures);
+                }
+
+                //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
+                GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
+                if (group == null)
                 {
                     return NotFound();
                 }
-                else
+                try
                 {
-                    throw;
+
+                    await services.Groups.UpdateAsync(dto);
+                    //var mapped = mapper.Map<GroupDetailForLeaderGetDto>(group);
+                    return Ok();
                 }
+                catch (Exception ex)
+                {
+                    if (!await GroupExists(groupId))
+                    {
+                        valResult.Add("Không tìm thấy Id nhóm", ValidateErrType.NotFound);
+                        return NotFound(valResult);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            } 
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
         }
 

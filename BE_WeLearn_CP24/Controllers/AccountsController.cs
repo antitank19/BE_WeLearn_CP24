@@ -141,7 +141,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                valResult.Add(ex.Message);
+                valResult.Add(ex.ToString());
                 return BadRequest(valResult);
             }
         }
@@ -211,7 +211,7 @@ namespace API.Controllers
             }
             catch(Exception ex)
             {
-                valResult.Add(ex.Message );
+                valResult.Add(ex.ToString() );
                 return BadRequest(valResult);
             }
         }

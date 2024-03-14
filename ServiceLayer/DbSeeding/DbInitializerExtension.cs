@@ -26,7 +26,7 @@ namespace ServiceLayer.DbSeeding
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.ToString());
             }
 
             return app;

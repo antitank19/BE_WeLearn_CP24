@@ -21,14 +21,19 @@ namespace API.Controllers
     public class GroupMembersController : ControllerBase
     {
         private readonly IServiceWrapper services;
-        private readonly IValidatorWrapper validators;
+        //private readonly IValidatorWrapper validators;
         //private readonly IMapper mapper;
         private readonly IHubContext<GroupHub> groupHub;
 
-        public GroupMembersController(IServiceWrapper services, IValidatorWrapper validators, IMapper mapper, IHubContext<GroupHub> groupHub)
+        public GroupMembersController(
+            IServiceWrapper services, 
+            //IValidatorWrapper validators, 
+            //IMapper mapper, 
+            IHubContext<GroupHub> groupHub
+        )
         {
             this.services = services;
-            this.validators = validators;
+            //this.validators = validators;
             //this.mapper = mapper;
             this.groupHub = groupHub;
         }
@@ -111,104 +116,113 @@ namespace API.Controllers
         [HttpPost("Invite")]
         public async Task<IActionResult> CreateInvite(GroupMemberInviteCreateDto dto)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
-            if (!isLead)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
-            }
-            #region unused code
-            //if (await services.Groups.IsStudentJoiningGroupAsync(dto.AccountId, dto.GroupId))
-            //{
-            //    //validatorResult.Failures.Add("Học sinh đã tham gia nhóm này");
-            //    return BadRequest(new { Message = "Học sinh đã tham gia nhóm này" });
-            //}
-            //if (await services.Groups.IsStudentInvitedToGroupAsync(dto.AccountId, dto.GroupId))
-            //{
-            //    //validatorResult.Failures.Add("Học sinh đã được mời tham gia nhóm này từ trước");
-            //    GroupMemberInviteGetDto inviteGetDto = mapper.Map<GroupMemberInviteGetDto>( 
-            //        await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-            //    return BadRequest(new { Message = "Học sinh đã được mời tham gia nhóm này từ trước", Previous = inviteGetDto });
-            //}
-            //if (await services.Groups.IsStudentRequestingToGroupAsync(dto.AccountId, dto.GroupId))
-            //{
-            //    //validatorResult.Failures.Add("Học sinh đã yêu cầu tham gia nhóm này từ trước");
-            //    GroupMemberRequestGetDto requestGetDto = mapper.Map<GroupMemberRequestGetDto>(
-            //        await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-            //    return BadRequest(new { Message = "Học sinh đã yêu cầu tham gia nhóm này từ trước", Previous = requestGetDto });
-            //}
-            //if (await services.Groups.IsStudentDeclinedToGroupAsync(dto.AccountId, dto.GroupId))
-            //{
-            //    //validatorResult.Failures.Add("Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước");
-            //    GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
-            //        await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-            //    return BadRequest(new { 
-            //        Message = "Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại", 
-            //        Previous = getDto 
-            //    });
-            //}
-            #endregion
-            GroupMemberGetDto exsited = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync<GroupMemberGetDto>(dto.AccountId, dto.GroupId);
-            if (exsited != null)
-            {
-                if (!exsited.IsActive)
+                int studentId = HttpContext.User.GetUserId();
+                bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
+                if (!isLead)
                 {
-                    //GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
-                    //          await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                    //GroupMemberGetDto getDto = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
-                    return BadRequest(new
+                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                }
+                #region unused code
+                //if (await services.Groups.IsStudentJoiningGroupAsync(dto.AccountId, dto.GroupId))
+                //{
+                //    //validatorResult.Failures.Add("Học sinh đã tham gia nhóm này");
+                //    return BadRequest(new { Message = "Học sinh đã tham gia nhóm này" });
+                //}
+                //if (await services.Groups.IsStudentInvitedToGroupAsync(dto.AccountId, dto.GroupId))
+                //{
+                //    //validatorResult.Failures.Add("Học sinh đã được mời tham gia nhóm này từ trước");
+                //    GroupMemberInviteGetDto inviteGetDto = mapper.Map<GroupMemberInviteGetDto>( 
+                //        await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                //    return BadRequest(new { Message = "Học sinh đã được mời tham gia nhóm này từ trước", Previous = inviteGetDto });
+                //}
+                //if (await services.Groups.IsStudentRequestingToGroupAsync(dto.AccountId, dto.GroupId))
+                //{
+                //    //validatorResult.Failures.Add("Học sinh đã yêu cầu tham gia nhóm này từ trước");
+                //    GroupMemberRequestGetDto requestGetDto = mapper.Map<GroupMemberRequestGetDto>(
+                //        await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                //    return BadRequest(new { Message = "Học sinh đã yêu cầu tham gia nhóm này từ trước", Previous = requestGetDto });
+                //}
+                //if (await services.Groups.IsStudentDeclinedToGroupAsync(dto.AccountId, dto.GroupId))
+                //{
+                //    //validatorResult.Failures.Add("Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước");
+                //    GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
+                //        await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                //    return BadRequest(new { 
+                //        Message = "Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại", 
+                //        Previous = getDto 
+                //    });
+                //}
+                #endregion
+                GroupMemberGetDto exsited = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync<GroupMemberGetDto>(dto.AccountId, dto.GroupId);
+                if (exsited != null)
+                {
+                    if (!exsited.IsActive)
                     {
-                        Message = "Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại",
-                        Previous = exsited
-                    });
-                }
-                switch (exsited.MemberRole)
-                {
-                    case GroupMemberRole.Leader:
+                        //GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
+                        //          await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                        //GroupMemberGetDto getDto = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
+                        return BadRequest(new
                         {
-                            return BadRequest(new { Message = "Học sinh đã tham gia nhóm này" });
-                        }
-                    case GroupMemberRole.Member:
-                        {
-                            return BadRequest(new { Message = "Học sinh đã tham gia nhóm này" });
-                        }
-                    //Fix later
-                    //case GroupMemberState.Inviting:
-                    //    {
-                    //        GroupMemberInviteGetDto inviteGetDto = mapper.Map<GroupMemberInviteGetDto>(
-                    //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                    //        return BadRequest(new { Message = "Học sinh đã được mời tham gia nhóm này từ trước", Previous = inviteGetDto });
-                    //    }
-                    //case GroupMemberState.Requesting:
-                    //    {
-                    //        GroupMemberRequestGetDto requestGetDto = mapper.Map<GroupMemberRequestGetDto>(
-                    //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                    //        return BadRequest(new { Message = "Học sinh đã yêu cầu tham gia nhóm này từ trước", Previous = requestGetDto });
-                    //    }
-                    //case GroupMemberRole.Banned:
-                    //    {
-
-                    //    }
-                    default:
-                        {
-                            //GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
-                            //    await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                            return BadRequest(new
+                            Message = "Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại",
+                            Previous = exsited
+                        });
+                    }
+                    switch (exsited.MemberRole)
+                    {
+                        case GroupMemberRole.Leader:
                             {
-                                Message = "Học sinh đã có liên quan đến nhóm",
-                                Previous = exsited
-                            });
-                        }
-                }
-            }
-            ValidatorResult valResult = await validators.GroupMembers.ValidateParamsAsync(dto, studentId);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
-            }
-            await services.GroupMembers.CreateJoinInvite(dto);
+                                return BadRequest(new { Message = "Học sinh đã tham gia nhóm này" });
+                            }
+                        case GroupMemberRole.Member:
+                            {
+                                return BadRequest(new { Message = "Học sinh đã tham gia nhóm này" });
+                            }
+                        //Fix later
+                        //case GroupMemberState.Inviting:
+                        //    {
+                        //        GroupMemberInviteGetDto inviteGetDto = mapper.Map<GroupMemberInviteGetDto>(
+                        //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                        //        return BadRequest(new { Message = "Học sinh đã được mời tham gia nhóm này từ trước", Previous = inviteGetDto });
+                        //    }
+                        //case GroupMemberState.Requesting:
+                        //    {
+                        //        GroupMemberRequestGetDto requestGetDto = mapper.Map<GroupMemberRequestGetDto>(
+                        //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                        //        return BadRequest(new { Message = "Học sinh đã yêu cầu tham gia nhóm này từ trước", Previous = requestGetDto });
+                        //    }
+                        //case GroupMemberRole.Banned:
+                        //    {
 
-            return Ok();
+                        //    }
+                        default:
+                            {
+                                //GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
+                                //    await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                                return BadRequest(new
+                                {
+                                    Message = "Học sinh đã có liên quan đến nhóm",
+                                    Previous = exsited
+                                });
+                            }
+                    }
+                }
+                await valResult.ValidateParamsAsync(services, dto, studentId);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult.Failures);
+                }
+                await services.GroupMembers.CreateJoinInvite(dto);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         //Put: api/GroupMember/Request/{requestId}/Accept"
@@ -347,85 +361,93 @@ namespace API.Controllers
         [HttpPost("Request")]
         public async Task<IActionResult> CreateRequest(GroupMemberRequestCreateDto dto)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
-            if (studentId != dto.AccountId)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không thể yêu cầu tham gia dùm người khác");
-            }
-            GroupMemberGetDto exsitedGroupMember = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync<GroupMemberGetDto>(dto.AccountId, dto.GroupId);
-            if (exsitedGroupMember != null)
-            {
-                if (!exsitedGroupMember.IsActive)
+                int studentId = HttpContext.User.GetUserId();
+                bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
+                if (studentId != dto.AccountId)
                 {
-                    return BadRequest(new
+                    return Unauthorized("Bạn không thể yêu cầu tham gia dùm người khác");
+                }
+                GroupMemberGetDto exsitedGroupMember = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync<GroupMemberGetDto>(dto.AccountId, dto.GroupId);
+                if (exsitedGroupMember != null)
+                {
+                    if (!exsitedGroupMember.IsActive)
                     {
-                        Message = "Bạn đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại",
-                        Previous = exsitedGroupMember
-                    });
-                }
-                switch (exsitedGroupMember.MemberRole)
-                {
-                    case GroupMemberRole.Leader:
+                        return BadRequest(new
                         {
-                            return BadRequest(new { Message = "Bạn đã tham gia nhóm này" });
-                        }
-                    case GroupMemberRole.Member:
-                        {
-                            return BadRequest(new { Message = "Bạn đã tham gia nhóm này" });
-                        }
-                    //Fix later
-                    //case GroupMemberState.Inviting:
-                    //    {
-                    //        GroupMemberInviteGetDto inviteGetDto = mapper.Map<GroupMemberInviteGetDto>(
-                    //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                    //        return BadRequest(new { Message = "Bạn đã được mời tham gia nhóm này từ trước", Previous = inviteGetDto });
-                    //    }
-                    //case GroupMemberState.Requesting:
-                    //    {
-                    //        GroupMemberRequestGetDto requestGetDto = mapper.Map<GroupMemberRequestGetDto>(
-                    //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                    //        return BadRequest(new { Message = "Bạn đã yêu cầu tham gia nhóm này từ trước", Previous = requestGetDto });
-                    //    }
-                    //case GroupMemberRole.Banned:
-                    //    {
-                    //        GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
-                    //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
-                    //        return BadRequest(new
-                    //        {
-                    //            Message = "Bạn đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại",
-                    //            Previous = getDto
-                    //        });
-                    //    }
-                    default:
-                        {
-                            return BadRequest(new
+                            Message = "Bạn đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại",
+                            Previous = exsitedGroupMember
+                        });
+                    }
+                    switch (exsitedGroupMember.MemberRole)
+                    {
+                        case GroupMemberRole.Leader:
                             {
-                                Message = "Bạn đã có liên quan đến nhóm",
-                                Previous = exsitedGroupMember
-                            });
-                        }
+                                return BadRequest(new { Message = "Bạn đã tham gia nhóm này" });
+                            }
+                        case GroupMemberRole.Member:
+                            {
+                                return BadRequest(new { Message = "Bạn đã tham gia nhóm này" });
+                            }
+                        //Fix later
+                        //case GroupMemberState.Inviting:
+                        //    {
+                        //        GroupMemberInviteGetDto inviteGetDto = mapper.Map<GroupMemberInviteGetDto>(
+                        //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                        //        return BadRequest(new { Message = "Bạn đã được mời tham gia nhóm này từ trước", Previous = inviteGetDto });
+                        //    }
+                        //case GroupMemberState.Requesting:
+                        //    {
+                        //        GroupMemberRequestGetDto requestGetDto = mapper.Map<GroupMemberRequestGetDto>(
+                        //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                        //        return BadRequest(new { Message = "Bạn đã yêu cầu tham gia nhóm này từ trước", Previous = requestGetDto });
+                        //    }
+                        //case GroupMemberRole.Banned:
+                        //    {
+                        //        GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
+                        //            await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
+                        //        return BadRequest(new
+                        //        {
+                        //            Message = "Bạn đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại",
+                        //            Previous = getDto
+                        //        });
+                        //    }
+                        default:
+                            {
+                                return BadRequest(new
+                                {
+                                    Message = "Bạn đã có liên quan đến nhóm",
+                                    Previous = exsitedGroupMember
+                                });
+                            }
+                    }
                 }
-            }
-            JoinInviteForGroupGetDto exsitedInvite = await services.GroupMembers.GetInviteOfStudentAndGroupAsync<JoinInviteForGroupGetDto>(dto.AccountId, dto.GroupId);
-            if (exsitedInvite != null)
-            {
-                return BadRequest(new { Message = "Bạn đã được mời tham gia nhóm này từ trước", Previous = exsitedInvite });
-            }
-            Request exsitedRequest = await services.GroupMembers.GetRequestOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
-            if (exsitedRequest != null)
-            {
-                return BadRequest(new { Message = "Bạn đã yêu cầu tham gia nhóm này từ trước", Previous = exsitedInvite });
-            }
+                JoinInviteForGroupGetDto exsitedInvite = await services.GroupMembers.GetInviteOfStudentAndGroupAsync<JoinInviteForGroupGetDto>(dto.AccountId, dto.GroupId);
+                if (exsitedInvite != null)
+                {
+                    return BadRequest(new { Message = "Bạn đã được mời tham gia nhóm này từ trước", Previous = exsitedInvite });
+                }
+                Request exsitedRequest = await services.GroupMembers.GetRequestOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
+                if (exsitedRequest != null)
+                {
+                    return BadRequest(new { Message = "Bạn đã yêu cầu tham gia nhóm này từ trước", Previous = exsitedInvite });
+                }
 
-            ValidatorResult valResult = await validators.GroupMembers.ValidateParamsAsync(dto);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
+                await valResult.ValidateParamsAsync(services, dto);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult.Failures);
+                }
+                await services.GroupMembers.CreateJoinRequest(dto);
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
+                return Ok();
             }
-            await services.GroupMembers.CreateJoinRequest(dto);
-            await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
-            return Ok();
+            catch (Exception ex) {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         //Put: api/GroupMember/Invite/{inviteId}/Accept"

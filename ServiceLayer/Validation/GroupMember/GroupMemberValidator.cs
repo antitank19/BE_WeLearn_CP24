@@ -67,7 +67,7 @@ namespace APIExtension.Validator
             }
             catch (Exception ex)
             {
-                validatorResult.Failures.Add(ex.Message);
+                validatorResult.Failures.Add(ex.ToString());
             }
             return validatorResult;
         }
@@ -124,8 +124,8 @@ namespace APIExtension.Validator
             }
             catch (Exception ex)
             {
-                //validatorResult.Failures.Add(ex.Message);
-                validatorResult.Add(ex.Message);
+                //validatorResult.Failures.Add(ex.ToString());
+                validatorResult.Add(ex.ToString());
             }
             return validatorResult;
         }
@@ -178,7 +178,7 @@ namespace APIExtension.Validator
             }
             catch (Exception ex)
             {
-                validatorResult.Failures.Add(ex.Message);
+                validatorResult.Failures.Add(ex.ToString());
             }
             return validatorResult;
         }
@@ -235,8 +235,8 @@ namespace APIExtension.Validator
             }
             catch (Exception ex)
             {
-                //validatorResult.Failures.Add(ex.Message);
-                validatorResult.Add(ex.Message);
+                //validatorResult.Failures.Add(ex.ToString());
+                validatorResult.Add(ex.ToString());
             }
             return validatorResult;
         }

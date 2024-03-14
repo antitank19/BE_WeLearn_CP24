@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(WeLearnContext))]
-    [Migration("20240305064852_UpdateDB")]
+    [Migration("20240314110821_UpdateDB")]
     partial class UpdateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,6 +191,39 @@ namespace DataLayer.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("Discussions");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.DocumentFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HttpLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("DocumentFiles");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Group", b =>
@@ -574,6 +607,25 @@ namespace DataLayer.Migrations
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Discussion", b =>
+                {
+                    b.HasOne("DataLayer.DbObject.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.DbObject.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("DataLayer.DbObject.DocumentFile", b =>
                 {
                     b.HasOne("DataLayer.DbObject.Account", "Account")
                         .WithMany()

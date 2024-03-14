@@ -32,7 +32,7 @@ namespace ServiceLayer.Services.Implementation
             subjects = new SubjectService(repos, mapper);
             meetings = new MeetingService(repos, mapper);
             groupMembers = new GroupMemberSerivce(repos, mapper);
-            documentFiles = new DocumentFileService(repos);
+            documentFiles = new DocumentFileService(repos, mapper, env);
             stats = new StatService(repos, mapper);
             mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
         }
@@ -114,19 +114,6 @@ namespace ServiceLayer.Services.Implementation
                 return groupMembers;
             }
         }
-        private IDocumentFileService documentFiles;
-
-        public IDocumentFileService DocumentFiles
-        {
-            get
-            {
-                if (documentFiles is null)
-                {
-                    documentFiles = new DocumentFileService(repos);
-                }
-                return documentFiles;
-            }
-        }
 
         private IStatService stats;
         public IStatService Stats
@@ -150,6 +137,18 @@ namespace ServiceLayer.Services.Implementation
                     mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
                 }
                 return mails;
+            }
+        }
+        private IDocumentFileService documentFiles;
+        public IDocumentFileService Documents
+        {
+            get
+            {
+                if (documentFiles is null)
+                {
+                    documentFiles = new DocumentFileService(repos, mapper, env);
+                }
+                return documentFiles;
             }
         }
     }

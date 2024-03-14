@@ -204,6 +204,35 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DocumentFiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HttpLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    Approved = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocumentFiles_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DocumentFiles_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GroupMembers",
                 columns: table => new
                 {
@@ -469,6 +498,16 @@ namespace DataLayer.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DocumentFiles_AccountId",
+                table: "DocumentFiles",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentFiles_GroupId",
+                table: "DocumentFiles",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GroupMembers_AccountId_GroupId",
                 table: "GroupMembers",
                 columns: new[] { "AccountId", "GroupId" },
@@ -567,6 +606,9 @@ namespace DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Chats");
+
+            migrationBuilder.DropTable(
+                name: "DocumentFiles");
 
             migrationBuilder.DropTable(
                 name: "GroupMembers");

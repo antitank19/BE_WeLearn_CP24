@@ -25,13 +25,17 @@ namespace API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IServiceWrapper services;
-        private readonly IMapper mapper;
-        private readonly IValidatorWrapper validators;
-        public AuthController(IServiceWrapper services, IMapper mapper, IValidatorWrapper validators)
+        //private readonly IMapper mapper;
+        //private readonly IValidatorWrapper validators;
+        public AuthController(
+            IServiceWrapper services 
+            //IMapper mapper, 
+            //IValidatorWrapper validators
+        )
         {
             this.services = services;
-            this.mapper = mapper;
-            this.validators = validators;
+            //this.mapper = mapper;
+            //this.validators = validators;
         }
 
 
@@ -140,22 +144,41 @@ namespace API.Controllers
         [HttpPost("Register/Student")]
         public async Task<IActionResult> StudentRegister(StudentRegisterDto dto)
         {
-            ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
-            if (!valResult.IsValid)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return BadRequest(valResult.Failures);
+                await valResult.ValidateParams(services, dto);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult.Failures);
+                }
+                //Account register = mapper.Map<Account>(dto);
+                Account register = new Account()
+                {
+                    Username = dto.Username,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    FullName = dto.FullName,
+                    Phone = dto.Phone,
+                    Career = dto.Career,
+                    DateOfBirth = dto.DateOfBirth,
+                };
+                register.Password = register.Password.CustomHash();
+                if (dto.IsStudent)
+                {
+                    await services.Auth.Register(register, RoleNameEnum.Student);
+                }
+                else
+                {
+                    await services.Auth.Register(register, RoleNameEnum.Parent);
+                }
+                return Ok();
             }
-            Account register = mapper.Map<Account>(dto);
-            register.Password = register.Password.CustomHash();
-            if (dto.IsStudent)
+            catch (Exception ex)
             {
-                await services.Auth.Register(register, RoleNameEnum.Student);
+                valResult.Add(ex.Message);
+                return BadRequest(valResult);
             }
-            else
-            {
-                await services.Auth.Register(register, RoleNameEnum.Parent);
-            }
-            return Ok();
         }
 
         [SwaggerOperation(
@@ -165,14 +188,32 @@ namespace API.Controllers
         [HttpPost("Register/Parent")]
         public async Task<IActionResult> ParentRegister(ParentRegisterDto dto)
         {
-            ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
-            if (!valResult.IsValid)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return BadRequest(valResult.Failures);
+                await valResult.ValidateParams(services, dto);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult);
+                }
+                //Account register = mapper.Map<Account>(dto);
+                Account register = new Account()
+                {
+                    Username = dto.Username,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    FullName = dto.FullName,
+                    Phone = dto.Phone,
+                    DateOfBirth = dto.DateOfBirth,
+                };
+                await services.Auth.Register(register, RoleNameEnum.Student);
+                return Ok();
             }
-            Account register = mapper.Map<Account>(dto);
-            await services.Auth.Register(register, RoleNameEnum.Student);
-            return Ok();
+            catch (Exception ex)
+            {
+                valResult.Add(ex.Message);
+                return BadRequest(valResult);
+            }
         }
 
         [SwaggerOperation(

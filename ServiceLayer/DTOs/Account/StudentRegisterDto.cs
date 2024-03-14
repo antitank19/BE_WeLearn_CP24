@@ -50,12 +50,19 @@ namespace ServiceLayer.DTOs
             set { phone = value.Trim(); }
         }
 
-        private string? schhool { get; set; }
-        public string? Schhool
+        private string career;
+        public string Career
         {
-            get { return schhool; }
-            set { schhool = value.Trim(); }
+            get { return career; }
+            set { career = value.Trim(); }
         }
+
+        //private string? schhool { get; set; }
+        //public string? Schhool
+        //{
+        //    get { return schhool; }
+        //    set { schhool = value.Trim(); }
+        //}
 
         private DateTime? dateOfBirth;
 

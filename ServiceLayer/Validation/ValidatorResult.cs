@@ -16,7 +16,7 @@ namespace APIExtension.Validator
 
         public bool IsValid => !Failures.Any();
 
-        public List<string?> Failures { get; set; }
+        public List<string?> Failures { get;private set; }
         public Dictionary<string, string> FailuresMap { get; set; }
         public void Add(string error, string? errorType= "Exception")
         {

@@ -1,5 +1,6 @@
 ﻿using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
+using RepoLayer.Implement;
 using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace RepoLayer.Implemention
             meeting = new MeetingRepository(dbContext);
             groupMembers = new GroupMemberReposity(dbContext);
             connections = new ConnectionRepository(dbContext);
+            documentFiles = new DocumentFileRepository(dbContext);
         }
 
         private IAccountRepo users;
@@ -169,6 +171,18 @@ namespace RepoLayer.Implemention
                 return reviews;
             }
 
+        }
+        private IDocumentFileReposity documentFiles;
+        public IDocumentFileReposity DocumentFiles
+        {
+            get
+            {
+                if (documentFiles is null)
+                {
+                    documentFiles = new DocumentFileRepository(dbContext);
+                }
+                return documentFiles;
+            }
         }
     }
 }

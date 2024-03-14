@@ -21,5 +21,6 @@ namespace RepoLayer.Interface
         public IConnectionRepository Connections { get; }
         public IChatRepository Chats { get; }
         public IReviewRepository Reviews { get; }
+        public IDocumentFileReposity DocumentFiles { get; }
     }
 }

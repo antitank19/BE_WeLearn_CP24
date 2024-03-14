@@ -19,5 +19,6 @@ namespace ServiceLayer.Services.Interface
         public IMeetingService Meetings { get; }
         public IStatService Stats { get; }
         public ISubjectService Subjects { get; }
+        public IDocumentFileService Documents { get; }
     }
 }

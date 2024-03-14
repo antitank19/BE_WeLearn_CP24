@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DataLayer.DbObject;
+using Microsoft.EntityFrameworkCore;
 using RepoLayer.Interface;
 using ServiceLayer.Services.Interface.Db;
 
@@ -20,6 +21,11 @@ namespace ServiceLayer.Services.Implementation.Db
         public IQueryable<T> GetList<T>()
         {
             return repos.Subjects.GetList().ProjectTo<T>(mapper.ConfigurationProvider);
+        }
+
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await repos.Subjects.GetList().AnyAsync(s=>s.Id == id);
         }
     }
 }

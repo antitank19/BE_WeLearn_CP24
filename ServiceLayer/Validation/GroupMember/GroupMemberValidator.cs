@@ -130,4 +130,115 @@ namespace APIExtension.Validator
             return validatorResult;
         }
     }
+    public static class GroupMemberValidatorExtension 
+    {
+        public static async Task<ValidatorResult> ValidateParamsAsync(this ValidatorResult validatorResult, IServiceWrapper services, GroupMemberInviteCreateDto? dto, int leaderId)
+        {
+            try
+            {
+                if (!await services.Groups.IsStudentLeadingGroupAsync(leaderId, dto.GroupId))
+                {
+                    //validatorResult.Failures.Add("Bạn không phải nhóm trưởng nhóm này");
+                    validatorResult.Add("Bạn không phải nhóm trưởng nhóm này", ValidateErrType.Role);
+                }
+                GroupMember exsited = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync<GroupMember>(dto.AccountId, dto.GroupId);
+                if (exsited != null)
+                {
+                    switch (exsited.MemberRole)
+                    {
+                        case GroupMemberRole.Leader:
+                            {
+                                //validatorResult.Failures.Add("Người dùng đã tham gia nhóm này");
+                                validatorResult.Add("Người dùng đã tham gia nhóm này", ValidateErrType.Role);
+                                break;
+                            }
+                        case GroupMemberRole.Member:
+                            {
+                                //validatorResult.Failures.Add("Người dùng đã tham gia nhóm này");
+                                validatorResult.Add("Người dùng đã tham gia nhóm này", ValidateErrType.Role);
+                                break;
+                            }
+                        default:
+                            {
+                                //validatorResult.Failures.Add("Người dùng đã có liên quan đến nhóm");
+                                validatorResult.Add("Người dùng đã có liên quan đến nhóm", ValidateErrType.Role);
+                                break;
+                            }
+                    }
+                    if (await services.GroupMembers.AnyInviteAsync(dto.AccountId, dto.GroupId))
+                    {
+                        //validatorResult.Failures.Add("Người dùng đã được mời vào nhóm");
+                        validatorResult.Add("Người dùng đã được mời vào nhóm", ValidateErrType.Role);
+                    }
+                    if (await services.GroupMembers.AnyRequestAsync(dto.AccountId, dto.GroupId))
+                    {
+                        validatorResult.Add("Người dùng đã xin vào nhóm", ValidateErrType.Role);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                validatorResult.Failures.Add(ex.Message);
+            }
+            return validatorResult;
+        }
+
+        public static async Task<ValidatorResult> ValidateParamsAsync(this ValidatorResult validatorResult, IServiceWrapper services, GroupMemberRequestCreateDto? dto)
+        {
+            try
+            {
+                if (await services.Groups.IsStudentJoiningGroupAsync(dto.AccountId, dto.GroupId))
+                {
+                    validatorResult.Add("Bạn đã tham gia nhóm này", ValidateErrType.Role);
+                }
+                GroupMember exsited = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync<GroupMember>(dto.AccountId, dto.GroupId);
+                if (exsited != null)
+                {
+                    switch (exsited.MemberRole)
+                    {
+                        case GroupMemberRole.Leader:
+                            {
+                                validatorResult.Add("Người dùng đã tham gia nhóm này", ValidateErrType.Role);
+                                break;
+                            }
+                        case GroupMemberRole.Member:
+                            {
+                                validatorResult.Add("Người dùng đã tham gia nhóm này", ValidateErrType.Role);
+                                break;
+                            }
+                        default:
+                            {
+                                validatorResult.Add("Người dùng đã có liên quan đến nhóm", ValidateErrType.Role);
+                                break;
+                            }
+                    }
+                    if (await services.GroupMembers.AnyInviteAsync(dto.AccountId, dto.GroupId))
+                    {
+                        //validatorResult.Failures.Add("Người dùng đã được mời vào nhóm");
+                        validatorResult.Add("Người dùng đã được mời vào nhóm", ValidateErrType.Role);
+                    }
+                    if (await services.GroupMembers.AnyRequestAsync(dto.AccountId, dto.GroupId))
+                    {
+                        //validatorResult.Failures.Add("Người dùng đã xin vào nhóm");
+                        validatorResult.Add("Người dùng đã xin vào nhóm", ValidateErrType.Role);
+                    }
+                    if (await services.GroupMembers.AnyInviteAsync(dto.AccountId, dto.GroupId))
+                    {
+                        //validatorResult.Failures.Add("Người dùng đã được mời vào nhóm");
+                        validatorResult.Add("Người dùng đã được mời vào nhóm", ValidateErrType.Role);
+                    }
+                    if (await services.GroupMembers.AnyRequestAsync(dto.AccountId, dto.GroupId))
+                    {
+                        validatorResult.Add("Người dùng đã xin vào nhóm", ValidateErrType.Role);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //validatorResult.Failures.Add(ex.Message);
+                validatorResult.Add(ex.Message);
+            }
+            return validatorResult;
+        }
+    }
 }

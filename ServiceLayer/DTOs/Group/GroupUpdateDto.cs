@@ -13,7 +13,7 @@ namespace ServiceLayer.DTOs
             set { name = value.Trim(); }
         }
 
-        public int? ClassId { get; set; }
+        //public int? ClassId { get; set; }
         public virtual ICollection<SubjectEnum>? SubjectIds { get; set; }
     }
 }

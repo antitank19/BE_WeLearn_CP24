@@ -23,17 +23,25 @@ namespace API.Controllers
             this.validators = validators;
         }
 
-        [HttpGet("DocumentFile")]
+        [HttpGet("Get")]
         public async Task<IActionResult> GetDocumentFilesInGroup(int groupId)
         {
             var documentFiles = await services.Documents.GetDocumentFilesByGroupId(groupId);
             return Ok(documentFiles);
         }
-        // POST: DocumentFileController/Create
-        [HttpPost("DocumentFile")]
+
+
+        [HttpPost("Upload")]
         public async Task<IActionResult> UploadDocumentFile(IFormFile file, int groupId, int accountId)
         {
             await services.Documents.UploadDocumentFIle(file, groupId, accountId);
+            return Ok();
+        }
+
+        [HttpPost("Aprove/Reject")]
+        public async Task<IActionResult> ApproveRejectDocumentFile(int documentId, Boolean check)
+        {
+            await services.Documents.ApproveRejectFile(documentId, check);
             return Ok();
         }
     }

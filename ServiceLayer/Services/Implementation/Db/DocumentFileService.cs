@@ -29,10 +29,12 @@ public class DocumentFileService : IDocumentFileService
         var mapped = mapper.Map<List<DocumentFileDto>>(documentFiles);
         return mapped;
     }
-    public async Task ApproveRejectFile(DocumentFileDto documentFile)
+    public async Task ApproveRejectFile(int documentId ,Boolean check)
     {
-        var mapped = mapper.Map<DocumentFile>(documentFile);
-        await repos.DocumentFiles.ApproveRejectAsync(mapped);
+        var file = await repos.DocumentFiles.GetByIdAsync(documentId);
+        file.Approved = check;
+        
+        await repos.DocumentFiles.ApproveRejectAsync(file);
     }
 
     public async Task UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId)

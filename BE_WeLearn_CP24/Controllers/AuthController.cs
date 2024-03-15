@@ -150,7 +150,7 @@ namespace API.Controllers
                 await valResult.ValidateParams(services, dto);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
                 //Account register = mapper.Map<Account>(dto);
                 Account register = new Account()

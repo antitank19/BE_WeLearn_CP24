@@ -72,7 +72,7 @@ namespace ServiceLayer.DTOs
             set { dateOfBirth = value.Value.Date; }
         }
 
-        public int ClassId { get; set; } = 6;
+        //public int ClassId { get; set; } = 6;
         public bool IsStudent { get; set; } = true;
 
         //Role

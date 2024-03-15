@@ -137,21 +137,30 @@ namespace API.Controllers
         [HttpGet("Member/{groupId}")]
         public async Task<IActionResult> GetGroupDetailForMember(int groupId)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isLeader = await services.Groups.IsStudentMemberGroupAsync(studentId, groupId);
-            if (!isLeader)
+            ValidatorResult valResult=new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải là thành viên nhóm này");
-            }
-            //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
-            GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentMemberGroupAsync(studentId, groupId);
+                if (!isLeader)
+                {
+                    return Unauthorized("Bạn không phải là thành viên nhóm này");
+                }
+                //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
+                GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
 
-            if (group == null)
-            {
-                return NotFound();
+                if (group == null)
+                {
+                    valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
+                return Ok(group);
             }
-            //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
-            return Ok(group);
+            catch (Exception ex) {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         // GET: api/Groups/Lead
@@ -183,38 +192,49 @@ namespace API.Controllers
         [HttpGet("Lead/{id}")]
         public async Task<IActionResult> GetGroupDetailForLeader(int id)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, id);
-            //if (!isLeader)
-            //{
-            //     return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
-            //}
-            bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, id);
-            if (!isJoining)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải thành viên của nhóm này");
-            }
-            //Group group = await services.Groups.GetFullByIdAsync(id);
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, id);
+                //if (!isLeader)
+                //{
+                //     return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                //}
+                bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, id);
+                if (!isJoining)
+                {
+                    return Unauthorized("Bạn không phải thành viên của nhóm này");
+                }
+                //Group group = await services.Groups.GetFullByIdAsync(id);
 
-            if (isLeader)
-            {
-                //GroupDetailForLeaderGetDto dto = mapper.Map<GroupDetailForLeaderGetDto>(group);
-                GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
-                if (group == null)
+                if (isLeader)
                 {
-                    return NotFound();
+                    //GroupDetailForLeaderGetDto dto = mapper.Map<GroupDetailForLeaderGetDto>(group);
+                    GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
+                    if (group == null)
+                    {
+                        valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+                        return NotFound(valResult);
+                    }
+                    return Ok(group);
                 }
-                return Ok(group);
+                else
+                {
+                    //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
+                    GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
+                    if (group == null)
+                    {
+                        valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+                        return NotFound(valResult);
+                    }
+                    return Ok(group);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
-                GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
-                if (group == null)
-                {
-                    return NotFound();
-                }
-                return Ok(group);
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
 
         }
@@ -235,7 +255,7 @@ namespace API.Controllers
                 await valResult.ValidateParams(services, dto);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
                 //Group group = mapper.Map<Group>(dto);
                 await services.Groups.CreateAsync(dto, creatorId);
@@ -263,26 +283,29 @@ namespace API.Controllers
             {
                 if (groupId != dto.Id)
                 {
-                    return BadRequest();
+                    valResult.Add("Group Id không trùng", ValidateErrType.IdNotMatch);
+                    return BadRequest(valResult);
                 }
                 int studentId = HttpContext.User.GetUserId();
                 //List<int> leadGroupIds = (await services.Groups.GetLeaderGroupsIdAsync(studentId));
 
                 if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId))
                 {
-                    return Unauthorized("You can't update other's group");
+                    valResult.Add("You can't update other's group", ValidateErrType.Unauthorized);
+                    return Unauthorized(valResult);
                 }
                 await valResult.ValidateParams(services, dto);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
 
                 //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
                 GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
                 if (group == null)
                 {
-                    return NotFound();
+                    valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+                    return NotFound(valResult);
                 }
                 try
                 {

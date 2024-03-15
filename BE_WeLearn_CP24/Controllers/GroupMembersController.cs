@@ -212,7 +212,7 @@ namespace API.Controllers
                 await valResult.ValidateParamsAsync(services, dto, studentId);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
                 await services.GroupMembers.CreateJoinInvite(dto);
 
@@ -438,7 +438,7 @@ namespace API.Controllers
                 await valResult.ValidateParamsAsync(services, dto);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
                 await services.GroupMembers.CreateJoinRequest(dto);
                 await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);

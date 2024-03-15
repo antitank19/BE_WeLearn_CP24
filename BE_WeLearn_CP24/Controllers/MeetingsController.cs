@@ -205,7 +205,7 @@ namespace API.Controllers
                 await valResult.ValidateParams(services, dto, studentId);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return  BadRequest(valResult);
                 }
                 //Meeting created= await services.Meetings.CreateInstantMeetingAsync(dto);
                 //LiveMeetingGetDto mappedCreated = mapper.Map<LiveMeetingGetDto>(created);
@@ -240,7 +240,7 @@ namespace API.Controllers
                 await valResult.ValidateParams(services, dto, studentId);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
 
 
@@ -277,7 +277,7 @@ namespace API.Controllers
                 await valResult.ValidateParams(services, dto, studentId);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
                 await services.Meetings.CreateScheduleMeetingAsync(dto);
                 await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp mới {dto.Name}");
@@ -363,7 +363,7 @@ namespace API.Controllers
                 await valResult.ValidateParams(services, dto, studentId);
                 if (!valResult.IsValid)
                 {
-                    return BadRequest(valResult.Failures);
+                    return BadRequest(valResult);
                 }
                 await services.Meetings.UpdateScheduleMeetingAsync(dto);
                 //Meeting updated = await services.Meetings.GetByIdAsync(id);

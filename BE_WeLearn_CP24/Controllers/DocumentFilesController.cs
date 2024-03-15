@@ -15,12 +15,15 @@ namespace API.Controllers
     {
         private readonly IServiceWrapper services;
         //private readonly IMapper mapper;
-        private readonly IValidatorWrapper validators;
+        //private readonly IValidatorWrapper validators;
 
-        public DocumentFilesController(IServiceWrapper services, IValidatorWrapper validators)
+        public DocumentFilesController(
+            //IValidatorWrapper validators,
+            IServiceWrapper services 
+        )
         {
             this.services = services;
-            this.validators = validators;
+            //this.validators = validators;
         }
 
         [HttpGet("Get")]

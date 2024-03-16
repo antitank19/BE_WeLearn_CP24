@@ -28,7 +28,7 @@ namespace API.SignalRHub
             string groupIdString = httpContext.Request.Query["groupId"].ToString();
             await Groups.AddToGroupAsync(Context.ConnectionId, groupIdString);
 
-            var isOnline = await presenceTracker.UserConnected(new UserConnectionSignalrDto(Context.User.GetUsername(), 0), Context.ConnectionId);
+            //var isOnline = await presenceTracker.UserConnected(new UserConnectionSignalrDto(Context.User.GetUsername(), 0), Context.ConnectionId);
             base.OnConnectedAsync();
         }
 
@@ -38,7 +38,7 @@ namespace API.SignalRHub
             string groupIdString = httpContext.Request.Query["groupId"].ToString();
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupIdString);
 
-            var isOffline = await presenceTracker.UserDisconnected(new UserConnectionSignalrDto(Context.User.GetUsername(), 0), Context.ConnectionId);
+            //var isOffline = await presenceTracker.UserDisconnected(new UserConnectionSignalrDto(Context.User.GetUsername(), 0), Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
 

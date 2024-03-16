@@ -65,7 +65,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #endregion
 #region validator
-builder.Services.AddScoped<IValidatorWrapper, ValidatorWrapper>();
+//builder.Services.AddScoped<IValidatorWrapper, ValidatorWrapper>();
 #endregion
 #region cors
 builder.Services.AddCors(options =>

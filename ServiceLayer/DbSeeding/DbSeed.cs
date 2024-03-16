@@ -866,7 +866,7 @@ namespace ServiceLayer.DbSeeding
             #region Meeting 2
             new Connection
             {
-                Id= "Id1",
+                SinganlrId= "Id1",
                 AccountId = 1,
                 MeetingId = 2,
                 Start = DateTime.Now.AddDays(-2).AddMinutes(30),
@@ -875,7 +875,7 @@ namespace ServiceLayer.DbSeeding
             },
             new Connection
             {
-                Id= "Id2",
+                SinganlrId= "Id2",
                 AccountId = 1,
                 MeetingId = 2,
                 Start = DateTime.Now.AddDays(-2).AddHours(1),
@@ -884,7 +884,7 @@ namespace ServiceLayer.DbSeeding
             },
              new Connection
             {
-                Id= "Id3",
+                SinganlrId= "Id3",
                 AccountId = 1,
                 MeetingId = 3,
                 Start = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1),

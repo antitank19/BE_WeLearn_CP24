@@ -7,6 +7,7 @@ using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
 using Swashbuckle.AspNetCore.Annotations;
 using API.SwaggerOption.Descriptions;
+using APIExtension.Validator;
 
 namespace API.Controllers
 {
@@ -29,16 +30,25 @@ namespace API.Controllers
         [Authorize(Roles = Actor.Student_Parent)]
         public async Task<IActionResult> GetStatForStudentInMonthNew(int studentId, DateTime month)
         {
-            if (studentId < 0)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return NotFound();
+                if (studentId < 0)
+                {
+                    return NotFound();
+                }
+                if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
+                {
+                    return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+                }
+                StatGetDto mappedStat = await services.Stats.GetStatForStudentInMonth(studentId, month);
+                return Ok(mappedStat);
             }
-            if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
+            catch (Exception ex)
             {
-                return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            StatGetDto mappedStat = await services.Stats.GetStatForStudentInMonth(studentId, month);
-            return Ok(mappedStat);
         }
 
         [SwaggerOperation(
@@ -49,16 +59,25 @@ namespace API.Controllers
         [Authorize(Roles = Actor.Student_Parent)]
         public async Task<IActionResult> GetStatForStudent(int studentId)
         {
-            if (studentId < 0)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return NotFound();
+                if (studentId < 0)
+                {
+                    return NotFound();
+                }
+                if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
+                {
+                    return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+                }
+                IList<StatGetListDto> mappedStat = await services.Stats.GetStatsForStudent(studentId);
+                return Ok(mappedStat);
             }
-            if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
+            catch (Exception ex)
             {
-                return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            IList<StatGetListDto> mappedStat = await services.Stats.GetStatsForStudent(studentId);
-            return Ok(mappedStat);
         }
     }
 }

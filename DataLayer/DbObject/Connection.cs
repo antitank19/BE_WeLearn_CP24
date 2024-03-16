@@ -1,19 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DataLayer.DbObject
 {
     [Table("MeetingParticipations")]
+    [Index(nameof(SinganlrId), IsUnique = true)]
     public class Connection
     {
-        //public Connection(string connectionId, string userName)
-        //{
-        //    Id = connectionId;
-        //    UserName = userName;
-        //}
         [Key]
-        public string Id { get; set; }   
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string SinganlrId { get; set; }
+        public string? PeerId { get; set; }
         public DateTime Start { get;set; }
         public DateTime? End { get;set; }
 

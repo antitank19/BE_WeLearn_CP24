@@ -20,14 +20,19 @@ namespace API.Controllers
     public class MeetingsController : ControllerBase
     {
         private readonly IServiceWrapper services;
-        private readonly IValidatorWrapper validators;
+        //private readonly IValidatorWrapper validators;
         //private readonly IMapper mapper;
         private readonly IHubContext<GroupHub> groupHub;
 
-        public MeetingsController(IServiceWrapper services, IValidatorWrapper validators, IMapper mapper, IHubContext<GroupHub> groupHub)
+        public MeetingsController(
+            IServiceWrapper services, 
+            //IValidatorWrapper validators, 
+            //IMapper mapper, 
+            IHubContext<GroupHub> groupHub
+        )
         {
             this.services = services;
-            this.validators = validators;
+            //this.validators = validators;
             //this.mapper = mapper;
             this.groupHub = groupHub;
         }
@@ -188,22 +193,31 @@ namespace API.Controllers
         [HttpPost("Instant")]
         public async Task<IActionResult> CreateInstantMeeting(InstantMeetingCreateDto dto)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, dto.GroupId);
-            if (!isJoining)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải thành viên của nhóm này");
+                int studentId = HttpContext.User.GetUserId();
+                bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, dto.GroupId);
+                if (!isJoining)
+                {
+                    return Unauthorized("Bạn không phải thành viên của nhóm này");
+                }
+                await valResult.ValidateParams(services, dto, studentId);
+                if (!valResult.IsValid)
+                {
+                    return  BadRequest(valResult);
+                }
+                //Meeting created= await services.Meetings.CreateInstantMeetingAsync(dto);
+                //LiveMeetingGetDto mappedCreated = mapper.Map<LiveMeetingGetDto>(created);
+                LiveMeetingGetDto mappedCreated = await services.Meetings.CreateInstantMeetingAsync<LiveMeetingGetDto>(dto);
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} bắt đầu cuộc họp {dto.Name}");
+                return Ok(mappedCreated);
             }
-            ValidatorResult valResult = await validators.Meetings.ValidateParams(dto, studentId);
-            if (!valResult.IsValid)
+            catch (Exception ex)
             {
-                return BadRequest(valResult.Failures);
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            //Meeting created= await services.Meetings.CreateInstantMeetingAsync(dto);
-            //LiveMeetingGetDto mappedCreated = mapper.Map<LiveMeetingGetDto>(created);
-            LiveMeetingGetDto mappedCreated = await services.Meetings.CreateInstantMeetingAsync<LiveMeetingGetDto>(dto);
-            await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} bắt đầu cuộc họp {dto.Name}");
-            return Ok(mappedCreated);
         }
 
         [SwaggerOperation(
@@ -214,26 +228,34 @@ namespace API.Controllers
         [HttpPost("Mass-schedule")]
         public async Task<IActionResult> MassCreateScheduleMeeting(ScheduleMeetingMassCreateDto dto)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
-            if (!isLeader)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
-            }
-            ValidatorResult valResult = await validators.Meetings.ValidateParams(dto, studentId);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
-            }
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
+                if (!isLeader)
+                {
+                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                }
+                await valResult.ValidateParams(services, dto, studentId);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult);
+                }
 
 
-            //Schedule schedule = await services.Meetings.MassCreateScheduleMeetingAsync(dto);
-            //var mapped = mapper.Map<ScheduleGetDto>(schedule);
-            ScheduleGetDto mapped = await services.Meetings.MassCreateScheduleMeetingAsync<ScheduleGetDto>(dto);
-            //schedule.ScheduleSubjects = dto.SubjectIds.Select(sId => new ScheduleSubject() { SubjectId = (int)sId }).ToList();
-            //await services.Meetings.CreateScheduleMeetingAsync(dto);
-            await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp {mapped.Name} mới");
-            return Ok(mapped);
+                //Schedule schedule = await services.Meetings.MassCreateScheduleMeetingAsync(dto);
+                //var mapped = mapper.Map<ScheduleGetDto>(schedule);
+                ScheduleGetDto mapped = await services.Meetings.MassCreateScheduleMeetingAsync<ScheduleGetDto>(dto);
+                //schedule.ScheduleSubjects = dto.SubjectIds.Select(sId => new ScheduleSubject() { SubjectId = (int)sId }).ToList();
+                //await services.Meetings.CreateScheduleMeetingAsync(dto);
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp {mapped.Name} mới");
+                return Ok(mapped);
+            }
+            catch (Exception ex) {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         [SwaggerOperation(
@@ -243,20 +265,29 @@ namespace API.Controllers
         [HttpPost("Schedule")]
         public async Task<IActionResult> CreateScheduleMeeting(ScheduleMeetingCreateDto dto)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
-            if (!isLeader)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
+                if (!isLeader)
+                {
+                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                }
+                await valResult.ValidateParams(services, dto, studentId);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult);
+                }
+                await services.Meetings.CreateScheduleMeetingAsync(dto);
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp mới {dto.Name}");
+                return Ok(dto);
             }
-            ValidatorResult valResult = await validators.Meetings.ValidateParams(dto, studentId);
-            if (!valResult.IsValid)
+            catch(Exception ex)
             {
-                return BadRequest(valResult.Failures);
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            await services.Meetings.CreateScheduleMeetingAsync(dto);
-            await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp mới {dto.Name}");
-            return Ok(dto);
         }
 
         [SwaggerOperation(
@@ -318,25 +349,33 @@ namespace API.Controllers
         [HttpPut("Schedule/{id}")]
         public async Task<IActionResult> UpdateScheduleMeeting(int id, ScheduleMeetingUpdateDto dto)
         {
-            int studentId = HttpContext.User.GetUserId();
-            Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(id);
-            bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, meeting.Schedule.GroupId);
-            if (!isLeader)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải thành viên của nhóm này");
+                int studentId = HttpContext.User.GetUserId();
+                Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(id);
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, meeting.Schedule.GroupId);
+                if (!isLeader)
+                {
+                    return Unauthorized("Bạn không phải thành viên của nhóm này");
+                }
+                //dto.Date=dto.Date.AddDays(1);
+                await valResult.ValidateParams(services, dto, studentId);
+                if (!valResult.IsValid)
+                {
+                    return BadRequest(valResult);
+                }
+                await services.Meetings.UpdateScheduleMeetingAsync(dto);
+                //Meeting updated = await services.Meetings.GetByIdAsync(id);
+                //var updatedDto = mapper.Map<ScheduleMeetingGetDto>(updated);
+                ScheduleMeetingGetDto mappedUpdated = await services.Meetings.GetByIdAsync<ScheduleMeetingGetDto>(id);
+                await groupHub.Clients.Group(mappedUpdated.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} cập nhật cuộc họp {mappedUpdated.Name}");
+                return Ok(mappedUpdated);
             }
-            //dto.Date=dto.Date.AddDays(1);
-            ValidatorResult valResult = await validators.Meetings.ValidateParams(dto, studentId);
-            if (!valResult.IsValid)
-            {
-                return BadRequest(valResult.Failures);
+            catch (Exception ex) {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            await services.Meetings.UpdateScheduleMeetingAsync(dto);
-            //Meeting updated = await services.Meetings.GetByIdAsync(id);
-            //var updatedDto = mapper.Map<ScheduleMeetingGetDto>(updated);
-            ScheduleMeetingGetDto mappedUpdated = await services.Meetings.GetByIdAsync<ScheduleMeetingGetDto>(id);
-            await groupHub.Clients.Group(mappedUpdated.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} cập nhật cuộc họp {mappedUpdated.Name}");
-            return Ok(mappedUpdated);
         }
 
 

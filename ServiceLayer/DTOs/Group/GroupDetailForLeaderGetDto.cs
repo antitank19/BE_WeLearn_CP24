@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ClassId { get; set; }
+        //public int ClassId { get; set; }
         public ICollection<StudentGetDto> Members { get; set; }
         public ICollection<JoinRequestForGroupGetDto> JoinRequest { get; set; }
         public ICollection<JoinInviteForGroupGetDto> JoinInvite { get; set; }

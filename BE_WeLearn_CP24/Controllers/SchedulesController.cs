@@ -1,6 +1,7 @@
 ﻿using API.Extension.ClaimsPrinciple;
 using API.SwaggerOption.Const;
 using API.SwaggerOption.Endpoints;
+using APIExtension.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,14 +30,23 @@ namespace API.Controllers
         [HttpGet("Group/{groupId}")]
         public async Task<IActionResult> GetSchedulesForGroup(int groupId)
         {
-            int studentId = HttpContext.User.GetUserId();
-            bool isJoined = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
-            if (!isJoined)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Bạn không phải là thành viên nhóm này");
+                int studentId = HttpContext.User.GetUserId();
+                bool isJoined = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
+                if (!isJoined)
+                {
+                    return Unauthorized("Bạn không phải là thành viên nhóm này");
+                }
+                IQueryable<ScheduleGetDto> mapped = services.Meetings.GetSchedulesForGroup(groupId);
+                return Ok(mapped);
             }
-            IQueryable<ScheduleGetDto> mapped = services.Meetings.GetSchedulesForGroup(groupId);
-            return Ok(mapped);
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
     }
 }

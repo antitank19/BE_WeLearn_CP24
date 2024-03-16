@@ -64,7 +64,7 @@ namespace RepoLayer.Implemention
             return await dbContext.Meetings
                 .Include(x => x.Connections)
                 .Include(x => x.Schedule)
-                .Where(x => x.Connections.Any(c => c.Id == connectionId))
+                .Where(x => x.Connections.Any(c => c.SinganlrId == connectionId))
                 .FirstOrDefaultAsync();
         }
 

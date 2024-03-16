@@ -27,10 +27,10 @@ namespace API.Controllers
         private readonly IServer server;
 
         public AccountsController(
-            IServiceWrapper services, 
+            IServiceWrapper services,
             //IMapper mapper, 
             //IValidatorWrapper validators, 
-            /*IAutoMailService mailService,*/ 
+            /*IAutoMailService mailService,*/
             IServer server)
         {
             this.services = services;
@@ -50,17 +50,26 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> SearchStudent(string search, int? groupId)
         {
-            bool isParent = HttpContext.User.IsInRole(Actor.Parent);
-            int? parentId = isParent ? HttpContext.User.GetUserId() : null;
-            //var list = services.Accounts.SearchStudents(search, groupId, parentId);//.ToList();
+            ValidatorResult valResutl = new ValidatorResult();
+            try
+            {
+                bool isParent = HttpContext.User.IsInRole(Actor.Parent);
+                int? parentId = isParent ? HttpContext.User.GetUserId() : null;
+                //var list = services.Accounts.SearchStudents(search, groupId, parentId);//.ToList();
 
-            //if (list == null)
-            //{
-            //    return NotFound();
-            //}
-            //var mapped = list.ProjectTo<AccountProfileDto>(mapper.ConfigurationProvider);
-            var mapped = services.Accounts.SearchStudents<AccountProfileDto>(search, groupId, parentId);//.ToList();
-            return Ok(mapped);
+                //if (list == null)
+                //{
+                //    return NotFound();
+                //}
+                //var mapped = list.ProjectTo<AccountProfileDto>(mapper.ConfigurationProvider);
+                var mapped = services.Accounts.SearchStudents<AccountProfileDto>(search, groupId, parentId);//.ToList();
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResutl.Add(ex.ToString());
+                return BadRequest(valResutl);
+            }
         }
 
         // GET: api/Accounts/5
@@ -73,16 +82,25 @@ namespace API.Controllers
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfile()
         {
-            int id = HttpContext.User.GetUserId();
-            //Account user = await services.Accounts.GetProfileByIdAsync(id);
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                int id = HttpContext.User.GetUserId();
+                //Account user = await services.Accounts.GetProfileByIdAsync(id);
 
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-            //      var mapped = mapper.Map<AccountProfileDto>(user);
-            AccountProfileDto mapped = await services.Accounts.GetProfileByIdAsync<AccountProfileDto>(id);
-            return Ok(mapped);
+                //if (user == null)
+                //{
+                //    return NotFound();
+                //}
+                //      var mapped = mapper.Map<AccountProfileDto>(user);
+                AccountProfileDto mapped = await services.Accounts.GetProfileByIdAsync<AccountProfileDto>(id);
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
 
@@ -95,7 +113,7 @@ namespace API.Controllers
         [HttpPut("{accountId}")]
         public async Task<IActionResult> UpdateProfile(int accountId, AccountUpdateDto dto)
         {
-            ValidatorResult valResult =  new ValidatorResult();
+            ValidatorResult valResult = new ValidatorResult();
             try
             {
                 if (accountId != HttpContext.User.GetUserId())
@@ -209,9 +227,9 @@ namespace API.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                valResult.Add(ex.ToString() );
+                valResult.Add(ex.ToString());
                 return BadRequest(valResult);
             }
         }
@@ -223,29 +241,40 @@ namespace API.Controllers
         [HttpGet("Password/Reset")]
         public async Task<IActionResult> ConfirmResetPassword(string email)
         {
-            bool existedAccount = await services.Accounts.ExistEmailAsync(email);
-            if (!existedAccount)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return NotFound("Tài khoản không tồn tại");
-            }
-            #region old code
-            //Random password
-            //string newPassword = RandomPassword(9);
-            //account.Password = newPassword;
-            //await services.Accounts.UpdateAsync(account);
+                bool existedAccount = await services.Accounts.ExistEmailAsync(email);
+                if (!existedAccount)
+                {
+                    valResult.Add("Tài khoản không tồn tại", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                #region old code
+                //Random password
+                //string newPassword = RandomPassword(9);
+                //account.Password = newPassword;
+                //await services.Accounts.UpdateAsync(account);
 
-            ////string mailContent="<a href=\"localhost\"></a>" 
-            //string mailContent = $"<div>Mật khẩu mới của bạn là {newPassword}</div>";
-            //bool sendSuccessful = await mailService.SendEmailWithDefaultTemplateAsync(new List<String> { email }, "Reset password", mailContent, null);
-            #endregion
-            bool sendSuccessful = await services.Mails.SendConfirmResetPasswordMailAsync(email, server.Features.Get<IServerAddressesFeature>().Addresses.First());
-            if (!sendSuccessful)
-            {
-                //return BadRequest($"Something went wrong with sending mail. The new password is {newPassword}");
-                return BadRequest($"Something went wrong with sending mail.");
+                ////string mailContent="<a href=\"localhost\"></a>" 
+                //string mailContent = $"<div>Mật khẩu mới của bạn là {newPassword}</div>";
+                //bool sendSuccessful = await mailService.SendEmailWithDefaultTemplateAsync(new List<String> { email }, "Reset password", mailContent, null);
+                #endregion
+                bool sendSuccessful = await services.Mails.SendConfirmResetPasswordMailAsync(email, server.Features.Get<IServerAddressesFeature>().Addresses.First());
+                if (!sendSuccessful)
+                {
+                    //return BadRequest($"Something went wrong with sending mail. The new password is {newPassword}");
+                    valResult.Add("Gặp lỗi khi gửi mail");
+                    return BadRequest(valResult);
+                }
+                //return Ok($"Reset successfully, check {email} inbox for the new password {newPassword}");
+                return Ok($"Reset successfully, check {email} inbox for the new password");
             }
-            //return Ok($"Reset successfully, check {email} inbox for the new password {newPassword}");
-            return Ok($"Reset successfully, check {email} inbox for the new password");
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         [SwaggerOperation(
@@ -256,41 +285,53 @@ namespace API.Controllers
 
         public async Task<IActionResult> ConfirmResetPassword(string email, string secret)
         {
-            //Account account = await services.Accounts.GetAccountByEmailAsync(email);
-            //if (account == null)
-            //{
-            //    return NotFound("Tài khoản không tồn tại");
-            //}
-            bool existedAccount = await services.Accounts.ExistEmailAsync(email);
-            if (!existedAccount)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return NotFound("Tài khoản không tồn tại");
-            }
-            //test secret
-            string correctSecrete = DateTime.Today.ToString("yyyy-MM-dd").CustomHash();
-            if (secret != correctSecrete)
-            {
-                return Unauthorized("Incorrect secret");
-            }
-            #region old code
-            //Random password
-            //string newPassword = RandomPassword(9);
-            //account.Password = newPassword;
-            //await services.Accounts.UpdateAsync(account);
+                //Account account = await services.Accounts.GetAccountByEmailAsync(email);
+                //if (account == null)
+                //{
+                //    return NotFound("Tài khoản không tồn tại");
+                //}
+                bool existedAccount = await services.Accounts.ExistEmailAsync(email);
+                if (!existedAccount)
+                {
+                    valResult.Add("Tài khoản không tồn tại", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                //test secret
+                string correctSecrete = DateTime.Today.ToString("yyyy-MM-dd").CustomHash();
+                if (secret != correctSecrete)
+                {
+                    valResult.Add("Không đúng secret", ValidateErrType.Unauthorized);
+                    return Unauthorized(valResult);
+                }
+                #region old code
+                //Random password
+                //string newPassword = RandomPassword(9);
+                //account.Password = newPassword;
+                //await services.Accounts.UpdateAsync(account);
 
-            ////string mailContent="<a href=\"localhost\"></a>" 
-            //string mailContent = $"<div>Mật khẩu mới của bạn là {newPassword}</div>";
-            //bool sendSuccessful = await mailService.SendEmailWithDefaultTemplateAsync(new List<String> { email }, "Reset password", mailContent, null);
-            #endregion
-            bool sendSuccessful = await services.Mails.SendNewPasswordMailAsync(email);
-            if (!sendSuccessful)
-            {
-                //return BadRequest($"Something went wrong with sending mail. The new password is {newPassword}");
-                return BadRequest($"Something went wrong with sending mail.");
+                ////string mailContent="<a href=\"localhost\"></a>" 
+                //string mailContent = $"<div>Mật khẩu mới của bạn là {newPassword}</div>";
+                //bool sendSuccessful = await mailService.SendEmailWithDefaultTemplateAsync(new List<String> { email }, "Reset password", mailContent, null);
+                #endregion
+                bool sendSuccessful = await services.Mails.SendNewPasswordMailAsync(email);
+                if (!sendSuccessful)
+                {
+                    //return BadRequest($"Something went wrong with sending mail. The new password is {newPassword}");
+                    valResult.Add("Gặp lỗi khi gửi mail");
+                    return BadRequest(valResult);
+                }
+                //return Ok($"Reset successfully, check {email} inbox for the new password {newPassword}");
+                //return Ok();
+                return Ok($"Reset successfully, check {email} inbox for the new password");
             }
-            //return Ok($"Reset successfully, check {email} inbox for the new password {newPassword}");
-            //return Ok();
-            return Ok($"Reset successfully, check {email} inbox for the new password");
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
         #region Not copy 22/1       
         //[Authorize(Roles = Actor.Student)]

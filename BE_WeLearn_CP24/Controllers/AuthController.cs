@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ServiceLayer.DTOs;
-using ServiceLayer.DTOs;
 using ServiceLayer.Utils;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Http.Headers;
@@ -28,9 +27,9 @@ namespace API.Controllers
         //private readonly IMapper mapper;
         //private readonly IValidatorWrapper validators;
         public AuthController(
-            IServiceWrapper services 
-            //IMapper mapper, 
-            //IValidatorWrapper validators
+            IServiceWrapper services
+        //IMapper mapper, 
+        //IValidatorWrapper validators
         )
         {
             this.services = services;
@@ -47,14 +46,24 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync(LoginModel loginModel)
         {
-            Account logined = await services.Auth.LoginAsync(loginModel);
-            if (logined is null)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                return Unauthorized("Username or password is wrong");
-            }
+                Account logined = await services.Auth.LoginAsync(loginModel);
+                if (logined is null)
+                {
+                    valResult.Add("Sai username hoặc password");
+                    return Unauthorized(valResult);
+                }
 
-            string token = await services.Auth.GenerateJwtAsync(logined, loginModel.RememberMe);
-            return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                string token = await services.Auth.GenerateJwtAsync(logined, loginModel.RememberMe);
+                return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         [SwaggerOperation(
@@ -65,18 +74,28 @@ namespace API.Controllers
         [HttpPost("Login/Google/Id-Token")]
         public async Task<IActionResult> LoginWithGoogleIdTokenAsync(string? idToken, bool rememberMe = true)
         {
-            //var idToken = await HttpContext.GetTokenAsync("access_token");
-            if (idToken is null || idToken.Length == 0)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                idToken = HttpContext.GetGoogleIdToken();
+                //var idToken = await HttpContext.GetTokenAsync("access_token");
+                if (idToken is null || idToken.Length == 0)
+                {
+                    idToken = HttpContext.GetGoogleIdToken();
+                }
+                Account logined = await services.Auth.LoginWithGoogleIdToken(idToken);
+                if (logined is null)
+                {
+                    valResult.Add("Sai username hoặc password");
+                    return Unauthorized(valResult);
+                }
+                string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
+                return Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
             }
-            Account logined = await services.Auth.LoginWithGoogleIdToken(idToken);
-            if (logined is null)
+            catch (Exception ex)
             {
-                return Unauthorized("Username or password is wrong");
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
-            return Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
         }
 
         [SwaggerOperation(
@@ -87,28 +106,39 @@ namespace API.Controllers
         [HttpPost("Login/Google/Access-Token")]
         public async Task<IActionResult> LoginWithGoogleAccessTokenAsync(string? accessToken, bool rememberMe = true)
         {
-            if (accessToken is null || accessToken.Length == 0)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                accessToken = HttpContext.GetGoogleAccessToken();
+                if (accessToken is null || accessToken.Length == 0)
+                {
+                    accessToken = HttpContext.GetGoogleAccessToken();
+                }
+                var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
+                var hc = new HttpClient();
+                hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = hc.GetAsync(userInfoUrl).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    valResult.Add(JsonConvert.SerializeObject(response, Formatting.Indented));
+                    return BadRequest(valResult);
+                }
+                var userInfoString = response.Content.ReadAsStringAsync().Result;
+                GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
+                Account logined = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);
+                if (logined is null)
+                {
+                    valResult.Add("Bạn chưa đăng kí tài khoản");
+                    return Unauthorized(valResult);
+                }
+                //return Ok(await services.Auth.GenerateJwtAsync(logined, rememberMe));
+                string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
+                return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
             }
-            var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
-            var hc = new HttpClient();
-            hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = hc.GetAsync(userInfoUrl).Result;
-            if (!response.IsSuccessStatusCode)
+            catch (Exception ex)
             {
-                return BadRequest(response);
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
-            var userInfoString = response.Content.ReadAsStringAsync().Result;
-            GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
-            Account logined = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);
-            if (logined is null)
-            {
-                return Unauthorized("Bạn chưa có đăng kí tài khoản");
-            }
-            //return Ok(await services.Auth.GenerateJwtAsync(logined, rememberMe));
-            string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
-            return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
         }
         public partial class GoogleUser
         {
@@ -223,32 +253,42 @@ namespace API.Controllers
         [HttpPost("Register/Google")]
         public async Task<IActionResult> StudentRegisterWithGgAccessToken(string? accessToken, bool isStudent = true)
         {
-            if (accessToken is null || accessToken.Length == 0)
+            ValidatorResult valResult = new ValidatorResult();
+            try
             {
-                accessToken = HttpContext.GetGoogleAccessToken();
-            }
-            var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
-            var hc = new HttpClient();
-            hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = hc.GetAsync(userInfoUrl).Result;
-            var userInfoString = response.Content.ReadAsStringAsync().Result;
-            GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
-            Account existed = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);
-            if (existed is not null)
-            {
-                return Unauthorized("Bạn đã đăng kí tài khoản rồi");
-            }
-            Account register = new Account()
-            {
-                Username = userInfo.Email,
-                Email = userInfo.Email,
-                Password = PasswordUtil.RandomPassword(9),
-                FullName = userInfo.Name,
+                if (accessToken is null || accessToken.Length == 0)
+                {
+                    accessToken = HttpContext.GetGoogleAccessToken();
+                }
+                var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
+                var hc = new HttpClient();
+                hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = hc.GetAsync(userInfoUrl).Result;
+                var userInfoString = response.Content.ReadAsStringAsync().Result;
+                GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
+                Account existed = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);
+                if (existed is not null)
+                {
+                    valResult.Add("Bạn đã đăng kí tài khoản rồi");
+                    return Unauthorized(valResult);
+                }
+                Account register = new Account()
+                {
+                    Username = userInfo.Email,
+                    Email = userInfo.Email,
+                    Password = PasswordUtil.RandomPassword(9),
+                    FullName = userInfo.Name,
 
-            };
-            await services.Auth.Register(register, isStudent ? RoleNameEnum.Student : RoleNameEnum.Parent);
+                };
+                await services.Auth.Register(register, isStudent ? RoleNameEnum.Student : RoleNameEnum.Parent);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         //[SwaggerOperation(

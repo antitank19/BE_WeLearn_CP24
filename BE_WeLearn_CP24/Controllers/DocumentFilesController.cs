@@ -19,7 +19,7 @@ namespace API.Controllers
 
         public DocumentFilesController(
             //IValidatorWrapper validators,
-            IServiceWrapper services 
+            IServiceWrapper services
         )
         {
             this.services = services;
@@ -29,23 +29,50 @@ namespace API.Controllers
         [HttpGet("Get")]
         public async Task<IActionResult> GetDocumentFilesInGroup(int groupId)
         {
-            var documentFiles = await services.Documents.GetDocumentFilesByGroupId(groupId);
-            return Ok(documentFiles);
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var documentFiles = await services.Documents.GetDocumentFilesByGroupId(groupId);
+                return Ok(documentFiles);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
 
         [HttpPost("Upload")]
         public async Task<IActionResult> UploadDocumentFile(IFormFile file, int groupId, int accountId)
         {
-            await services.Documents.UploadDocumentFIle(file, groupId, accountId);
-            return Ok();
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                await services.Documents.UploadDocumentFIle(file, groupId, accountId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
 
         [HttpPost("Aprove/Reject")]
         public async Task<IActionResult> ApproveRejectDocumentFile(int documentId, Boolean check)
         {
-            await services.Documents.ApproveRejectFile(documentId, check);
-            return Ok();
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                await services.Documents.ApproveRejectFile(documentId, check);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using ServiceLayer.Services.Interface;
 using ServiceLayer.DTOs;
 using API.SwaggerOption.Const;
 using API.SwaggerOption.Endpoints;
+using APIExtension.Validator;
 
 namespace API.Controllers
 {
@@ -30,6 +31,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSubject()
         {
+            ValidatorResult valResult = new ValidatorResult();
+            try { 
             IQueryable<SubjectGetDto> list = services.Subjects.GetList<SubjectGetDto>();
           if (list == null|| !list.Any())
           {
@@ -38,5 +41,11 @@ namespace API.Controllers
 
             return Ok(list);
         }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+    }
+}
     }
 }

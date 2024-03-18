@@ -42,6 +42,7 @@ namespace RepoLayer.Implemention
         {
             Account account =await dbContext.Accounts
                 .Include(a => a.Role)
+                .Include(e => e.GroupMembers).ThenInclude(e => e.Group).ThenInclude(e => e.GroupMembers)
                 .SingleOrDefaultAsync(a => a.Username == username);
             return account;
         }
@@ -49,6 +50,7 @@ namespace RepoLayer.Implemention
         {
             Account account = await dbContext.Accounts
                 .Include(a => a.Role)
+                .Include(e => e.GroupMembers).ThenInclude(e => e.Group).ThenInclude(e => e.GroupMembers)
                 .SingleOrDefaultAsync(a => a.Email == email);
             return account;
         }
@@ -57,7 +59,8 @@ namespace RepoLayer.Implemention
         {
             return await dbContext.Accounts
                 .Include(a=>a.Role)
-                .SingleOrDefaultAsync(a => (a.Username == usernameOrEmail || a.Email == usernameOrEmail.ToLower()) && a.Password == password); 
+                .Include(e => e.GroupMembers).ThenInclude(e => e.Group).ThenInclude(e => e.GroupMembers)
+                .SingleOrDefaultAsync(a => (a.Username == usernameOrEmail || a.Email == usernameOrEmail.ToLower()) && a.Password == password);
         }
 
         public override IQueryable<Account> GetList()

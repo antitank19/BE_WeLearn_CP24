@@ -1,15 +1,18 @@
 ﻿//using Google.Apis.Auth;
 //using Google.Apis.Oauth2.v2;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AutoMapper;
 using DataLayer.DbObject;
 using DataLayer.Enums;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Auth;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 
@@ -19,23 +22,32 @@ namespace ServiceLayer.Services.Implementation.Auth
     {
         private readonly IRepoWrapper repos;
         private readonly IConfiguration configuration;
+        private readonly IMapper mapper;
         private JwtSecurityTokenHandler jwtHandler;
 
-        public AuthService(IRepoWrapper repos, IConfiguration configuration)
+        public AuthService(IRepoWrapper repos, IConfiguration configuration, IMapper mapper)
         {
             this.repos = repos;
             this.configuration = configuration;
             jwtHandler = new JwtSecurityTokenHandler();
+            this.mapper = mapper;
         }
 
-        public async Task<Account> LoginAsync(LoginModel loginModel)
+        public async Task<LoginInfoDto> LoginAsync(LoginModel loginModel)
         {
-            return await repos.Accounts.GetByUsernameOrEmailAndPasswordAsync(loginModel.UsernameOrEmail, loginModel.Password);
+            Account account = await repos.Accounts.GetByUsernameOrEmailAndPasswordAsync(loginModel.UsernameOrEmail, loginModel.Password);
+            if (account == null)
+            {
+                return null;
+            }
+            LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
+            loginInfoDto.Token = await GenerateJwtAsync(account, loginModel.RememberMe);
+            return loginInfoDto;
         }
 
-        public Task<Account> LoginWithGoogleIdToken(string googleIdToken)
+        public async Task<LoginInfoDto> LoginWithGoogleIdToken(string googleIdToken, bool rememberMe)
         {
-            JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
+            //JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
 
             if (!jwtHandler.CanReadToken(googleIdToken))
             {
@@ -45,7 +57,37 @@ namespace ServiceLayer.Services.Implementation.Auth
 
             var payload = GoogleJsonWebSignature.ValidateAsync(googleIdToken, new GoogleJsonWebSignature.ValidationSettings()).Result;
             //return repos.Accounts.GetByUsernameAsync(payload.Email);
-            return repos.Accounts.GetByEmailAsync(payload.Email);
+            Account account = await repos.Accounts.GetByEmailAsync(payload.Email);
+            if (account == null)
+            {
+                return null;
+            }
+            LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
+            loginInfoDto.Token = await GenerateJwtAsync(account, rememberMe);
+            return loginInfoDto;
+        }
+
+        public async Task<LoginInfoDto> LoginWithGoogleAccessToken(string googleAccessToken, bool rememberMe)
+        {
+            var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
+            var hc = new HttpClient();
+            hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", googleAccessToken);
+            var response = hc.GetAsync(userInfoUrl).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                throw (new Exception(JsonConvert.SerializeObject(response, Formatting.Indented)));
+                
+            }
+            var userInfoString = response.Content.ReadAsStringAsync().Result;
+            GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
+            Account account = await repos.Accounts.GetByEmailAsync(userInfo.Email);
+            if (account == null)
+            {
+                return null;
+            }
+            LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
+            loginInfoDto.Token = await GenerateJwtAsync(account, rememberMe);
+            return loginInfoDto;
         }
 
         public async Task<string> GenerateJwtAsync(Account logined, bool rememberMe)

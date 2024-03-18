@@ -33,6 +33,7 @@ namespace DataLayer.DbContext
         public virtual DbSet<Discussion> Discussions{ get; set; }
         public virtual DbSet<AnswerDiscussion> AnswerDiscussions { get; set; }
         public virtual DbSet<DocumentFile> DocumentFiles { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AnswerDiscussion>()

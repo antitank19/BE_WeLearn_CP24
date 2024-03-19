@@ -27,7 +27,7 @@ namespace ServiceLayer.Services.Implementation
             this.mapper = mapper;
             this.env = env;
             accounts = new AccountService(repos, mapper);
-            auth = new AuthService(repos, configuration);
+            auth = new AuthService(repos, configuration, mapper);
             groups = new GroupService(repos, mapper);
             subjects = new SubjectService(repos, mapper);
             meetings = new MeetingService(repos, mapper);
@@ -57,7 +57,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (auth is null)
                 {
-                    auth = new AuthService(repos, configuration);
+                    auth = new AuthService(repos, configuration, mapper);
                 }
                 return auth;
             }

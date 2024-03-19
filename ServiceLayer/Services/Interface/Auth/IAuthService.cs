@@ -16,13 +16,14 @@ namespace ServiceLayer.Services.Interface.Auth
         /// </summary>
         /// <param name="loginModel"></param>
         /// <returns>jwtToken: String</returns>
-        public Task<Account> LoginAsync(LoginModel loginModel);
+        public Task<LoginInfoDto> LoginAsync(LoginModel loginModel);
         /// <summary>
         /// LoginAsync by google
         /// </summary>
         /// <param name="googleIdToken"></param>
         /// <returns>jwtToken: String</returns>
-        public Task<Account> LoginWithGoogleIdToken(string googleIdToken);
+        public Task<LoginInfoDto> LoginWithGoogleIdToken(string googleIdToken, bool rememberMe);
+        public Task<LoginInfoDto> LoginWithGoogleAccessToken(string googleAccessToken, bool rememberMe);
         public Task<string> GenerateJwtAsync(Account logined, bool rememberMe = true);
         public Task Register(Account register, RoleNameEnum role);
     }

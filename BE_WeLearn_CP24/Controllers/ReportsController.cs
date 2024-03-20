@@ -1,7 +1,10 @@
-﻿using APIExtension.Validator;
+﻿using API.Extension.ClaimsPrinciple;
+using APIExtension.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.DTOs;
+using ServiceLayer.Services.Interface;
 
 namespace API.Controllers
 {
@@ -9,6 +12,13 @@ namespace API.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
+        private readonly IServiceWrapper services;
+
+        public ReportsController(IServiceWrapper services)
+        {
+            this.services = services;
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetReports()
@@ -16,7 +26,12 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                return Ok();
+                var mapped = services.Reports.GetReportList<ReportGetListDto>();
+                if(mapped == null || !mapped.Any()) { 
+                valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                return Ok(mapped);
             }
             catch (Exception ex)
             {
@@ -27,11 +42,14 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreatePost()
+        public async Task<IActionResult> CreateReport(ReportCreateDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
+                //valResult.ValidateParams(dto);
+                int reporterId = HttpContext.User.GetUserId();
+                services.Reports.CreateReport(dto, reporterId);
                 return Ok();
             }
             catch (Exception ex)

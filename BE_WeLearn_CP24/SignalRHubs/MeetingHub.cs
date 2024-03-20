@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
-using ServiceLayer.DTOs.Connection;
 
 namespace API.SignalRHub
 {

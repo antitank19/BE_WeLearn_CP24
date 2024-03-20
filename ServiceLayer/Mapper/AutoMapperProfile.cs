@@ -19,10 +19,18 @@ namespace ShareResource.Mapper
             MapSchedule(); 
             MapReview();
             MapChat();
+            MapReport();
         }
+
         ///////////////////////////
 
         //CreateMap<src, dest>
+        private void MapReport()
+        {
+            CreateMap<Report, ReportGetListDto>()
+                .PreserveReferences();
+        }
+
         private void MapAccount()
         {
             BasicMap<Account, StudentGetDto, StudentRegisterDto, AccountUpdateDto>();

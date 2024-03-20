@@ -35,7 +35,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 Name = dto.Name,
                 GroupId = dto.GroupId,
                 StartTime = DateTime.Now.TimeOfDay,
-                DaysOfWeek = "Chủ Nhật, Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy,"
+                DaysOfWeek = "Chủ Nhật, Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy"
             };
 
             Meeting meeting = mapper.Map<Meeting>(dto);

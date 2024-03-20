@@ -17,7 +17,7 @@ namespace DataLayer.DbObject
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string DaysOfWeek { get; set; }
+        public string DaysOfWeek { get; set; } = "Chủ Nhật, Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy";
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         

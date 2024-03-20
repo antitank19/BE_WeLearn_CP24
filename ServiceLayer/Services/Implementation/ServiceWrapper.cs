@@ -151,6 +151,19 @@ namespace ServiceLayer.Services.Implementation
                 return documentFiles;
             }
         }
+
+        private IReportService reports;
+        public IReportService Reports
+        {
+            get
+            {
+                if (reports is null)
+                {
+                    reports = new ReportService(repos, mapper);
+                }
+                return reports;
+            }
+        }
     }
 }
 

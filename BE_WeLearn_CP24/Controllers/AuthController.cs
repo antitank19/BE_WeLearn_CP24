@@ -49,15 +49,16 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                Account logined = await services.Auth.LoginAsync(loginModel);
+                LoginInfoDto logined = await services.Auth.LoginAsync(loginModel);
                 if (logined is null)
                 {
                     valResult.Add("Sai username hoặc password");
                     return Unauthorized(valResult);
                 }
 
-                string token = await services.Auth.GenerateJwtAsync(logined, loginModel.RememberMe);
-                return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                //string token = await services.Auth.GenerateJwtAsync(logined, loginModel.RememberMe);
+                //return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                return Ok(logined);
             }
             catch (Exception ex)
             {
@@ -82,14 +83,16 @@ namespace API.Controllers
                 {
                     idToken = HttpContext.GetGoogleIdToken();
                 }
-                Account logined = await services.Auth.LoginWithGoogleIdToken(idToken);
+                LoginInfoDto logined = await services.Auth.LoginWithGoogleIdToken(idToken, rememberMe);
                 if (logined is null)
                 {
-                    valResult.Add("Sai username hoặc password");
+                    valResult.Add("Bạn chưa đăng kí tài khoản");
                     return Unauthorized(valResult);
                 }
-                string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
-                return Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                //string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
+                //return Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                return Ok( logined);
+
             }
             catch (Exception ex)
             {
@@ -113,26 +116,28 @@ namespace API.Controllers
                 {
                     accessToken = HttpContext.GetGoogleAccessToken();
                 }
-                var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
-                var hc = new HttpClient();
-                hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = hc.GetAsync(userInfoUrl).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    valResult.Add(JsonConvert.SerializeObject(response, Formatting.Indented));
-                    return BadRequest(valResult);
-                }
-                var userInfoString = response.Content.ReadAsStringAsync().Result;
-                GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
-                Account logined = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);
+                //var userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
+                //var hc = new HttpClient();
+                //hc.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                //var response = hc.GetAsync(userInfoUrl).Result;
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    valResult.Add(JsonConvert.SerializeObject(response, Formatting.Indented));
+                //    return BadRequest(valResult);
+                //}
+                //var userInfoString = response.Content.ReadAsStringAsync().Result;
+                //GoogleUser userInfo = JsonConvert.DeserializeObject<GoogleUser>(userInfoString);
+                //Account logined = await services.Accounts.GetAccountByEmailAsync(userInfo.Email);
+                LoginInfoDto logined = await services.Auth.LoginWithGoogleAccessToken(accessToken, rememberMe);
                 if (logined is null)
                 {
                     valResult.Add("Bạn chưa đăng kí tài khoản");
                     return Unauthorized(valResult);
                 }
                 //return Ok(await services.Auth.GenerateJwtAsync(logined, rememberMe));
-                string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
-                return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                //string token = await services.Auth.GenerateJwtAsync(logined, rememberMe);
+                //return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
+                return Ok(logined);
             }
             catch (Exception ex)
             {
@@ -140,33 +145,33 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
-        public partial class GoogleUser
-        {
-            [JsonProperty("id")]
-            public string Id { get; set; }
+        //public partial class GoogleUser
+        //{
+        //    [JsonProperty("id")]
+        //    public string Id { get; set; }
 
-            [JsonProperty("email")]
-            public string Email { get; set; }
+        //    [JsonProperty("email")]
+        //    public string Email { get; set; }
 
-            [JsonProperty("verified_email")]
-            public bool VerifiedEmail { get; set; }
+        //    [JsonProperty("verified_email")]
+        //    public bool VerifiedEmail { get; set; }
 
-            [JsonProperty("name")]
-            public string Name { get; set; }
+        //    [JsonProperty("name")]
+        //    public string Name { get; set; }
 
-            [JsonProperty("given_name")]
-            public string GivenName { get; set; }
+        //    [JsonProperty("given_name")]
+        //    public string GivenName { get; set; }
 
-            [JsonProperty("family_name")]
-            public string FamilyName { get; set; }
+        //    [JsonProperty("family_name")]
+        //    public string FamilyName { get; set; }
 
-            [JsonProperty("picture")]
-            public Uri Picture { get; set; }
+        //    [JsonProperty("picture")]
+        //    public Uri Picture { get; set; }
 
-            [JsonProperty("locale")]
-            public string Locale { get; set; }
+        //    [JsonProperty("locale")]
+        //    public string Locale { get; set; }
 
-        }
+        //}
         [SwaggerOperation(
         Summary = AuthEndpoints.StudentRegister,
                 Description = AuthDescriptions.StudentRegister

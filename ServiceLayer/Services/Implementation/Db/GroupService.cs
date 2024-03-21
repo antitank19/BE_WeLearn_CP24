@@ -181,7 +181,6 @@ namespace ServiceLayer.Services.Implementation.Db
             var group = await repos.Groups.GetByIdAsync(dto.Id);
 
             //Image
-            string filePath = null;
             if(image != null && image.Length > 0)
             {
                 // Initialize FirebaseStorage instance

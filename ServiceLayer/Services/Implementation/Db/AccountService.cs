@@ -120,21 +120,24 @@ namespace ServiceLayer.Services.Implementation.Db
             string filePath;
             if (image != null && image.Length > 0)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
+                // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
 
-                filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("DocumentFiles").Child(uniqueFileName);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Upload the file to Firebase Storage
+                using (var stream = image.OpenReadStream())
                 {
-                    await image.CopyToAsync(fileStream);
+                    await fileReference.PutAsync(stream);
                 }
-                account.ImagePath = filePath;
+
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                account.ImagePath = downloadUrl;
             }
 
             await repos.Accounts.CreateAsync(account);

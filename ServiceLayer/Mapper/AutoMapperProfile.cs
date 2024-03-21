@@ -44,6 +44,22 @@ namespace ShareResource.Mapper
                 //    .Where(e => e.State == RequestStateEnum.Approved)
                 //    .Select(e => e.Student.FullName)))
                 .PreserveReferences();
+            CreateMap<Account, LoginInfoDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(
+                    src => src.Role.Name))
+                .ForMember(dest => dest.LeadGroups, opt => opt.MapFrom(
+                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Leader).Select(e => e.Group)))
+                .ForMember(dest => dest.JoinGroups, opt => opt.MapFrom(
+                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Member).Select(e => e.Group)))
+                //.ForMember(dest => dest.Parents, opt => opt.MapFrom(
+                //    src => src.SupervisionsForStudent
+                //    .Where(e => e.State == RequestStateEnum.Approved)
+                //    .Select(e => e.Parent.FullName)))
+                //.ForMember(dest => dest.Students, opt => opt.MapFrom(
+                //    src => src.SupervisionsForParent
+                //    .Where(e => e.State == RequestStateEnum.Approved)
+                //    .Select(e => e.Student.FullName)))
+                .PreserveReferences();
         }
         private void MapGroup()
         {

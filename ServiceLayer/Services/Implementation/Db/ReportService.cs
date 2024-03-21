@@ -27,13 +27,30 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public IQueryable<T> GetReportList<T>()
         {
-           var list = repos.Reports.GetList()
-                .Include(r=>r.Sender)
-                .Include(r=>r.Account)
-                .Include(r=>r.Group)
-                .Include(r=>r.File)
-                .Include(r=>r.Discussion);
-            if(list == null || !list.Any()) {
+            var list = repos.Reports.GetList()
+                 .Include(r => r.Sender)
+                 .Include(r => r.Account)
+                 .Include(r => r.Group)
+                 .Include(r => r.File)
+                 .Include(r => r.Discussion);
+            if (list == null || !list.Any())
+            {
+                return null;
+            }
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+        public IQueryable<T> GetUnresolvedReportList<T>()
+        {
+            var list = repos.Reports.GetList()
+                 .Include(r => r.Sender)
+                 .Include(r => r.Account)
+                 .Include(r => r.Group)
+                 .Include(r => r.File)
+                 .Include(r => r.Discussion)
+                 .Where(r=>r.State==RequestStateEnum.Waiting);
+            if (list == null || !list.Any())
+            {
                 return null;
             }
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);

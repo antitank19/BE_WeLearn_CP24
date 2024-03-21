@@ -19,7 +19,7 @@ namespace API.Controllers
             this.services = services;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetReports()
         {
@@ -29,6 +29,28 @@ namespace API.Controllers
                 var mapped = services.Reports.GetReportList<ReportGetListDto>();
                 if(mapped == null || !mapped.Any()) { 
                 valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        //[Authorize]
+        [HttpGet("new")]
+        public async Task<IActionResult> GetUresolvedReports()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetUnresolvedReportList<ReportGetListDto>();
+                if (mapped == null || !mapped.Any())
+                {
+                    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
                     return NotFound(valResult);
                 }
                 return Ok(mapped);

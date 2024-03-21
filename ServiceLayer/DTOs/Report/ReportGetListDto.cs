@@ -17,7 +17,7 @@ namespace ServiceLayer.DTOs
 
         //Sender
         public int SenderId { get; set; }
-        public virtual AccountProfileDto Sender { get; set; }
+        public virtual StudentGetDto Sender { get; set; }
 
         //Account
         public int? AccountId { get; set; }

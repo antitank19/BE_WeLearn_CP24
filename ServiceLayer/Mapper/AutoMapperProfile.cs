@@ -2,6 +2,7 @@
 using DataLayer.DbObject;
 using DataLayer.Enums;
 using ServiceLayer.DTOs;
+using ServiceLayer.DTOs.Discussion;
 
 namespace ShareResource.Mapper
 {
@@ -248,6 +249,11 @@ namespace ShareResource.Mapper
         {
             CreateMap<Subject, SubjectGetDto>().PreserveReferences();
             CreateMap<SubjectGetDto, Subject>().PreserveReferences();
+        }
+        private void MapDiscussion()
+        {
+            CreateMap<Discussion, DiscussionDto>().PreserveReferences();
+            CreateMap<DiscussionDto, Discussion>().PreserveReferences();
         }
         private void MapDocumentFile()
         {

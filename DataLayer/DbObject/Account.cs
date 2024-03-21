@@ -36,6 +36,8 @@ namespace DataLayer.DbObject
         public string Phone { get; set; }
         public string? Career { get; set; }
 
+        public string? ImagePath { get; set; }
+
         [Column("Dob")]
         public DateTime? DateOfBirth { get; set; }
 

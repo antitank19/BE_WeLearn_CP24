@@ -22,6 +22,7 @@ namespace RepoLayer.Implemention
             groupMembers = new GroupMemberReposity(dbContext);
             connections = new ConnectionRepository(dbContext);
             documentFiles = new DocumentFileRepository(dbContext);
+            discussions = new DiscussionRepository(dbContext);
         }
 
         private IAccountRepo users;
@@ -184,5 +185,18 @@ namespace RepoLayer.Implemention
                 return documentFiles;
             }
         }
+        private IDiscussionRepository discussions;
+        public IDiscussionRepository Discussions
+        {
+            get
+            {
+                if (discussions is null)
+                {
+                    discussions = new DiscussionRepository(dbContext);
+                }
+                return discussions;
+
+            }
+        } 
     }
 }

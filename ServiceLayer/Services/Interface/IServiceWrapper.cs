@@ -20,5 +20,6 @@ namespace ServiceLayer.Services.Interface
         public IStatService Stats { get; }
         public ISubjectService Subjects { get; }
         public IDocumentFileService Documents { get; }
+        public IDiscussionService Discussions { get; }
     }
 }

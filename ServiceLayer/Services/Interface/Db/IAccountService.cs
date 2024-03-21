@@ -1,4 +1,5 @@
 ﻿using DataLayer.DbObject;
+using Microsoft.AspNetCore.Http;
 using ServiceLayer.DTOs;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace ServiceLayer.Services.Interface.Db
         /// <param name="account"></param>
         /// <param name="creatorId">id of creator account id</param>
         /// <returns></returns>
-        public Task CreateAsync(Account account);
-        public Task UpdateAsync(AccountUpdateDto account);
+        public Task CreateAsync(Account account, IFormFile? image);
+        public Task UpdateAsync(AccountUpdateDto account, IFormFile? image);
         public Task UpdatePasswordAsync(AccountChangePasswordDto dto);
         public Task RemoveAsync(int id);
         public Task<Account> GetAccountByUserNameAsync(string userName);

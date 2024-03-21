@@ -11,26 +11,21 @@ using System.Threading.Tasks;
 
 namespace RepoLayer.Implement
 {
-    public class DocumentFileRepository : BaseRepo<DocumentFile>, IDocumentFileReposity
+    public class DiscussionRepository : BaseRepo<Discussion>, IDiscussionRepository
     {
         private readonly WeLearnContext dbContext;
 
-        public DocumentFileRepository(WeLearnContext dbContext) : base(dbContext)
+        public DiscussionRepository(WeLearnContext dbContext) : base(dbContext)
         {
             this.dbContext = dbContext;
         }
-
-        public async Task<List<DocumentFile>> GetDocumentFilesByGroupId(int groupId)
+        public async Task<List<Discussion>> GetDocumentFilesByGroupId(int groupId)
         {
-            return await dbContext.DocumentFiles
+            return await dbContext.Discussions
                 .Include(e => e.Account)
                 .Include(e => e.Group)
+                .Include(e => e.AnswerDiscussion)
                 .Where(x => x.GroupId == groupId).ToListAsync();
-        }
-
-        public Task ApproveRejectAsync(DocumentFile entity)
-        {
-            return base.UpdateAsync(entity);
         }
     }
 }

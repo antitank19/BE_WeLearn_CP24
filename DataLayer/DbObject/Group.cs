@@ -12,6 +12,7 @@ namespace DataLayer.DbObject
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string? ImagePath { get; set; }
 
         #region Group Member
         public virtual ICollection<GroupMember> GroupMembers { get; set; } = new Collection<GroupMember>();

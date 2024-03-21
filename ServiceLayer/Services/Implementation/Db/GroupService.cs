@@ -8,6 +8,10 @@ using DataLayer.Enums;
 using DataLayer.DbObject;
 using ServiceLayer.Utils;
 using ServiceLayer.Services.Interface.Db;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Firebase.Storage;
+using System.Security.Principal;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -15,11 +19,13 @@ namespace ServiceLayer.Services.Implementation.Db
     {
         private IRepoWrapper repos;
         private readonly IMapper mapper;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public GroupService(IRepoWrapper repos, IMapper mapper)
+        public GroupService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.repos = repos;
             this.mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IQueryable<T> GetList<T>()
         {
@@ -124,14 +130,39 @@ namespace ServiceLayer.Services.Implementation.Db
         }
 
 
-        public async Task CreateAsync(GroupCreateDto dto, int creatorId)
+        public async Task CreateAsync(GroupCreateDto dto, int creatorId, IFormFile? image)
         {
+            string filePath = null;
+            if (image != null && image.Length > 0)
+            {
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+
+                // Generate a unique file name
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("DocumentFiles").Child(uniqueFileName);
+
+                // Upload the file to Firebase Storage
+                using (var stream = image.OpenReadStream())
+                {
+                    await fileReference.PutAsync(stream);
+                }
+
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                filePath = downloadUrl;
+            }
+
             Group entity = mapper.Map<Group>(dto);
             entity.GroupMembers.Add(new GroupMember
             {
                 AccountId = creatorId,
                 MemberRole = GroupMemberRole.Leader
             });
+            entity.ImagePath = filePath;
+
             await repos.Groups.CreateAsync(entity);
         }
 
@@ -145,9 +176,34 @@ namespace ServiceLayer.Services.Implementation.Db
         //    await repos.Groups.UpdateAsync(entity);
         //}
 
-        public async Task UpdateAsync(GroupUpdateDto dto)
+        public async Task UpdateAsync(GroupUpdateDto dto, IFormFile? image)
         {
             var group = await repos.Groups.GetByIdAsync(dto.Id);
+
+            //Image
+            string filePath = null;
+            if(image != null && image.Length > 0)
+            {
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+
+                // Generate a unique file name
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("DocumentFiles").Child(uniqueFileName);
+
+                // Upload the file to Firebase Storage
+                using (var stream = image.OpenReadStream())
+                {
+                    await fileReference.PutAsync(stream);
+                }
+
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                group.ImagePath = downloadUrl;
+            }
+
             //Remove subject, nếu dto ko có thì sẽ loại
             group.PatchUpdate(dto);
             List<GroupSubject> groupSubjects = group.GroupSubjects.ToList();

@@ -246,7 +246,7 @@ namespace API.Controllers
        )]
         [Authorize(Roles = Actor.Student)]
         [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup(GroupCreateDto dto)
+        public async Task<ActionResult<Group>> CreateGroup(GroupCreateDto dto, IFormFile? image)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
@@ -258,7 +258,7 @@ namespace API.Controllers
                     return BadRequest(valResult);
                 }
                 //Group group = mapper.Map<Group>(dto);
-                await services.Groups.CreateAsync(dto, creatorId);
+                await services.Groups.CreateAsync(dto, creatorId, image);
 
                 return Ok();
             }
@@ -276,7 +276,7 @@ namespace API.Controllers
         )]
         [Authorize(Roles = Actor.Student)]
         [HttpPut("{groupId}")]
-        public async Task<IActionResult> UpdateGroup(int groupId, GroupUpdateDto dto)
+        public async Task<IActionResult> UpdateGroup(int groupId, GroupUpdateDto dto, IFormFile image)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
@@ -309,8 +309,7 @@ namespace API.Controllers
                 }
                 try
                 {
-
-                    await services.Groups.UpdateAsync(dto);
+                    await services.Groups.UpdateAsync(dto, image);
                     //var mapped = mapper.Map<GroupDetailForLeaderGetDto>(group);
                     return Ok();
                 }

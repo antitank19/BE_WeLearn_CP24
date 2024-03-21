@@ -135,6 +135,13 @@ namespace ServiceLayer.DbSeeding
                 }
                 #endregion
 
+                #region seed Report
+                if (!context.Reports.Any())
+                {
+                    context.Reports.AddRange(DbSeed.Reports);
+                }
+                #endregion
+
                 context.SaveChanges();
             }
         }

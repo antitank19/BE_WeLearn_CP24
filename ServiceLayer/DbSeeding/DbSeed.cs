@@ -948,5 +948,40 @@ namespace ServiceLayer.DbSeeding
             }
 
         };
+        public static Report[] Reports = new Report[] 
+        { 
+            new Report
+            {
+                Id = 1,
+                Detail = "Tên không phù hợp", 
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+             new Report
+            {
+                Id = 2,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                GroupId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+            //  new Report
+            //{
+            //    Id = 3, 
+            //    Detail = "Nội dung không phù hợp",
+            //    SenderId = 1,
+            //    DiscussionId = 2,
+            //    State= RequestStateEnum.Waiting,
+            //},
+            //   new Report
+            //{
+            //    Id = 4,
+            //    Detail = "Nội dung không phù hợp",
+            //    SenderId = 1,
+            //    FileId = 2,
+            //    State= RequestStateEnum.Waiting,
+            //},
+        };
     }
 }

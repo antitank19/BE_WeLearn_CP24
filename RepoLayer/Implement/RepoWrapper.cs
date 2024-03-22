@@ -22,6 +22,7 @@ namespace RepoLayer.Implemention
             groupMembers = new GroupMemberReposity(dbContext);
             connections = new ConnectionRepository(dbContext);
             documentFiles = new DocumentFileRepository(dbContext);
+            reports = new ReportRepository(dbContext);
             discussions = new DiscussionRepository(dbContext);
         }
 
@@ -132,7 +133,7 @@ namespace RepoLayer.Implemention
 
         }
 
-        private IConnectionRepository connections; 
+        private IConnectionRepository connections;
         public IConnectionRepository Connections
         {
             get
@@ -184,6 +185,20 @@ namespace RepoLayer.Implemention
                 }
                 return documentFiles;
             }
+        }
+
+        private IReportRepository reports;
+        public IReportRepository Reports
+        {
+            get
+            {
+                if (reports is null)
+                {
+                    reports = new ReportRepository(dbContext);
+                }
+                return reports;
+            }
+
         }
         private IDiscussionRepository discussions;
         public IDiscussionRepository Discussions

@@ -50,7 +50,7 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> SearchStudent(string search, int? groupId)
         {
-            ValidatorResult valResutl = new ValidatorResult();
+            ValidatorResult valResult = new ValidatorResult();
             try
             {
                 bool isParent = HttpContext.User.IsInRole(Actor.Parent);
@@ -67,8 +67,8 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                valResutl.Add(ex.ToString());
-                return BadRequest(valResutl);
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
             }
         }
 

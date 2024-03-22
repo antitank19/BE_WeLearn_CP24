@@ -2,7 +2,7 @@
 using API.SignalRHub.Tracker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using ServiceLayer.DTOs.Connection;
+using ServiceLayer.DTOs;
 
 namespace API.SignalRHub
 {

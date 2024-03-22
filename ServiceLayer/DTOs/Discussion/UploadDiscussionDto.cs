@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.DTOs.Discussion
+namespace ServiceLayer.DTOs
 {
     public class UploadDiscussionDto
     {

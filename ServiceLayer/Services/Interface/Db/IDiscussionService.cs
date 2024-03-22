@@ -1,6 +1,6 @@
 ﻿using DataLayer.DbObject;
 using Microsoft.AspNetCore.Http;
-using ServiceLayer.DTOs.Discussion;
+using ServiceLayer.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

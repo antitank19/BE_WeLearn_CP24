@@ -1,7 +1,7 @@
 ﻿using APIExtension.Validator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ServiceLayer.DTOs.Discussion;
+using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
 
 namespace API.Controllers

@@ -163,42 +163,62 @@ namespace ServiceLayer.DbSeeding
             new Subject
             {
                 Id = 1,
-                Name = "Toán"
+                Name = "Back end"
             },
             new Subject
             {
                 Id = 2,
-                Name = "Lí"
+                Name = "Front end"
             },
             new Subject
             {
                 Id = 3,
-                Name = "Hóa"
+                Name = "Mobile"
             },
             new Subject
             {
                 Id = 4,
-                Name = "Văn"
+                Name = "C"
             },
             new Subject
             {
                 Id = 5,
-                Name = "Sử"
+                Name = "C++"
             },
             new Subject
             {
                 Id = 6,
-                Name = "Địa"
+                Name = "C#"
             },
             new Subject
             {
                 Id = 7,
-                Name = "Sinh"
+                Name = "Java"
             },
             new Subject
             {
                 Id = 8,
-                Name = "Anh"
+                Name = "Python"
+            } ,
+            new Subject
+            {
+                Id = 9,
+                Name = "Node Js"
+            }   ,
+             new Subject
+            {
+                Id = 10,
+                Name = "Js"
+            },
+              new Subject
+            {
+                Id = 11,
+                Name = "React"
+            },
+               new Subject
+            {
+                Id = 12,
+                Name = "Flutter"
             }
         };
         public static Group[] Groups = new Group[]
@@ -206,32 +226,32 @@ namespace ServiceLayer.DbSeeding
             new Group
             {
                 Id = 1,
-                Name = "Ôn thi đại học",
+                Name = "BE toàn tập",
             },
             new Group
             {
                 Id = 2,
-                Name = "Khối A1",
+                Name = "Thánh gánh tem",
             } ,
             new Group
             {
                 Id = 3,
-                Name = "Lớp 12A4",
+                Name = "Fullstack",
             } ,
             new Group
             {
                 Id = 4,
-                Name = "Chuẩn bị thi ĐH",
+                Name = "Thiết kế web đẹp",
             },
             new Group
             {
                 Id = 5,
-                Name = "AE 12A1",
+                Name = "Design web",
             },
             new Group
             {
                 Id = 6,
-                Name = "10A4",
+                Name = "Design mobile",
             },
         };
         public static GroupMember[] GroupMembers = new GroupMember[]
@@ -445,19 +465,19 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 1,
                 GroupId = 1,
-                SubjectId = (int)SubjectEnum.Toan
+                SubjectId = (int)SubjectEnum.BE
             },
             new GroupSubject
             {
                 Id = 2,
                 GroupId = 1,
-                SubjectId = (int)SubjectEnum.Van
+                SubjectId = (int)SubjectEnum.CPlusPlus
             },
             new GroupSubject
             {
                 Id = 3,
                 GroupId = 1,
-                SubjectId = (int)SubjectEnum.Anh
+                SubjectId = (int)SubjectEnum.CSharp
             },
             #endregion
             #region Subject group 2
@@ -948,12 +968,12 @@ namespace ServiceLayer.DbSeeding
             }
 
         };
-        public static Report[] Reports = new Report[] 
-        { 
+        public static Report[] Reports = new Report[]
+        {
             new Report
             {
                 Id = 1,
-                Detail = "Tên không phù hợp", 
+                Detail = "Tên không phù hợp",
                 SenderId = 1,
                 AccountId = 2,
                 State= RequestStateEnum.Waiting,

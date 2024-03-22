@@ -8,13 +8,25 @@ namespace DataLayer.Enums
 {
     public enum SubjectEnum: int
     {
-        Toan = 1,
-        Li,
-        Hoa,
-        Van,
-        Su,
-        Dia,
-        Sinh,
-        Anh,
+        //Toan = 1,
+        //Li,
+        //Hoa,
+        //Van,
+        //Su,
+        //Dia,
+        //Sinh,
+        //Anh,
+        BE = 1,
+        FE,
+        MO,
+        C,
+        CPlusPlus,
+        CSharp,
+        Java,
+        Python,
+        NodeJs,
+        Js,
+        React,
+        Flutter
     }
 }

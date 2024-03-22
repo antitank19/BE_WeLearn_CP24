@@ -111,7 +111,7 @@ namespace API.Controllers
         )]
         [Authorize(Roles = "Student, Parent")]
         [HttpPut("{accountId}")]
-        public async Task<IActionResult> UpdateProfile(int accountId, AccountUpdateDto dto)
+        public async Task<IActionResult> UpdateProfile(int accountId, AccountUpdateDto dto, IFormFile? image)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
@@ -141,7 +141,7 @@ namespace API.Controllers
                 }
                 try
                 {
-                    await services.Accounts.UpdateAsync(dto);
+                    await services.Accounts.UpdateAsync(dto, image);
                     return Ok();
                 }
                 catch (Exception ex)

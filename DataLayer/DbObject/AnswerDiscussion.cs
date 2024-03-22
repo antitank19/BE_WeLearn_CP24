@@ -22,6 +22,8 @@ namespace DataLayer.DbObject
         public int DiscussionId { get; set; }
         public virtual Discussion Discussion { get; set; }
 
-        public string Content { get; set; }
+        public string? Content { get; set; }
+        public DateTime CreateAt { get; set; }
+        public string? FilePath { get; set; }
     }
 }

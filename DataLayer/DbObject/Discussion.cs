@@ -24,7 +24,10 @@ namespace DataLayer.DbObject
         public int GroupId { get; set; }
         public virtual Group Group { get; set; }
 
-        public string Question { get; set; }
+        public string? Question { get; set; }
+        public string? Content { get; set; }
+        public DateTime CreateAt { get; set; }
+        public string? FilePath { get; set; }
         public ICollection<AnswerDiscussion> AnswerDiscussion { get; set; } = new Collection<AnswerDiscussion>();
     }
 }

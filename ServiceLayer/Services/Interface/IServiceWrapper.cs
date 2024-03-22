@@ -21,5 +21,6 @@ namespace ServiceLayer.Services.Interface
         public ISubjectService Subjects { get; }
         public IDocumentFileService Documents { get; }
         public IReportService Reports { get; }
+        public IDiscussionService Discussions { get; }
     }
 }

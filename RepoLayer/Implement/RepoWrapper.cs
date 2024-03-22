@@ -23,6 +23,7 @@ namespace RepoLayer.Implemention
             connections = new ConnectionRepository(dbContext);
             documentFiles = new DocumentFileRepository(dbContext);
             reports = new ReportRepository(dbContext);
+            discussions = new DiscussionRepository(dbContext);
         }
 
         private IAccountRepo users;
@@ -199,5 +200,18 @@ namespace RepoLayer.Implemention
             }
 
         }
+        private IDiscussionRepository discussions;
+        public IDiscussionRepository Discussions
+        {
+            get
+            {
+                if (discussions is null)
+                {
+                    discussions = new DiscussionRepository(dbContext);
+                }
+                return discussions;
+
+            }
+        } 
     }
 }

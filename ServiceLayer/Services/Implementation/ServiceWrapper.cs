@@ -26,9 +26,9 @@ namespace ServiceLayer.Services.Implementation
             this.configuration = configuration;
             this.mapper = mapper;
             this.env = env;
-            accounts = new AccountService(repos, mapper);
+            accounts = new AccountService(repos, mapper, env);
             auth = new AuthService(repos, configuration, mapper);
-            groups = new GroupService(repos, mapper);
+            groups = new GroupService(repos, mapper, env);
             subjects = new SubjectService(repos, mapper);
             meetings = new MeetingService(repos, mapper);
             groupMembers = new GroupMemberSerivce(repos, mapper);
@@ -44,7 +44,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (accounts is null)
                 {
-                    accounts = new AccountService(repos, mapper);
+                    accounts = new AccountService(repos, mapper, env);
                 }
                 return accounts;
             }
@@ -70,7 +70,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (groups is null)
                 {
-                    groups = new GroupService(repos, mapper);
+                    groups = new GroupService(repos, mapper, env);
                 }
                 return groups;
             }
@@ -162,6 +162,16 @@ namespace ServiceLayer.Services.Implementation
                     reports = new ReportService(repos, mapper);
                 }
                 return reports;
+        private IDiscussionService discussions;
+        public IDiscussionService Discussions
+        {
+            get
+            {
+                if (discussions is null)
+                {
+                    discussions = new DiscussionService(repos, mapper, env);
+                }
+                return discussions;
             }
         }
     }

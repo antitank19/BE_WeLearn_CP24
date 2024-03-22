@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.DbObject;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -41,29 +42,35 @@ public class DocumentFileService : IDocumentFileService
     {
         if (fileUpload != null && fileUpload.Length > 0)
         {
-            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "DocumentFiles");
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
-            }
+            // Initialize FirebaseStorage instance
+            var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
+            // Generate a unique file name
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileUpload.FileName;
 
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            // Get reference to the file in Firebase Storage
+            var fileReference = firebaseStorage.Child("DocumentFiles").Child(uniqueFileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            // Upload the file to Firebase Storage
+            using (var stream = fileUpload.OpenReadStream())
             {
-                await fileUpload.CopyToAsync(fileStream);
+                await fileReference.PutAsync(stream);
             }
+
+            // Get the download URL of the uploaded file
+            string downloadUrl = await fileReference.GetDownloadUrlAsync();
+
+            // Update the discussion entity with the download URL
+
             DocumentFile file = new DocumentFile();
-            file.HttpLink = filePath;
+            file.HttpLink = downloadUrl;
             file.Approved = false;
             file.GroupId = groupId;
             file.AccountId = accountId;
             file.CreatedDate = DateTime.UtcNow;
 
             await repos.DocumentFiles.CreateAsync(file);
-
         }
+
     }
 }

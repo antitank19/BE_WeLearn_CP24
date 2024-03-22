@@ -4,7 +4,7 @@ using Firebase.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using RepoLayer.Interface;
-using ServiceLayer.DTOs.Discussion;
+using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
 using ServiceLayer.Utils;
 

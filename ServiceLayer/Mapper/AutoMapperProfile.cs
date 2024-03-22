@@ -2,7 +2,7 @@
 using DataLayer.DbObject;
 using DataLayer.Enums;
 using ServiceLayer.DTOs;
-using ServiceLayer.DTOs.Discussion;
+using ServiceLayer.DTOs;
 
 namespace ShareResource.Mapper
 {

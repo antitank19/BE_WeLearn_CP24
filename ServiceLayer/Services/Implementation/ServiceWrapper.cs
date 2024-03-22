@@ -162,6 +162,8 @@ namespace ServiceLayer.Services.Implementation
                     reports = new ReportService(repos, mapper);
                 }
                 return reports;
+            }
+        }
         private IDiscussionService discussions;
         public IDiscussionService Discussions
         {

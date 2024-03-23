@@ -174,6 +174,19 @@ namespace RepoLayer.Implemention
             }
 
         }
+        private IReviewDetailRepository reviewDetails;
+        public IReviewDetailRepository ReviewDetails
+        {
+            get
+            {
+                if (reviewDetails is null)
+                {
+                    reviewDetails = new ReviewDetailRepository(dbContext);
+                }
+                return reviewDetails;
+            }
+
+        }
         private IDocumentFileReposity documentFiles;
         public IDocumentFileReposity DocumentFiles
         {

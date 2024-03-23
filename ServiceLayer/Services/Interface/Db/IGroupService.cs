@@ -18,9 +18,9 @@ namespace ServiceLayer.Services.Interface.Db
         /// <param name="group"></param>
         /// <param name="creatorId">id of creator account id</param>
         /// <returns></returns>
-        public Task CreateAsync(GroupCreateDto dto, int creatorId, IFormFile? image);
+        public Task CreateAsync(GroupCreateDto dto, int creatorId);
         //public Task UpdateAsync(Group group);
-        public Task UpdateAsync(GroupUpdateDto dto, IFormFile? image);
+        public Task UpdateAsync(GroupUpdateDto dto);
         /// <summary>
         /// DO NOT USE
         /// </summary>

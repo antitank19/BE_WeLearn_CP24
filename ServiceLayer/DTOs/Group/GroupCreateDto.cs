@@ -17,7 +17,7 @@ namespace ServiceLayer.DTOs
             get { return name.Trim(); }
             set { name = value.Trim(); }
         }
-
+        public IFormFile? Image { get; set; }
         //public int ClassId { get; set; }
         public virtual ICollection<SubjectEnum> SubjectIds { get; set; }
 

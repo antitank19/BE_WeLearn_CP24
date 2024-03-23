@@ -127,7 +127,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
 
                 // Get reference to the file in Firebase Storage
-                var fileReference = firebaseStorage.Child("DocumentFiles").Child(uniqueFileName);
+                var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
 
                 // Upload the file to Firebase Storage
                 using (var stream = image.OpenReadStream())
@@ -148,24 +148,24 @@ namespace ServiceLayer.Services.Implementation.Db
             await repos.Accounts.RemoveAsync(id);
         }
 
-        public async Task UpdateAsync(AccountUpdateDto dto, IFormFile? image)
+        public async Task UpdateAsync(AccountUpdateDto dto)
         {
             string filePath;
             Account account = await repos.Accounts.GetByIdAsync(dto.Id);
             //Image
-            if (image != null && image.Length > 0)
+            if (dto.Image != null && dto.Image.Length > 0)
             {
                 // Initialize FirebaseStorage instance
                 var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
                 // Generate a unique file name
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
 
                 // Get reference to the file in Firebase Storage
-                var fileReference = firebaseStorage.Child("DocumentFiles").Child(uniqueFileName);
+                var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
 
                 // Upload the file to Firebase Storage
-                using (var stream = image.OpenReadStream())
+                using (var stream = dto.Image.OpenReadStream())
                 {
                     await fileReference.PutAsync(stream);
                 }

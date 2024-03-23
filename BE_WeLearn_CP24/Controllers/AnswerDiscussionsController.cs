@@ -6,13 +6,13 @@ using ServiceLayer.Services.Interface;
 
 namespace API.Controllers
 {
-    public class DiscussionsController : Controller
+    public class AnswerDiscussionsController : Controller
     {
         private readonly IServiceWrapper services;
         //private readonly IMapper mapper;
         //private readonly IValidatorWrapper validators;
 
-        public DiscussionsController(
+        public AnswerDiscussionsController(
             //IValidatorWrapper validators,
             IServiceWrapper services
         )
@@ -21,13 +21,13 @@ namespace API.Controllers
             //this.validators = validators;
         }
 
-        [HttpGet("api/Discussion/Get")]
-        public async Task<IActionResult> GetDiscussionInGroup(int groupId)
+        [HttpGet("api/AnswerDiscussion/Get")]
+        public async Task<IActionResult> GetAnswerDiscussionByDiscussionId(int discussionId)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var discussions = await services.Discussions.GetDocumentFilesByGroupId(groupId);
+                var discussions = await services.AnswersDiscussions.GetAnswerDiscussionByDiscussionId(discussionId);
                 return Ok(discussions);
             }
             catch (Exception ex)
@@ -37,14 +37,13 @@ namespace API.Controllers
             }
         }
 
-
-        [HttpPost("api/Discussion/Upload")]
-        public async Task<IActionResult> UploadDiscussion(int accountId, int groupId, UploadDiscussionDto dto)
+        [HttpPost("api/AnswerDiscussion/Upload")]
+        public async Task<IActionResult> UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.Discussions.UploadDiscussion(accountId, groupId, dto);
+                await services.AnswersDiscussions.UploadAnswerDiscussion(accountId, discussionId, dto);
                 return Ok();
             }
             catch (Exception ex)
@@ -54,13 +53,13 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("api/Discussion/Update")]
-        public async Task<IActionResult> UpdateDiscussion(int discussionId, UploadDiscussionDto dto)
+        [HttpPut("api/AnswerDiscussion/Update")]
+        public async Task<IActionResult> UpdateAnswerDiscussion(int discussionId, UploadAnswerDiscussionDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
-            {
-                await services.Discussions.UdateDiscussion(discussionId, dto);
+            { 
+                await services.AnswersDiscussions.UpdateAnswerDiscussion(discussionId, dto);
                 return Ok();
             }
             catch (Exception ex)

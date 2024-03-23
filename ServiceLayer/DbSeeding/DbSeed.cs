@@ -485,19 +485,19 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 4,
                 GroupId = 2,
-                SubjectId = (int)SubjectEnum.Toan
+                SubjectId = (int)SubjectEnum.BE
             },
             new GroupSubject
             {
                 Id = 5,
                 GroupId = 2,
-                SubjectId = (int)SubjectEnum.Li
+                SubjectId = (int)SubjectEnum.FE
             },
             new GroupSubject
             {
                 Id = 6,
                 GroupId = 2,
-                SubjectId = (int)SubjectEnum.Hoa
+                SubjectId = (int)SubjectEnum.MO
             } ,
             #endregion
             #region Subject group 3
@@ -505,13 +505,13 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 7,
                 GroupId = 3,
-                SubjectId = (int)SubjectEnum.Su
+                SubjectId = (int)SubjectEnum.BE
             },
             new GroupSubject
             {
                 Id = 8,
                 GroupId = 3,
-                SubjectId = (int)SubjectEnum.Dia
+                SubjectId = (int)SubjectEnum.FE
             },
             #endregion
             #region Subject group 4
@@ -519,30 +519,36 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 9,
                 GroupId = 4,
-                SubjectId = (int)SubjectEnum.Su
+                SubjectId = (int)SubjectEnum.FE
+            },
+            new GroupSubject
+            {
+                Id = 10,
+                GroupId = 5,
+                SubjectId = (int)SubjectEnum.React
             },
             #endregion
             #region Subject group 5
             new GroupSubject
             {
-                Id = 10,
+                Id = 11,
                 GroupId = 5,
-                SubjectId = (int)SubjectEnum.Su
+                SubjectId = (int)SubjectEnum.React
             },
             #endregion
             #region Subject group 6
             new GroupSubject
             {
-                Id = 11,
+                Id = 12,
                 GroupId = 6,
-                SubjectId = (int)SubjectEnum.Su
+                SubjectId = (int)SubjectEnum.MO
             },
             #endregion
             new GroupSubject
             {
-                Id = 12,
-                GroupId = 1,
-                SubjectId = (int)SubjectEnum.Li
+                Id = 13,
+                GroupId = 6,
+                SubjectId = (int)SubjectEnum.Flutter
             },
         };
         public static Meeting[] Meetings = new Meeting[]

@@ -30,6 +30,14 @@ namespace ShareResource.Mapper
         {
             CreateMap<Report, ReportGetListDto>()
                 .PreserveReferences();
+            CreateMap<Account, ReportedAccountDto>()
+               .PreserveReferences();
+            CreateMap<Group, ReportedGroupDto>()
+               .PreserveReferences();
+            CreateMap<Discussion, ReportedDiscussionDto>()
+               .PreserveReferences();
+            CreateMap<DocumentFile, ReportedFileDto>()
+               .PreserveReferences();
         }
 
         private void MapAccount()

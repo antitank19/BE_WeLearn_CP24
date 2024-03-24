@@ -66,12 +66,12 @@ namespace API.Controllers
 
         //[Authorize]
         [HttpGet("Account")]
-        public async Task<IActionResult> GetUresolvedReportedAccount()
+        public async Task<IActionResult> GetReportedAccount()
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var mapped = services.Reports.GetReportedAccountList<Account>();
+                var mapped = services.Reports.GetReportedAccountList<ReportedAccountDto>();
                 if (mapped == null || !mapped.Any())
                 {
                     valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
@@ -88,12 +88,12 @@ namespace API.Controllers
 
         //[Authorize]
         [HttpGet("Group")]
-        public async Task<IActionResult> GetUresolvedReportedGroup()
+        public async Task<IActionResult> GetReportedGroup()
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var mapped = services.Reports.GetReportedAccountList<Group>();
+                var mapped = services.Reports.GetReportedGroupList<ReportedGroupDto>();
                 if (mapped == null || !mapped.Any())
                 {
                     valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
@@ -110,12 +110,12 @@ namespace API.Controllers
 
         //[Authorize]
         [HttpGet("Discussion")]
-        public async Task<IActionResult> GetUresolvedReportedDiscussion()
+        public async Task<IActionResult> GetReportedDiscussion()
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var mapped = services.Reports.GetReportedAccountList<Discussion>();
+                var mapped = services.Reports.GetReportedDiscussionList<ReportedDiscussionDto>();
                 if (mapped == null || !mapped.Any())
                 {
                     valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
@@ -132,12 +132,12 @@ namespace API.Controllers
 
         //[Authorize]
         [HttpGet("File")]
-        public async Task<IActionResult> GetUresolvedReportedFile()
+        public async Task<IActionResult> GetReportedFile()
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var mapped = services.Reports.GetReportedAccountList<DocumentFile>();
+                var mapped = services.Reports.GetReportedFileList<ReportedFileDto>();
                 if (mapped == null || !mapped.Any())
                 {
                     valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);

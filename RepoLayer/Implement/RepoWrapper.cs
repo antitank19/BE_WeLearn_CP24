@@ -225,6 +225,20 @@ namespace RepoLayer.Implemention
                 return discussions;
 
             }
-        } 
+        }
+        private IAnswerDiscussionRepository answerDiscussions;
+        public IAnswerDiscussionRepository AnswerDiscussions
+        {
+            get
+            {
+                if (answerDiscussions is null)
+                {
+                    answerDiscussions = new AnswerDiscussionRepository(dbContext);
+                }
+                return answerDiscussions;
+
+            }
+        }
+
     }
 }

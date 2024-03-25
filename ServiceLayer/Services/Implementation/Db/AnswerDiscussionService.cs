@@ -7,52 +7,49 @@ using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
 using ServiceLayer.Utils;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
-    public class DiscussionService : IDiscussionService
+    internal class AnswerDiscussionService : IAnswerDiscussionService
     {
         private IRepoWrapper _repos;
         private IMapper _mapper;
         private IWebHostEnvironment _webHostEnvironment;
 
-        public DiscussionService(IRepoWrapper repoWrapper, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public AnswerDiscussionService(IRepoWrapper repoWrapper, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _mapper = mapper;
             _repos = repoWrapper;
             _webHostEnvironment = webHostEnvironment;
         }
-        public async Task<List<DiscussionDto>> GetDocumentFilesByGroupId(int groupId)
+
+        public Task<List<AnswerDiscussion>> GetAnswerDiscussionByDiscussionId(int discussionId)
         {
-            var discussion = await _repos.Discussions.GetDocumentFilesByGroupId(groupId);
-            var mapper = _mapper.Map<List<DiscussionDto>>(discussion);
-            return mapper;
+            throw new NotImplementedException();
         }
 
-        public async Task UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto)
+        public async Task UpdateAnswerDiscussion(int answeDiscussionId, UploadAnswerDiscussionDto answerDiscussionDto)
         {
-            var discussion = await _repos.Discussions.GetByIdAsync(discussionId);
-                      
-            if (discussionDto.File != null && discussionDto.File.Length > 0)
+            var answerDiscussion = await _repos.AnswerDiscussions.GetByIdAsync(answeDiscussionId);
+
+            if (answerDiscussionDto.File != null && answerDiscussionDto.File.Length > 0)
             {
                 // Initialize FirebaseStorage instance
                 var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
                 // Generate a unique file name
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + discussionDto.File.FileName;
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + answerDiscussionDto.File.FileName;
 
                 // Get reference to the file in Firebase Storage
                 var fileReference = firebaseStorage.Child("DiscussionFiles").Child(uniqueFileName);
 
                 // Upload the file to Firebase Storage
-                using (var stream = discussionDto.File.OpenReadStream())
+                using (var stream = answerDiscussionDto.File.OpenReadStream())
                 {
                     await fileReference.PutAsync(stream);
                 }
@@ -61,22 +58,22 @@ namespace ServiceLayer.Services.Implementation.Db
                 string downloadUrl = await fileReference.GetDownloadUrlAsync();
 
                 // Update the discussion entity with the download URL
-                discussion.FilePath = downloadUrl;
+                answerDiscussion.FilePath = downloadUrl;
             }
 
-            discussion.PatchUpdate(discussionDto);
+            answerDiscussion.PatchUpdate(answerDiscussionDto);
 
-            await _repos.Discussions.UpdateAsync(discussion);
+            await _repos.AnswerDiscussions.UpdateAsync(answerDiscussion);
         }
 
-        public async Task UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto)
+        public async Task UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto)
         {
             string filePath;
-            Discussion discussion = _mapper.Map<Discussion>(discussionDto);
-            discussion.GroupId = groupId;
+            AnswerDiscussion discussion = _mapper.Map<AnswerDiscussion>(answerDiscussionDto);
+            discussion.DiscussionId = discussionId;
             discussion.AccountId = accountId;
 
-            if (discussionDto.File != null && discussionDto.File.Length > 0)
+            if (answerDiscussionDto.File != null && answerDiscussionDto.File.Length > 0)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "DiscussionFiles");
                 if (!Directory.Exists(uploadsFolder))
@@ -84,19 +81,19 @@ namespace ServiceLayer.Services.Implementation.Db
                     Directory.CreateDirectory(uploadsFolder);
                 }
 
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + discussionDto.File.FileName;
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + answerDiscussionDto.File.FileName;
 
                 filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await discussionDto.File.CopyToAsync(fileStream);
+                    await answerDiscussionDto.File.CopyToAsync(fileStream);
                 }
                 discussion.FilePath = filePath;
 
             }
 
-            await _repos.Discussions.CreateAsync(discussion);
+            await _repos.AnswerDiscussions.CreateAsync(discussion);
         }
     }
 }

@@ -176,6 +176,18 @@ namespace ServiceLayer.Services.Implementation
                 return discussions;
             }
         }
+        private IAnswerDiscussionService answersDiscussions;
+        public IAnswerDiscussionService AnswersDiscussions
+        {
+            get
+            {
+                if (answersDiscussions is null)
+                {
+                    answersDiscussions = new AnswerDiscussionService(repos, mapper, env);
+                }
+                return answersDiscussions;
+            }
+        }
     }
 }
 

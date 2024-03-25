@@ -25,5 +25,6 @@ namespace RepoLayer.Interface
         public IDocumentFileReposity DocumentFiles { get; }
         public IReportRepository Reports { get; }
         public IDiscussionRepository Discussions { get; }
+        public IAnswerDiscussionRepository AnswerDiscussions { get; }
     }
 }

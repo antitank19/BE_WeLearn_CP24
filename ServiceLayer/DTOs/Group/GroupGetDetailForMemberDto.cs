@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace ServiceLayer.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public IFormFile? Image { get; set; }
+
         //public int ClassId { get; set; }
 
         public ICollection<StudentGetDto> Members { get; set; }

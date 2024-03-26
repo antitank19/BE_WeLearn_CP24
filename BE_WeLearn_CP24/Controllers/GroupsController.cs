@@ -137,27 +137,72 @@ namespace API.Controllers
         [HttpGet("Member/{groupId}")]
         public async Task<IActionResult> GetGroupDetailForMember(int groupId)
         {
-            ValidatorResult valResult=new ValidatorResult();
+            //ValidatorResult valResult=new ValidatorResult();
+            //try
+            //{
+            //    int studentId = HttpContext.User.GetUserId();
+            //    bool isLeader = await services.Groups.IsStudentMemberGroupAsync(studentId, groupId);
+            //    if (!isLeader)
+            //    {
+            //        return Unauthorized("Bạn không phải là thành viên nhóm này");
+            //    }
+            //    //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
+            //    GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
+
+            //    if (group == null)
+            //    {
+            //        valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+            //        return NotFound(valResult);
+            //    }
+            //    //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
+            //    return Ok(group);
+            //}
+            //catch (Exception ex) {
+            //    valResult.Add(ex.ToString());
+            //    return BadRequest(valResult);
+            //}
+
+            ValidatorResult valResult = new ValidatorResult();
             try
             {
                 int studentId = HttpContext.User.GetUserId();
-                bool isLeader = await services.Groups.IsStudentMemberGroupAsync(studentId, groupId);
-                if (!isLeader)
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
+                //if (!isLeader)
+                //{
+                //     return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                //}
+                bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
+                if (!isJoining)
                 {
-                    return Unauthorized("Bạn không phải là thành viên nhóm này");
+                    return Unauthorized("Bạn không phải thành viên của nhóm này");
                 }
-                //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
-                GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
+                //Group group = await services.Groups.GetFullByIdAsync(id);
 
-                if (group == null)
+                if (isLeader)
                 {
-                    valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
-                    return NotFound(valResult);
+                    //GroupDetailForLeaderGetDto dto = mapper.Map<GroupDetailForLeaderGetDto>(group);
+                    GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
+                    if (group == null)
+                    {
+                        valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+                        return NotFound(valResult);
+                    }
+                    return Ok(group);
                 }
-                //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
-                return Ok(group);
+                else
+                {
+                    //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
+                    GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
+                    if (group == null)
+                    {
+                        valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
+                        return NotFound(valResult);
+                    }
+                    return Ok(group);
+                }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 valResult.Add(ex.ToString());
                 return BadRequest(valResult);
             }

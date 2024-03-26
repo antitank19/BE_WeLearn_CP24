@@ -1,9 +1,13 @@
-﻿namespace ServiceLayer.DTOs
+﻿using Microsoft.AspNetCore.Http;
+
+namespace ServiceLayer.DTOs
 {
     public class GroupDetailForLeaderGetDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public IFormFile? Image { get; set; }
+
         //public int ClassId { get; set; }
         public ICollection<StudentGetDto> Members { get; set; }
         public ICollection<JoinRequestForGroupGetDto> JoinRequest { get; set; }

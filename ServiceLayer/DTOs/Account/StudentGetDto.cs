@@ -19,6 +19,7 @@ namespace ServiceLayer.DTOs
         public string Phone { get; set; }
         public string? Schhool { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? ImagePath { get; set; }
         //Role
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }

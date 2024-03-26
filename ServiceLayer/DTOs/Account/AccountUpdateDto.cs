@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace ServiceLayer.DTOs
 {
@@ -28,11 +22,11 @@ namespace ServiceLayer.DTOs
             set { phone = value?.Trim(); }
         }
 
-        private string? schhool { get; set; }
-        public string? Schhool
+        private string? career { get; set; }
+        public string? Career
         {
-            get { return schhool; }
-            set { schhool = value.Trim(); }
+            get { return career; }
+            set { career = value.Trim(); }
         }
 
 

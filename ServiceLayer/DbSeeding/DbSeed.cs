@@ -990,7 +990,7 @@ namespace ServiceLayer.DbSeeding
                 Detail = "Tên không phù hợp",
                 SenderId = 1,
                 GroupId = 2,
-                State= RequestStateEnum.Approved,
+                State= RequestStateEnum.Waiting,
             },
             //  new Report
             //{

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.DbObject;
@@ -20,4 +21,6 @@ public class DocumentFile
     public int GroupId { get; set; }
     public Group Group { get; set; }
     #endregion
+    public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
+
 }

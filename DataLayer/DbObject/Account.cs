@@ -50,6 +50,7 @@ namespace DataLayer.DbObject
         // Group Member
         public virtual ICollection<GroupMember> GroupMembers { get; set; } = new Collection<GroupMember>();
         public virtual ICollection<Connection> Connections { get; set; } = new Collection<Connection>();
+        public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
 
 
         #region Invite

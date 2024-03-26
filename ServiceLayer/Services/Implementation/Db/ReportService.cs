@@ -57,6 +57,42 @@ namespace ServiceLayer.Services.Implementation.Db
             return mapped;
         }
 
+        public IQueryable<T> GetReportedAccountList<T>()
+        {
+            var list = repos.Accounts.GetList()
+                .Include(a => a.ReportedReports)
+                .Where(a => a.ReportedReports.Any(r => r.State == RequestStateEnum.Waiting));
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+
+        public IQueryable<T> GetReportedGroupList<T>()
+        {
+            var list = repos.Groups.GetList()
+                .Include(a => a.ReportedReports)
+                .Where(a => a.ReportedReports.Any(r => r.State == RequestStateEnum.Waiting));
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+
+        public IQueryable<T> GetReportedDiscussionList<T>()
+        {
+            var list = repos.Discussions.GetList()
+                .Include(a => a.ReportedReports)
+                .Where(a => a.ReportedReports.Any(r => r.State == RequestStateEnum.Waiting));
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+
+        public IQueryable<T> GetReportedFileList<T>()
+        {
+            var list = repos.DocumentFiles.GetList()
+                .Include(a => a.ReportedReports)
+                .Where(a => a.ReportedReports.Any(r => r.State == RequestStateEnum.Waiting));
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+
         public async Task CreateReport(ReportCreateDto dto, int senderId)
         {
             Report report = new Report()

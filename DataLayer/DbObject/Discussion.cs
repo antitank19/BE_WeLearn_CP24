@@ -29,5 +29,6 @@ namespace DataLayer.DbObject
         public DateTime CreateAt { get; set; }
         public string? FilePath { get; set; }
         public ICollection<AnswerDiscussion> AnswerDiscussion { get; set; } = new Collection<AnswerDiscussion>();
+        public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
     }
 }

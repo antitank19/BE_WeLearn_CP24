@@ -36,6 +36,10 @@ namespace DataLayer.DbContext
         public virtual DbSet<Report> Reports { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.Account)
+                .WithMany(a => a.ReportedReports)
+                .HasForeignKey(r => r.AccountId);
             modelBuilder.Entity<AnswerDiscussion>()
             .HasOne(ad => ad.Account)
             .WithMany()

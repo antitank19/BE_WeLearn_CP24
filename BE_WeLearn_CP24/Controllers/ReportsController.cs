@@ -1,5 +1,6 @@
 ﻿using API.Extension.ClaimsPrinciple;
 using APIExtension.Validator;
+using DataLayer.DbObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,95 @@ namespace API.Controllers
             try
             {
                 var mapped = services.Reports.GetUnresolvedReportList<ReportGetListDto>();
+                if (mapped == null || !mapped.Any())
+                {
+                    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+
+        //[Authorize]
+        [HttpGet("Account")]
+        public async Task<IActionResult> GetReportedAccount()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetReportedAccountList<ReportedAccountDto>();
+                if (mapped == null || !mapped.Any())
+                {
+                    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        //[Authorize]
+        [HttpGet("Group")]
+        public async Task<IActionResult> GetReportedGroup()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetReportedGroupList<ReportedGroupDto>();
+                if (mapped == null || !mapped.Any())
+                {
+                    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        //[Authorize]
+        [HttpGet("Discussion")]
+        public async Task<IActionResult> GetReportedDiscussion()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetReportedDiscussionList<ReportedDiscussionDto>();
+                if (mapped == null || !mapped.Any())
+                {
+                    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        //[Authorize]
+        [HttpGet("File")]
+        public async Task<IActionResult> GetReportedFile()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetReportedFileList<ReportedFileDto>();
                 if (mapped == null || !mapped.Any())
                 {
                     valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);

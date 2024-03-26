@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Firebase.Storage;
 using System.Security.Principal;
+using ServiceLayer.Validation.FileUpload;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -135,23 +136,42 @@ namespace ServiceLayer.Services.Implementation.Db
             string filePath = null;
             if (dto.Image != null && dto.Image.Length > 0)
             {
-                // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
-
-                // Generate a unique file name
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
-
-                // Get reference to the file in Firebase Storage
-                var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
-
-                // Upload the file to Firebase Storage
-                using (var stream = dto.Image.OpenReadStream())
+                if (dto.Image.FileName.HasImageExtension())
                 {
-                    await fileReference.PutAsync(stream);
-                }
+                    // Initialize FirebaseStorage instance
+                    var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
-                // Get the download URL of the uploaded file
-                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                    // Generate a unique file name
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
+
+                    // Get reference to the file in Firebase Storage
+                    var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
+
+                    // Upload the file to Firebase Storage
+                    using (var stream = dto.Image.OpenReadStream())
+                    {
+                        await fileReference.PutAsync(stream);
+                    }
+
+                    // Get the download URL of the uploaded file
+                    string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                    filePath = downloadUrl;
+                }
+                else
+                {
+                    throw new ArgumentException("Not support file type!", nameof(dto.Image.FileName));
+                }
+            }
+            else
+            {
+                var bucket = "welearn-2024.appspot.com";
+                var path = "Images/groupdefault.jpg"; // Path to image
+
+                // Initialize Firebase storage
+                var storage = new FirebaseStorage(bucket);
+
+                // Get the download URL for the image
+                string downloadUrl = await storage.Child(path).GetDownloadUrlAsync();
                 filePath = downloadUrl;
             }
 
@@ -183,24 +203,31 @@ namespace ServiceLayer.Services.Implementation.Db
             //Image
             if(dto.Image != null && dto.Image.Length > 0)
             {
-                // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
-
-                // Generate a unique file name
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
-
-                // Get reference to the file in Firebase Storage
-                var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
-
-                // Upload the file to Firebase Storage
-                using (var stream = dto.Image.OpenReadStream())
+                if (dto.Image.FileName.HasImageExtension())
                 {
-                    await fileReference.PutAsync(stream);
-                }
+                    // Initialize FirebaseStorage instance
+                    var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
-                // Get the download URL of the uploaded file
-                string downloadUrl = await fileReference.GetDownloadUrlAsync();
-                group.ImagePath = downloadUrl;
+                    // Generate a unique file name
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
+
+                    // Get reference to the file in Firebase Storage
+                    var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
+
+                    // Upload the file to Firebase Storage
+                    using (var stream = dto.Image.OpenReadStream())
+                    {
+                        await fileReference.PutAsync(stream);
+                    }
+
+                    // Get the download URL of the uploaded file
+                    string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                    group.ImagePath = downloadUrl;
+                }
+                else
+                {
+                    throw new ArgumentException("Not support file type!", nameof(dto.Image.FileName));
+                }
             }
 
             //Remove subject, nếu dto ko có thì sẽ loại

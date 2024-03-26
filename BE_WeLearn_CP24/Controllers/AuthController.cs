@@ -16,6 +16,7 @@ using API.SwaggerOption.Descriptions;
 using API.Extension.HttpContext;
 using API.SwaggerOption.Const;
 using ServiceLayer.Services.Interface;
+using Firebase.Storage;
 
 namespace API.Controllers
 {
@@ -187,6 +188,16 @@ namespace API.Controllers
                 {
                     return BadRequest(valResult);
                 }
+
+                var bucket = "welearn-2024.appspot.com";
+                var path = "Images/default.jpg"; // Path to image
+
+                // Initialize Firebase storage
+                var storage = new FirebaseStorage(bucket);
+
+                // Get the download URL for the image
+                string downloadUrl = await storage.Child(path).GetDownloadUrlAsync();
+
                 //Account register = mapper.Map<Account>(dto);
                 Account register = new Account()
                 {
@@ -197,6 +208,7 @@ namespace API.Controllers
                     Phone = dto.Phone,
                     Career = dto.Career,
                     DateOfBirth = dto.DateOfBirth,
+                    ImagePath = downloadUrl,
                 };
                 register.Password = register.Password.CustomHash();
                 if (dto.IsStudent)

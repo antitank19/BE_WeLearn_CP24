@@ -22,6 +22,8 @@ namespace ServiceLayer.DTOs
         //public string? Schhool { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
+        public string? ImagePath { get; set; }
+
         //Parent
         public virtual ICollection<string> Parents { get; set; }
         public virtual ICollection<string> Students { get; set; }

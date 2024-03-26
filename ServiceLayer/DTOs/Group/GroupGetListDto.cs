@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.ObjectModel;
 
 namespace ServiceLayer.DTOs
 {
@@ -6,6 +7,7 @@ namespace ServiceLayer.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public IFormFile? Image { get; set; }
         public int MemberCount { get; set; }
         //public int ClassId { get; set; }
         public ICollection<string> Subjects { get; set; }=new Collection<string>();

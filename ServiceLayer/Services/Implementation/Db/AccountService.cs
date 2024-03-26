@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using static System.Net.Mime.MediaTypeNames;
 using Firebase.Storage;
+using ServiceLayer.Validation.FileUpload;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -155,24 +156,31 @@ namespace ServiceLayer.Services.Implementation.Db
             //Image
             if (dto.Image != null && dto.Image.Length > 0)
             {
-                // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
-
-                // Generate a unique file name
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
-
-                // Get reference to the file in Firebase Storage
-                var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
-
-                // Upload the file to Firebase Storage
-                using (var stream = dto.Image.OpenReadStream())
+                if (dto.Image.FileName.HasImageExtension())
                 {
-                    await fileReference.PutAsync(stream);
-                }
+                    // Initialize FirebaseStorage instance
+                    var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
-                // Get the download URL of the uploaded file
-                string downloadUrl = await fileReference.GetDownloadUrlAsync();
-                account.ImagePath = downloadUrl;
+                    // Generate a unique file name
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
+
+                    // Get reference to the file in Firebase Storage
+                    var fileReference = firebaseStorage.Child("Images").Child(uniqueFileName);
+
+                    // Upload the file to Firebase Storage
+                    using (var stream = dto.Image.OpenReadStream())
+                    {
+                        await fileReference.PutAsync(stream);
+                    }
+
+                    // Get the download URL of the uploaded file
+                    string downloadUrl = await fileReference.GetDownloadUrlAsync();
+                    account.ImagePath = downloadUrl;
+                }
+                else
+                {
+                    throw new ArgumentException("Not support file type!", nameof(dto.Image.FileName));
+                }
             }
                 account.PatchUpdate(dto);
             await repos.Accounts.UpdateAsync(account);

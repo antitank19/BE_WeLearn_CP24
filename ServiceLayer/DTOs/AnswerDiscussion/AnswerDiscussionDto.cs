@@ -15,6 +15,7 @@ namespace ServiceLayer.DTOs
         public int AccountId { get; set; }
         public int DiscussionId { get; set; }
         public string? Content { get; set; }
+        public string? FilePath { get; set; }
         public DateTime CreateAt { get; set; }
     }
 }

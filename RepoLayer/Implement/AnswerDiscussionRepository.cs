@@ -19,11 +19,18 @@ namespace RepoLayer.Implement
         {
             this.dbContext = dbContext;
         }
-        public async Task<List<AnswerDiscussion>> GetDocumentFilesByGroupId(int discussionId)
+        public override Task<AnswerDiscussion> GetByIdAsync(int id)
+        {
+            return base.GetByIdAsync(id);
+        }
+        public override Task CreateAsync(AnswerDiscussion entity)
+        {
+            return base.CreateAsync(entity);
+        }
+        public async Task<List<AnswerDiscussion>> GetAnswerDiscussionsByDiscussionId(int discussionId)
         {
             return await dbContext.AnswerDiscussions
                 .Include(e => e.Account)
-                .Include(e => e.Discussion)
                 .Where(x => x.DiscussionId == discussionId).ToListAsync();
         }
     }

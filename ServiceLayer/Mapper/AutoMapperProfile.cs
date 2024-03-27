@@ -21,6 +21,8 @@ namespace ShareResource.Mapper
             MapReview();
             MapChat();
             MapReport();
+            MapDiscussion();
+            MapAnswerDiscussion();
         }
 
         ///////////////////////////
@@ -284,9 +286,23 @@ namespace ShareResource.Mapper
         }
         private void MapDiscussion()
         {
-            CreateMap<Discussion, DiscussionDto>().PreserveReferences();
-            CreateMap<DiscussionDto, Discussion>().PreserveReferences();
+            CreateMap<Discussion, DiscussionDto>()
+                .ForMember(dest => dest.AnswerDiscussions, opt => opt.MapFrom(src => src.AnswerDiscussion));
+
+            CreateMap<DiscussionDto, Discussion>()
+                .ForMember(dest => dest.AnswerDiscussion, opt => opt.MapFrom(src => src.AnswerDiscussions));
+
+            CreateMap<Discussion, UploadDiscussionDto>();
+            CreateMap<UploadDiscussionDto, Discussion>();
         }
+        private void MapAnswerDiscussion()
+        {
+            CreateMap<AnswerDiscussion, AnswerDiscussionDto>().PreserveReferences();
+            CreateMap<AnswerDiscussionDto, AnswerDiscussion>().PreserveReferences();
+            CreateMap<AnswerDiscussion, UploadAnswerDiscussionDto>().PreserveReferences();
+            CreateMap<UploadAnswerDiscussionDto, AnswerDiscussion>().PreserveReferences();
+        }
+
         private void MapDocumentFile()
         {
             CreateMap<DocumentFile, DocumentFileDto>()

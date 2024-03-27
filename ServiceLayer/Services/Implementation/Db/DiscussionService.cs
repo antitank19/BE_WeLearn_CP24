@@ -63,7 +63,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 // Update the discussion entity with the download URL
                 discussion.FilePath = downloadUrl;
             }
-
+            discussion.CreateAt = DateTime.Now;
             discussion.PatchUpdate(discussionDto);
 
             await _repos.Discussions.UpdateAsync(discussion);
@@ -78,24 +78,28 @@ namespace ServiceLayer.Services.Implementation.Db
 
             if (discussionDto.File != null && discussionDto.File.Length > 0)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "DiscussionFiles");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
+                // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + discussionDto.File.FileName;
 
-                filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("DiscussionFiles").Child(uniqueFileName);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Upload the file to Firebase Storage
+                using (var stream = discussionDto.File.OpenReadStream())
                 {
-                    await discussionDto.File.CopyToAsync(fileStream);
+                    await fileReference.PutAsync(stream);
                 }
-                discussion.FilePath = filePath;
 
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+
+                // Update the discussion entity with the download URL
+                discussion.FilePath = downloadUrl;
             }
-
+            discussion.CreateAt = DateTime.Now;
             await _repos.Discussions.CreateAsync(discussion);
         }
     }

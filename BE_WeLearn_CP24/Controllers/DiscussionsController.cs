@@ -21,7 +21,7 @@ namespace API.Controllers
             //this.validators = validators;
         }
 
-        [HttpGet("api/Discussion/Get")]
+        [HttpGet("api/Discussion/Get/{groupId}")]
         public async Task<IActionResult> GetDiscussionInGroup(int groupId)
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -39,7 +39,7 @@ namespace API.Controllers
 
 
         [HttpPost("api/Discussion/Upload")]
-        public async Task<IActionResult> UploadDiscussion(int accountId, int groupId, UploadDiscussionDto dto)
+        public async Task<IActionResult> UploadDiscussion(int accountId, int groupId, [FromForm] UploadDiscussionDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
             try

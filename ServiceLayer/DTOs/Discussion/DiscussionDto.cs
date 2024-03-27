@@ -16,6 +16,9 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public string? Question { get; set; }
         public string? Content { get; set; }
+        public string? FilePath { get; set; }
         public DateTime CreateAt { get; set; }
+        public AccountProfileDto Account { get; set; }
+        public virtual ICollection<AnswerDiscussionDto> AnswerDiscussions { get; set; }
     }
 }

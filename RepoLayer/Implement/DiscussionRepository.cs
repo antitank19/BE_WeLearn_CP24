@@ -19,6 +19,15 @@ namespace RepoLayer.Implement
         {
             this.dbContext = dbContext;
         }
+        public override Task<Discussion> GetByIdAsync(int id)
+        {
+            return base.GetByIdAsync(id);
+        }
+        public override Task CreateAsync(Discussion entity)
+        {
+            return base.CreateAsync(entity);
+        }
+
         public async Task<List<Discussion>> GetDocumentFilesByGroupId(int groupId)
         {
             return await dbContext.Discussions

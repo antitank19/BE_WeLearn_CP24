@@ -7,11 +7,17 @@ namespace ServiceLayer.DTOs
     {
         public int Id { get; set; }
         private string? name;
-
         public string? Name
         {
             get { return name; }
             set { name = value.Trim(); }
+        }
+        private string description;
+        public string? Description
+        {
+            get { return description.Trim(); }
+            set { description = value.Trim(); }
+
         }
         public IFormFile? Image { get; set; }
         //public int? ClassId { get; set; }

@@ -28,9 +28,9 @@ namespace ServiceLayer.Services.Implementation.Db
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public Task<List<AnswerDiscussion>> GetAnswerDiscussionByDiscussionId(int discussionId)
+        public async Task<List<AnswerDiscussion>> GetAnswerDiscussionByDiscussionId(int discussionId)
         {
-            throw new NotImplementedException();
+            return await _repos.AnswerDiscussions.GetAnswerDiscussionsByDiscussionId(discussionId);
         }
 
         public async Task UpdateAnswerDiscussion(int answeDiscussionId, UploadAnswerDiscussionDto answerDiscussionDto)
@@ -69,31 +69,35 @@ namespace ServiceLayer.Services.Implementation.Db
         public async Task UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto)
         {
             string filePath;
-            AnswerDiscussion discussion = _mapper.Map<AnswerDiscussion>(answerDiscussionDto);
-            discussion.DiscussionId = discussionId;
-            discussion.AccountId = accountId;
+            AnswerDiscussion answerDiscussion = _mapper.Map<AnswerDiscussion>(answerDiscussionDto);
+            answerDiscussion.DiscussionId = discussionId;
+            answerDiscussion.AccountId = accountId;
 
             if (answerDiscussionDto.File != null && answerDiscussionDto.File.Length > 0)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "DiscussionFiles");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
 
+                // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + answerDiscussionDto.File.FileName;
 
-                filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("DiscussionFiles").Child(uniqueFileName);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Upload the file to Firebase Storage
+                using (var stream = answerDiscussionDto.File.OpenReadStream())
                 {
-                    await answerDiscussionDto.File.CopyToAsync(fileStream);
+                    await fileReference.PutAsync(stream);
                 }
-                discussion.FilePath = filePath;
 
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+
+                // Update the discussion entity with the download URL
+                answerDiscussion.FilePath = downloadUrl;
             }
 
-            await _repos.AnswerDiscussions.CreateAsync(discussion);
+            await _repos.AnswerDiscussions.CreateAsync(answerDiscussion);
         }
     }
 }

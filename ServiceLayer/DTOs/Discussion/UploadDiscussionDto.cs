@@ -11,7 +11,6 @@ namespace ServiceLayer.DTOs
     {
         public string? Question { get; set; }
         public string? Content { get; set; }
-        public DateTime CreateAt { get; set; }
         public IFormFile? File { get; set; }
     }
 }

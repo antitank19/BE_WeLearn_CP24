@@ -382,7 +382,7 @@ namespace API.Controllers
         [Authorize(Roles = Actor.Student)]
         [SwaggerOperation(
            Summary = GroupsEndpoints.GetGroups,
-           Description = GroupsDescriptions.GetGroups
+           Description = GroupsDescriptions.GetAllGroups
        )]
         [HttpGet]
         public async Task<IActionResult> GetGroups()

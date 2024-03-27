@@ -379,7 +379,7 @@ namespace API.Controllers
         }
 
         // GET: api/Groups
-        [Tags(Actor.Test)]
+        [Authorize(Roles = Actor.Student)]
         [SwaggerOperation(
            Summary = GroupsEndpoints.GetGroups,
            Description = GroupsDescriptions.GetGroups

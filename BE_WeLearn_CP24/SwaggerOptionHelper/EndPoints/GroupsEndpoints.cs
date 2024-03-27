@@ -14,7 +14,7 @@ namespace API.SwaggerOption.Endpoints
         public const string GetGroupDetailForLeader = $"[{Actor.Leader}/{Finnished.True}/{Auth.True}] Get group detail for leader by Id";
         public const string CreateGroup = $"[{Actor.Leader}/{Finnished.True}] create new group for leader";
         public const string UpdateGroup = $"[{Actor.Leader}/{Finnished.True}] Update group for leader";
-        public const string GetGroups = $"[{Actor.Test}/{Finnished.True}]Get list of groups";
+        public const string GetGroups = $"[{Actor.Student}/{Finnished.True}]Get list of groups";
         public const string GetGroup = $"[{Actor.Test}/{Finnished.True}] Get group by Id";
 
     }

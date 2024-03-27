@@ -18,6 +18,6 @@
         public const string UpdateGroup = "groupId Id nhóm dc update";
         public const string GetGroups = "Get leadGroupIds of group";
         public const string GetGroup = "Get group by Id";
-
+        public const string GetAllGroups = "Get all groups";
     }
 }

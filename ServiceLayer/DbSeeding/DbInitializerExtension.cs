@@ -142,6 +142,20 @@ namespace ServiceLayer.DbSeeding
                 }
                 #endregion
 
+                #region seed Discussion
+                if (!context.Discussions.Any())
+                {
+                    context.Discussions.AddRange(DbSeed.Discussions);
+                }
+                #endregion
+
+                #region seed AnswerDiscussion
+                if (!context.AnswerDiscussions.Any())
+                {
+                    context.AnswerDiscussions.AddRange(DbSeed.AnswerDiscussions);
+                }
+                #endregion
+
                 context.SaveChanges();
             }
         }

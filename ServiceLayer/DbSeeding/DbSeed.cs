@@ -1,6 +1,7 @@
 ﻿using DataLayer.DbObject;
 using DataLayer.Enums;
 using ServiceLayer.Utils;
+using System.Net.NetworkInformation;
 
 namespace ServiceLayer.DbSeeding
 {
@@ -1008,6 +1009,46 @@ namespace ServiceLayer.DbSeeding
             //    FileId = 2,
             //    State= RequestStateEnum.Waiting,
             //},
+        };
+        public static Discussion[] Discussions = new Discussion[]
+        {
+            new Discussion
+            {
+                Id=1,
+                AccountId=1,
+                GroupId=1,
+                Question="Question 1"  ,              
+                Content="In the heart of the forest, where ancient trees whispered secrets to the wind, there stood a forgotten shrine,",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            } ,
+            new Discussion
+            {
+                Id=1,
+                AccountId=2,
+                GroupId=1,
+                Question="Question 2"  ,
+                Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            } ,
+        };
+        public static AnswerDiscussion[] AnswerDiscussions = new AnswerDiscussion[]
+        {
+            new AnswerDiscussion
+            {
+                Id=1,
+                AccountId=2,
+                DiscussionId=1,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            },
+            new AnswerDiscussion
+            {
+                Id=2,
+                AccountId=1,
+                DiscussionId=2,
+                Content="Bravooo",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            },
         };
     }
 }

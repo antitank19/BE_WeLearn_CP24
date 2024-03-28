@@ -35,6 +35,7 @@ namespace DataLayer.DbObject
         public virtual ICollection<Schedule> Schedules { get; set; } = new Collection<Schedule>();
         #endregion
 
+        public virtual ICollection<Discussion> Discussions { get; set; } = new Collection<Discussion>();
         public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
 
     }

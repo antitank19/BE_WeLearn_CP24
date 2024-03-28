@@ -32,6 +32,7 @@ namespace RepoLayer.Implemention
                 .Include(e=>e.JoinRequests).ThenInclude(e=>e.Account)
                 .Include(e => e.Schedules).ThenInclude(e => e.Meetings)//.ThenInclude(m=>m.Reviews).ThenInclude(c=>c.Reviewee)
                 .Include(e => e.Schedules).ThenInclude(e => e.Meetings)//.ThenInclude(m=>m.Reviews).ThenInclude(c=>c.Details).ThenInclude(rd=>rd.Reviewer)
+                .Include(e=>e.Discussions).ThenInclude(d=>d.AnswerDiscussion)
                 .SingleOrDefaultAsync(e=>e.Id == id);
         }
 

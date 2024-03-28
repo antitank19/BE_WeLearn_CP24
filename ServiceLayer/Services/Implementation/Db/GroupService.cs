@@ -107,6 +107,7 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             var list = repos.GroupMembers.GetList()
                 .Include(e => e.Group).ThenInclude(e => e.GroupMembers)
+                .Include(e => e.Group).ThenInclude(e => e.Discussions).ThenInclude(d=>d.AnswerDiscussion)
                 .Where(e => e.AccountId == studentId && e.MemberRole == GroupMemberRole.Member && e.IsActive == true)
                 .Select(e => e.Group);
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
@@ -117,6 +118,7 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             var list = repos.GroupMembers.GetList()
                 .Include(e => e.Group).ThenInclude(e => e.GroupMembers)
+                .Include(e => e.Group).ThenInclude(e => e.Discussions).ThenInclude(d=>d.AnswerDiscussion)
                 .Where(e => e.AccountId == studentId && e.MemberRole == GroupMemberRole.Leader && e.IsActive == true)
                 .Select(e => e.Group);
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);

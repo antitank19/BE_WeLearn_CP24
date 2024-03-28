@@ -12,6 +12,7 @@ namespace ServiceLayer.DTOs
         public int AccountId { get; set; }
         public string AccountUsername { get; set; }
         public string AccountFullname { get; set; }
+        public string AccountImagePath { get; set; }
         public int GroupId { get; set; }
         public string? Question { get; set; }
         public string? Content { get; set; }

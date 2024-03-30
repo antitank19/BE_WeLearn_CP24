@@ -1,5 +1,4 @@
 ﻿using API.Extension.ClaimsPrinciple;
-using API.SignalRHub.Tracker;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using ServiceLayer.DTOs;
@@ -17,11 +16,6 @@ namespace API.SignalRHub
         public static string OnLockedUserMsg => "OnLockedUser";
         public static string OnReloadMeetingMsg => "OnReloadMeeting";
 
-        private readonly PresenceTracker presenceTracker;
-        public GroupHub(PresenceTracker tracker)
-        {
-            presenceTracker = tracker;
-        }
         public override async Task OnConnectedAsync()
         {
             HttpContext httpContext = Context.GetHttpContext();

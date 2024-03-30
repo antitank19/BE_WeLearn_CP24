@@ -18,36 +18,6 @@ namespace API.SignalRHub
         //BE SendAsync(UserOnlineInGroupMsg, MemberSignalrDto)
         public static string UserOnlineInMeetingMsg => "UserOnlineInMeeting";
 
-        //Dùng để test coi có connect thành công chưa. Nếu connect thành công, be sẽ
-        //gửi 1 đoạn msg thông báo là đã connect meetingHub thành công
-        //BE SendAsync(OnConnectMeetHubSuccessfullyMsg, msg: string);
-        public static string OnConnectMeetHubSuccessfullyMsg => "OnConnectMeetHubSuccessfully";
-        //Dùng để test coi có invoke thành công không. Nếu invoke thành công, be sẻ 
-        //gửi 1 đoạn msg thông báo đã invoke thành công
-        public static string OnTestReceiveInvokeMsg => "OnTestReceiveInvoke";
-
-        //Thông báo có người rời meeting
-        //BE SendAsync(UserOfflineInGroupMsg, offlineUser: MemberSignalrDto)
-        public static string UserOfflineInMeetingMsg => "UserOfflineInMeeting";
-
-        //Thông báo có user nào đang show screen ko. Cho FE biết để chuyển  
-        //màn hình chính qua lại chế độ show các cam và chế độ share screen
-        //BE SendAsync(OnShareScreenMsg, isShareScreen: bool)
-        public static string OnShareScreenMsg => "OnShareScreen";
-
-        //Thông báo tới người đang share screen là có người mới, shareScreenPeer share luôn cho người này
-        //BE SendAsync(OnShareScreenLastUser, new { usernameTo: string, isShare: bool })
-        public static string OnShareScreenLastUser => "OnShareScreenLastUser";
-
-        //Thông báo người nào đang share screen
-        //SendAsync(OnUserIsSharingMsg, screenSharerUsername: string);
-        public static string OnUserIsSharingMsg => "OnUserIsSharing";
-
-        //Thông báo tình trạng muteCam của username. Chỉ dùng để thay đổi icon cam trên 
-        //màn hình của người khác. Việc truyền cam là do peer trên FE quyết định
-        //BE SendAsync(OnMuteCameraMsg, new { username: String, mute: bool })
-        public static string OnMuteCameraMsg => "OnMuteCamera";
-
         //Thông báo tình trạng muteMic của username. Chỉ dùng để thay đổi icon mic trên 
         //màn hình của người khác. Việc truyền mic hay không là do peer trên FE quyết định
         //SendAsync(OnMuteMicroMsg, new { username: String, mute: bool })
@@ -74,6 +44,12 @@ namespace API.SignalRHub
         public static string OnReloadVoteMsg => "OnReloadVote";
 
         public static string OnNewVoteResultMsg => "OnNewVoteResult";
+
+        public static string UserJoinMsg => "user-joined";
+
+        public static string GetMessagesMsg => "get-messages";
+
+        public static string GetFocusMsg => "get-focusList";
         #endregion
 
         IMapper mapper;
@@ -87,13 +63,6 @@ namespace API.SignalRHub
             this.groupHub = presenceHubContext;
             this.mapper = mapper;
         }
-        //sẽ dc gọi khi FE sẽ connect qua hàm này
-        //sẽ dc gọi khi FE gọi:
-        //this.chatHubConnection = new HubConnectionBuilder()
-        //    .withUrl(this.hubUrl + 'chathub?roomId=' + roomId, {
-        //        accessTokenFactory: () => user.token
-        //    }).withAutomaticReconnect().build()
-        //this.chatHubConnection.start().catch(err => console.log(err));
         public override async Task OnConnectedAsync()
         {
             Console.WriteLine("\n\n===========================\nOnConnectedAsync");
@@ -106,7 +75,6 @@ namespace API.SignalRHub
             if (isTempConnection != null && isTempConnection.Length != 0 && isTempConnection == "ok")
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, meetingIdString);
-                //Clients.Caller.SendAsync("get-drawings", Drawings[meetingIdString]);
                 base.OnConnectedAsync();
                 return;
             }
@@ -235,7 +203,7 @@ namespace API.SignalRHub
             //step 9: Disconnect khỏi meetHub
             await base.OnDisconnectedAsync(exception);
         }
-        //sẽ dc gọi khi FE gọi chatHubConnection.invoke('SendMessage', { content: string })
+        //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('SendMessage', { content: string })
         public async Task SendMessageOld(MessageSignalrCreateDto createMessageDto)
         {
             string userName = Context.User.GetUsername();
@@ -267,7 +235,7 @@ namespace API.SignalRHub
             }
         }
 
-        //sẽ dc gọi khi FE gọi chatHubConnection.invoke('MuteMicro', mute)
+        //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('MuteMicro', mute)
         public async Task MuteMicro(bool muteMicro)
         {
             Meeting meeting = await repos.Meetings.GetMeetingForConnectionSignalr(Context.ConnectionId);
@@ -281,7 +249,7 @@ namespace API.SignalRHub
             }
         }
         //sẽ dc gọi khi có người xin dc vote (review)
-        //sẽ dc gọi khi FE gọi chatHubConnection.invoke('StartVote', meetingId: int)
+        //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('StartVote', meetingId: int)
         public async Task StartVote(int meetingId)
         {
             string reviewee = Context.User.GetUsername();
@@ -289,7 +257,7 @@ namespace API.SignalRHub
         }
 
         //sẽ dc gọi khi có người xin dc vote (review)
-        //sẽ dc gọi khi FE gọi chatHubConnection.invoke('StartVote', reviewee: username)
+        //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('StartVote', reviewee: username)
         public async Task EndVote(int meetingId)
         {
             int revieweeId = Context.User.GetUserId();
@@ -314,7 +282,7 @@ namespace API.SignalRHub
         }
 
         //sẽ dc gọi khi có người xin dc vote (review)
-        //sẽ dc gọi khi FE gọi chatHubConnection.invoke('VoteForReview', reviewDetail: ReviewDetailSignalrCreateDto)
+        //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('VoteForReview', reviewDetail: ReviewDetailSignalrCreateDto)
         public async Task VoteForReview(int meetingId)
         {
             Console.WriteLine("2.   " + meetingId);
@@ -366,6 +334,7 @@ namespace API.SignalRHub
         }
         //public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
         public static readonly Dictionary<string, List<IMessage>> Chats = new Dictionary<string, List<IMessage>> ();
+        public static readonly Dictionary<string, List<string>> FocusMap = new Dictionary<string, List<string>> ();
         public class CreateRoomInput
         {
             public string peerId { get; set; }
@@ -401,26 +370,15 @@ namespace API.SignalRHub
             Console.WriteLine(peerId);
             Console.WriteLine(roomId);
             Console.WriteLine(username);
-            #region unused code
-            //bool isRoomExisted = Rooms.ContainsKey(roomId);
-            //if (!isRoomExisted)
-            //{
-            //    Rooms.Add(roomId, new Dictionary<string, Peer>());
-            //}
-            //bool isUsernameExisted = Rooms[roomId].ContainsKey(username);
-            //if (isUsernameExisted)
-            //{
-            //    Rooms[roomId][username] = peer;
-            //}
-            //else
-            //{
-            //    Rooms[roomId].Add(username, peer);
-            //}
-            #endregion
             bool isChatExisted = Chats.ContainsKey(roomId);
             if (!isChatExisted)
             {
                 Chats.Add(roomId, new List<IMessage>());
+            }
+            bool isFocusListExisted = FocusMap.ContainsKey(roomId);
+            if (!isFocusListExisted)
+            {
+                FocusMap.Add(roomId, new List<string>());
             }
             Peer peer = new Peer
             {
@@ -431,8 +389,25 @@ namespace API.SignalRHub
 
             //Help stablize fe
             System.Threading.Thread.Sleep(1000);
-            await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync("user-joined", peer);
-            await Clients.Group(roomId).SendAsync("get-messages", Chats[roomId]);
+            await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
+            await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
+            await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
+        }
+
+        public class FocusInput
+        {
+            public string roomId { get; set; }
+            public string peerId { get; set; }
+        }
+        public async Task StartFocus(FocusInput input)
+        {
+            FocusMap[input.roomId].Add(input.peerId);
+            await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
+        }
+        public async Task EndFocus(FocusInput input)
+        {
+            FocusMap[input.roomId].Add(input.peerId);
+            await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
 
         public class LeaveRoomInput
@@ -456,6 +431,7 @@ namespace API.SignalRHub
             var usersInMeeting = repos.Connections.GetList()
                .Where(e => e.MeetingId == meeting.Id && e.End == null)
                .Select(e => e.UserName).ToHashSet();
+            await EndFocus(new FocusInput (){ roomId= roomId, peerId=peerId });
             await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
             if (usersInMeeting.Count == 0)
             {
@@ -466,6 +442,7 @@ namespace API.SignalRHub
                 meeting.End = DateTime.Now;
                 await repos.Meetings.UpdateAsync(meeting);
                 Chats.Remove(roomId);
+                FocusMap.Remove(roomId);
                 DrawHub.Drawings.Remove(roomId);
             }
             else

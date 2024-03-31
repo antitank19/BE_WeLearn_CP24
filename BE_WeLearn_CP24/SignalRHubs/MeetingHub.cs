@@ -334,7 +334,7 @@ namespace API.SignalRHub
         }
         //public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
         public static readonly Dictionary<string, List<IMessage>> Chats = new Dictionary<string, List<IMessage>> ();
-        public static readonly Dictionary<string, List<string>> FocusMap = new Dictionary<string, List<string>> ();
+        public static readonly Dictionary<string, List<FocusItem>> FocusMap = new Dictionary<string, List<FocusItem>> ();
         public class CreateRoomInput
         {
             public string peerId { get; set; }
@@ -378,7 +378,7 @@ namespace API.SignalRHub
             bool isFocusListExisted = FocusMap.ContainsKey(roomId);
             if (!isFocusListExisted)
             {
-                FocusMap.Add(roomId, new List<string>());
+                FocusMap.Add(roomId, new List<FocusItem>());
             }
             Peer peer = new Peer
             {
@@ -389,7 +389,8 @@ namespace API.SignalRHub
 
             //Help stablize fe
             System.Threading.Thread.Sleep(1000);
-            await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
+            //await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
+            await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
             await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
             await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
         }
@@ -398,18 +399,62 @@ namespace API.SignalRHub
         {
             public string roomId { get; set; }
             public string peerId { get; set; }
+            public string action { get; set; }
+        }
+        public class FocusItem
+        {
+            public FocusItem(FocusInput input)
+            {
+                roomId = input.roomId;
+                peerId = input.peerId;
+                actions = new List<string> { input.action };
+            }
+            public string roomId { get; set; }
+            public string peerId { get; set; }
+            public List<string> actions { get; set; }
         }
         public async Task StartFocus(FocusInput input)
         {
-            if (FocusMap[input.roomId].Contains(input.peerId))
+            string roomId = input.roomId;
+            string peerId = input.peerId;
+            string action = input.action;
+            if (FocusMap.ContainsKey(roomId))
             {
-                FocusMap[input.roomId].Add(input.peerId);
+                List<FocusItem> focusList = FocusMap[roomId];
+                FocusItem focus = focusList.FirstOrDefault(e=>e.peerId == input.peerId);
+                if(focus != null)
+                {
+                    focus.actions.Add(action);
+                }
+                else
+                {
+                    focusList.Add(new FocusItem(input));
+                }
+            }
+            else
+            {
+                FocusMap.Add(roomId, new List<FocusItem>() { new FocusItem(input)});
             }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
         public async Task EndFocus(FocusInput input)
         {
-            FocusMap[input.roomId].Remove(input.peerId);
+            string roomId = input.roomId;
+            string peerId = input.peerId;
+            string action = input.action;
+            if (FocusMap.ContainsKey(roomId))
+            {
+                List<FocusItem> focusList = FocusMap[roomId];
+                FocusItem focus = focusList.FirstOrDefault(e => e.peerId == input.peerId);
+                if (focus != null)
+                {
+                    focus.actions.Remove(action);
+                    if (focus.actions.Count == 0)
+                    {
+                        focusList.Remove(focus);
+                    }
+                }
+            }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
 

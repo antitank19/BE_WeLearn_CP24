@@ -401,12 +401,15 @@ namespace API.SignalRHub
         }
         public async Task StartFocus(FocusInput input)
         {
-            FocusMap[input.roomId].Add(input.peerId);
+            if (FocusMap[input.roomId].Contains(input.peerId))
+            {
+                FocusMap[input.roomId].Add(input.peerId);
+            }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
         public async Task EndFocus(FocusInput input)
         {
-            FocusMap[input.roomId].Add(input.peerId);
+            FocusMap[input.roomId].Remove(input.peerId);
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
 

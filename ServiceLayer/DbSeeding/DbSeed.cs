@@ -29,7 +29,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -41,7 +43,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -53,7 +57,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -65,7 +71,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -76,7 +84,9 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -88,7 +98,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -100,7 +112,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -111,7 +125,9 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             }
             , new Account
             {
@@ -123,7 +139,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             }, new Account
             {
                 Id = 10,
@@ -134,7 +152,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
+                ReportCounter = 0,
+                IsBanned = false
             },
             new Account
             {
@@ -145,7 +165,9 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1
+                RoleId = 1,
+                ReportCounter = 0,
+                IsBanned = false
             }  ,
             new Account
             {
@@ -156,7 +178,9 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1
+                RoleId = 1,
+                ReportCounter = 0,
+                IsBanned = false
             }
         };
         public static Subject[] Subjects = new Subject[]
@@ -229,6 +253,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 1,
                 Name = "BE toàn tập",
                 Description = "Nhóm học tập siêng năng",
+                IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fbetoantap.jpg?alt=media&token=8c8275d3-622b-417a-a41c-3ef59d825caf"
             },
             new Group
@@ -236,6 +261,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 2,
                 Name = "Fullstack toàn tập",
                 Description = "Nhóm học tập siêng năng",
+                IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Ffullstack.jpg?alt=media&token=18a2bd88-0168-4c9d-abaa-77818a3c64d9"
             } ,
             new Group
@@ -243,6 +269,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 3,
                 Name = "Fullstack",
                 Description = "Nhóm học tập siêng năng",
+                IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Ffullstactv2.jpg?alt=media&token=c8321b48-0988-477c-ae2a-9e13b5c73e57"
             } ,
             new Group
@@ -250,6 +277,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 4,
                 Name = "Thiết kế web đẹp",
                 Description = "Nhóm học tập siêng năng",
+                IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2FwebdesignV2.jpg?alt=media&token=f8ab2bcb-f4d6-475d-a6c2-94a063fe1aca"
             },
             new Group
@@ -257,6 +285,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 5,
                 Name = "Design web",
                 Description = "Nhóm học tập siêng năng",
+                IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fwebdesign.jpg?alt=media&token=4c9e8acf-2a10-4ddd-8ce3-82967fd31a80"
             },
             new Group
@@ -264,6 +293,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 6,
                 Name = "Design mobile",
                 Description = "Nhóm học tập siêng năng",
+                IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
             },
         };
@@ -665,6 +695,7 @@ namespace ServiceLayer.DbSeeding
                 EndTime = DateTime.Now.AddDays(-3).AddHours(1).TimeOfDay,
                 DaysOfWeek = "Chủ Nhật, Thứ Hai, Thứ Ba, Thứ Tư, , Thứ Năm, , Thứ Sáu, Thứ Bảy",
                 GroupId = 1,
+                IsActive = true,
             },
             //Ended schedule meeting
             new Schedule
@@ -1033,6 +1064,7 @@ namespace ServiceLayer.DbSeeding
                 Content="In the heart of the forest, where ancient trees whispered secrets to the wind, there stood a forgotten shrine,",
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
                 FilePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DiscussionFiles%2Fforest.jpg?alt=media&token=58859acc-bfb8-4e56-9a37-558741dd4126",
+                IsActive = true,
             } ,
             new Discussion
             {
@@ -1042,6 +1074,7 @@ namespace ServiceLayer.DbSeeding
                 Question="Question 2"  ,
                 Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
             } ,
         };
         public static AnswerDiscussion[] AnswerDiscussions = new AnswerDiscussion[]
@@ -1053,6 +1086,7 @@ namespace ServiceLayer.DbSeeding
                 DiscussionId=1,
                 Content="Nice job",
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive = true,
             },
             new AnswerDiscussion
             {
@@ -1061,7 +1095,21 @@ namespace ServiceLayer.DbSeeding
                 DiscussionId=2,
                 Content="Bravooo",
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive =true,
             },
+        };
+        public static DocumentFile[] DocumentFiles = new DocumentFile[]
+        {
+            new DocumentFile
+            {
+                Id = 1,
+                AccountId = 2,
+                GroupId = 1,
+                HttpLink = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DocumentFiles%2F8883342f-6895-4ea8-92d8-4d5c4dfbd0ba_ChangeUI21-3.docx?alt=media&token=62f43e85-c128-4268-91d6-93bc0a943e20",
+                Approved = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            }
         };
     }
 }

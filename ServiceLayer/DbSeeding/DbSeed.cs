@@ -234,7 +234,7 @@ namespace ServiceLayer.DbSeeding
             new Group
             {
                 Id = 2,
-                Name = "Thánh gánh tem",
+                Name = "Fullstack toàn tập",
                 Description = "Nhóm học tập siêng năng",
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             } ,

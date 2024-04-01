@@ -96,16 +96,10 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task CreateReport(ReportCreateDto dto, int senderId)
         {
-            Report report = new Report()
-            {
-                SenderId = senderId,
-                Detail = dto.Detail,
-                AccountId = dto.AccountId,
-                DiscussionId = dto.DiscussionId,
-                FileId = dto.FileId,
-                GroupId = dto.GroupId,
-                State = RequestStateEnum.Waiting,
-            };
+            var report = mapper.Map<Report>(dto);
+            report.SenderId = senderId;
+            report.State = RequestStateEnum.Waiting;
+
             await repos.Reports.CreateAsync(report);
         }
 
@@ -121,6 +115,7 @@ namespace ServiceLayer.Services.Implementation.Db
             {
                 report.State = RequestStateEnum.Approved;
 
+                //Account
                 if (report.AccountId is not null)
                 {
                     var account = await repos.Accounts.GetByIdAsync(report.AccountId.Value);
@@ -131,85 +126,204 @@ namespace ServiceLayer.Services.Implementation.Db
                     {
                         account.IsBanned = true;
 
-                        //update groupmember isActive = false
-                        var groupMember = await repos.GroupMembers.GetGroupMemberByMemberId(account.Id);
-                        groupMember.IsActive = false;
+                        if (account.GroupMembers.Any())
+                        {
+                            foreach (var groupMember in account.GroupMembers)
+                            {
+                                groupMember.IsActive = false;
 
-                        groupMember.PatchUpdate(groupMember);
-                        await repos.GroupMembers.UpdateAsync(groupMember);
+                                var group = groupMember.Group;
+
+                                var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
+                                if (document.Any())
+                                {
+                                    foreach (var file in document)
+                                    {
+                                        file.IsActive = false;
+                                    }
+                                }
+                                var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                if (discussions.Any())
+                                {
+                                    foreach (var discussion in discussions)
+                                    {
+                                        discussion.IsActive = false;
+
+                                        var answerDiscussions = discussion.AnswerDiscussion;
+                                        foreach (var answer in answerDiscussions)
+                                        {
+                                            answer.IsActive = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     account.PatchUpdate(account);
                     await repos.Accounts.UpdateAsync(account);
                 }
+                //Discussion
                 else if(report.DiscussionId is not null)
                 {
+                    var discussion = await repos.Discussions.GetByIdAsync(report.DiscussionId.Value);
                     var account = await repos.Accounts.GetByIdAsync(report.Discussion.AccountId);
 
+                    discussion.IsActive = false;
                     account.ReportCounter = ++account.ReportCounter;
 
                     if (account.ReportCounter > 5)
                     {
                         account.IsBanned = true;
+                        if (account.GroupMembers.Any())
+                        {
+                            foreach (var groupMember in account.GroupMembers)
+                            {
+                                groupMember.IsActive = false;
 
-                        //update groupmember isActive = false
-                        var groupMember = await repos.GroupMembers.GetGroupMemberByMemberId(account.Id);
-                        groupMember.IsActive = false;
+                                var group = groupMember.Group;
 
-                        groupMember.PatchUpdate(groupMember);
-                        await repos.GroupMembers.UpdateAsync(groupMember);
+                                var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
+                                if (document.Any())
+                                {
+                                    foreach (var file in document)
+                                    {
+                                        file.IsActive = false;
+                                    }
+                                }
+                                var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                if (discussions.Any())
+                                {
+                                    foreach (var discuss in discussions)
+                                    {
+                                        discuss.IsActive = false;
+
+                                        var answerDiscussions = discuss.AnswerDiscussion;
+                                        foreach (var answer in answerDiscussions)
+                                        {
+                                            answer.IsActive = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
-                    account.PatchUpdate(account);
+                    await repos.Discussions.UpdateAsync(discussion);
                     await repos.Accounts.UpdateAsync(account);
                 }
+                //DocumentFile
                 else if (report.FileId is not null)
                 {
+                    var docfile = await repos.DocumentFiles.GetByIdAsync(report.FileId.Value);
                     var account = await repos.Accounts.GetByIdAsync(report.File.AccountId);
 
+                    docfile.IsActive = false;
                     account.ReportCounter = ++account.ReportCounter;
 
                     if (account.ReportCounter > 5)
                     {
                         account.IsBanned = true;
 
-                        var groupMember = await repos.GroupMembers.GetGroupMemberByMemberId(account.Id);
-                        groupMember.IsActive = false;
+                        if (account.GroupMembers.Any())
+                        {
+                            foreach (var groupMember in account.GroupMembers)
+                            {
+                                groupMember.IsActive = false;
 
-                        groupMember.PatchUpdate(groupMember);
-                        await repos.GroupMembers.UpdateAsync(groupMember);
+                                var group = groupMember.Group;
+
+                                var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
+                                if (document.Any())
+                                {
+                                    foreach(var file in document)
+                                    {
+                                        file.IsActive = false;
+                                    }
+                                }
+                                var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                if (discussions.Any())
+                                {
+                                    foreach (var discussion in discussions)
+                                    {
+                                        discussion.IsActive = false;
+
+                                        var answerDiscussions = discussion.AnswerDiscussion;
+                                        foreach(var answer in answerDiscussions)
+                                        {
+                                            answer.IsActive = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
-                    account.PatchUpdate(account);                    
+                    await repos.DocumentFiles.UpdateAsync(docfile);
                     await repos.Accounts.UpdateAsync(account);
                 }
+                //Group
                 else if(report.GroupId is not null)
                 {
                     var group = await repos.Groups.GetByIdAsync(report.GroupId.Value);
-                    if(group.BanCounter > 3)
-                    {
-                        group.IsBanned = true;
-                        foreach(var doc in group.DocumentFiles)
-                        {
-                            doc.IsActive = false;
-                        }
-                        group.DocumentFiles.PatchUpdate(group.DocumentFiles);
-
-
-                        var groupMembers = await repos.GroupMembers.GetGroupMemberListByGroupId(group.Id);
-                        foreach (var groupMember in groupMembers)
-                        {
-                            groupMember.IsActive = false;
-                        }
-
-                        groupMembers.PatchUpdate(groupMembers);
-                        await repos.GroupMembers.UpdateRangeAsync(groupMembers);
-                        await repos.DocumentFiles.UpdateRangeAsync(group.DocumentFiles.ToList());
-                    }
 
                     group.BanCounter = ++group.BanCounter;
-  
 
+                    if (group.BanCounter > 3)
+                    {
+                        group.IsBanned = true;
+
+                        if (group.DocumentFiles.Any()) 
+                        {
+                            foreach (var doc in group.DocumentFiles)
+                            {
+                                doc.IsActive = false;
+                            }
+                        }
+                        if (group.Discussions.Any())
+                        {
+                            foreach (var doc in group.Discussions)
+                            {
+                                if (doc.AnswerDiscussion.Any())
+                                {
+                                    foreach(var answer in doc.AnswerDiscussion)
+                                    {
+                                        answer.IsActive = false;
+                                    }
+                                }
+
+                                doc.IsActive = false;
+                            }
+                        }
+                        if (group.GroupMembers.Any())
+                        {
+                            foreach (var doc in group.GroupMembers)
+                            {
+                                doc.IsActive = false;
+                            }
+                        }
+                        if (group.Schedules.Any())
+                        {
+                            foreach (var doc in group.Schedules)
+                            {
+                                doc.IsActive = false;
+                            }
+                        }
+                        if (group.JoinInvites.Any())
+                        {
+                            foreach (var doc in group.JoinInvites)
+                            {
+                                doc.State = RequestStateEnum.Decline;
+                            }
+                        }
+                        if (group.JoinRequests.Any())
+                        {
+                            foreach (var doc in group.JoinRequests)
+                            {
+                                doc.State = RequestStateEnum.Decline;
+                            }
+                        }
+                    }
                     group.PatchUpdate(group);
                     await repos.Groups.UpdateAsync(group);
                 }

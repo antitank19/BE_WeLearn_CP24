@@ -30,8 +30,16 @@ namespace RepoLayer.Implemention
 
         public virtual async Task CreateAsync(T entity)
         {
-            await dbContext.Set<T>().AddAsync(entity);
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                await dbContext.Set<T>().AddAsync(entity);
+                await dbContext.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public virtual async Task UpdateAsync(T entity)

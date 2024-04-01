@@ -25,5 +25,6 @@ namespace DataLayer.DbObject
         public string? Content { get; set; }
         public DateTime CreateAt { get; set; }
         public string? FilePath { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

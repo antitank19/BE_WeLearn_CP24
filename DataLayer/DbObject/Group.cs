@@ -39,9 +39,6 @@ namespace DataLayer.DbObject
 
         public virtual ICollection<Discussion> Discussions { get; set; } = new Collection<Discussion>();
         public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
-
-        public virtual ICollection<Discussion> Discussions { get; set; } = new Collection<Discussion>();
-
         public virtual ICollection<DocumentFile> DocumentFiles { get; set; } = new Collection<DocumentFile>();
 
 

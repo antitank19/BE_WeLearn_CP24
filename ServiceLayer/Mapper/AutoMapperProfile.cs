@@ -40,6 +40,8 @@ namespace ShareResource.Mapper
                .PreserveReferences();
             CreateMap<DocumentFile, ReportedFileDto>()
                .PreserveReferences();
+
+            CreateMap<Report, ReportCreateDto>().ReverseMap().PreserveReferences();
         }
 
         private void MapAccount()

@@ -24,9 +24,12 @@ namespace RepoLayer.Implemention
             return base.CreateAsync(entity);
         }
 
-        public override Task<Account> GetByIdAsync(int id)
+        public override async Task<Account> GetByIdAsync(int id)
         {
-            return base.GetByIdAsync(id);
+            return await dbContext.Accounts
+                 .Include(x => x.GroupMembers).ThenInclude(x => x.Group).ThenInclude(x => x.Discussions).ThenInclude(x => x.AnswerDiscussion)
+                 .Include(x => x.GroupMembers).ThenInclude(x => x.Group).ThenInclude(x => x.DocumentFiles)
+                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Account> GetProfileByIdAsync(int id)

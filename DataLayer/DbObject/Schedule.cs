@@ -20,6 +20,7 @@ namespace DataLayer.DbObject
         public string DaysOfWeek { get; set; } = "Chủ Nhật, Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy";
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public bool IsActive { get; set; } = true;
         
         #region Group
         public int GroupId { get; set; }

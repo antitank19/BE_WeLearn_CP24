@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         //[Authorize]
-        [HttpGet("new")]
+        [HttpGet("api/Report/GetUnresolve")]
         public async Task<IActionResult> GetUresolvedReports()
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -153,8 +153,8 @@ namespace API.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPost]
+        //[Authorize]
+        [HttpPost("api/Report/Create")]
         public async Task<IActionResult> CreateReport(ReportCreateDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -162,7 +162,7 @@ namespace API.Controllers
             {
                 //valResult.ValidateParams(dto);
                 int reporterId = HttpContext.User.GetUserId();
-                services.Reports.CreateReport(dto, reporterId);
+                await services.Reports.CreateReport(dto, reporterId);
                 return Ok();
             }
             catch (Exception ex)
@@ -171,7 +171,7 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
-        [HttpPost]
+        [HttpPost("api/Report/AdminSolve")]
         public async Task<IActionResult> SolveReport(int reportId, bool isApproved)
         {
             ValidatorResult valResult = new ValidatorResult();

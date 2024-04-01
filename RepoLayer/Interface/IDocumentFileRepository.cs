@@ -11,5 +11,7 @@ namespace RepoLayer.Interface
     {
         Task<List<DocumentFile>> GetDocumentFilesByGroupId(int groupId);
         Task ApproveRejectAsync(DocumentFile entity);
+        public Task UpdateRangeAsync(List<DocumentFile> entities);
+
     }
 }

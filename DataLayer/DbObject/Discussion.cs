@@ -28,6 +28,7 @@ namespace DataLayer.DbObject
         public string? Content { get; set; }
         public DateTime CreateAt { get; set; }
         public string? FilePath { get; set; }
+        public bool IsActive { get; set; } = true;
         public virtual ICollection<AnswerDiscussion> AnswerDiscussion { get; set; } = new Collection<AnswerDiscussion>();
         public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
     }

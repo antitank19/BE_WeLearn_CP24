@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
+using ServiceLayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,11 +114,113 @@ namespace ServiceLayer.Services.Implementation.Db
             return await repos.Requests.IdExistAsync(reportId);
         }
 
-        public async Task ResolveReport(int reportId, RequestStateEnum newState)
+        public async Task ResolveReport(int reportId, bool isApproved)
         {
-            Report report = await repos.Reports.GetByIdAsync(reportId);
-            report.State = newState;
+            var report = await repos.Reports.GetByIdAsync(reportId);
+            if(isApproved == true)
+            {
+                report.State = RequestStateEnum.Approved;
+
+                if (report.AccountId is not null)
+                {
+                    var account = await repos.Accounts.GetByIdAsync(report.AccountId.Value);
+      
+                    account.ReportCounter = ++account.ReportCounter;
+
+                    if (account.ReportCounter > 5)
+                    {
+                        account.IsBanned = true;
+
+                        //update groupmember isActive = false
+                        var groupMember = await repos.GroupMembers.GetGroupMemberByMemberId(account.Id);
+                        groupMember.IsActive = false;
+
+                        groupMember.PatchUpdate(groupMember);
+                        await repos.GroupMembers.UpdateAsync(groupMember);
+                    }
+
+                    account.PatchUpdate(account);
+                    await repos.Accounts.UpdateAsync(account);
+                }
+                else if(report.DiscussionId is not null)
+                {
+                    var account = await repos.Accounts.GetByIdAsync(report.Discussion.AccountId);
+
+                    account.ReportCounter = ++account.ReportCounter;
+
+                    if (account.ReportCounter > 5)
+                    {
+                        account.IsBanned = true;
+
+                        //update groupmember isActive = false
+                        var groupMember = await repos.GroupMembers.GetGroupMemberByMemberId(account.Id);
+                        groupMember.IsActive = false;
+
+                        groupMember.PatchUpdate(groupMember);
+                        await repos.GroupMembers.UpdateAsync(groupMember);
+                    }
+
+                    account.PatchUpdate(account);
+                    await repos.Accounts.UpdateAsync(account);
+                }
+                else if (report.FileId is not null)
+                {
+                    var account = await repos.Accounts.GetByIdAsync(report.File.AccountId);
+
+                    account.ReportCounter = ++account.ReportCounter;
+
+                    if (account.ReportCounter > 5)
+                    {
+                        account.IsBanned = true;
+
+                        var groupMember = await repos.GroupMembers.GetGroupMemberByMemberId(account.Id);
+                        groupMember.IsActive = false;
+
+                        groupMember.PatchUpdate(groupMember);
+                        await repos.GroupMembers.UpdateAsync(groupMember);
+                    }
+
+                    account.PatchUpdate(account);                    
+                    await repos.Accounts.UpdateAsync(account);
+                }
+                else if(report.GroupId is not null)
+                {
+                    var group = await repos.Groups.GetByIdAsync(report.GroupId.Value);
+                    if(group.BanCounter > 3)
+                    {
+                        group.IsBanned = true;
+                        foreach(var doc in group.DocumentFiles)
+                        {
+                            doc.IsActive = false;
+                        }
+                        group.DocumentFiles.PatchUpdate(group.DocumentFiles);
+
+
+                        var groupMembers = await repos.GroupMembers.GetGroupMemberListByGroupId(group.Id);
+                        foreach (var groupMember in groupMembers)
+                        {
+                            groupMember.IsActive = false;
+                        }
+
+                        groupMembers.PatchUpdate(groupMembers);
+                        await repos.GroupMembers.UpdateRangeAsync(groupMembers);
+                        await repos.DocumentFiles.UpdateRangeAsync(group.DocumentFiles.ToList());
+                    }
+
+                    group.BanCounter = ++group.BanCounter;
+  
+
+                    group.PatchUpdate(group);
+                    await repos.Groups.UpdateAsync(group);
+                }
+
+            }
+            else
+            {
+                report.State = RequestStateEnum.Decline;
+            }
             await repos.Reports.UpdateAsync(report);
         }
+
     }
 }

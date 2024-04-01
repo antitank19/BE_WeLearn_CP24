@@ -32,7 +32,9 @@ namespace RepoLayer.Implemention
                 .Include(e=>e.JoinRequests).ThenInclude(e=>e.Account)
                 .Include(e => e.Schedules).ThenInclude(e => e.Meetings)//.ThenInclude(m=>m.Reviews).ThenInclude(c=>c.Reviewee)
                 .Include(e => e.Schedules).ThenInclude(e => e.Meetings)//.ThenInclude(m=>m.Reviews).ThenInclude(c=>c.Details).ThenInclude(rd=>rd.Reviewer)
-                .SingleOrDefaultAsync(e=>e.Id == id);
+                .Include(e => e.Discussions).ThenInclude(e => e.AnswerDiscussion)
+                .Include(e => e.DocumentFiles)
+                .FirstOrDefaultAsync(e=>e.Id == id);
         }
 
         public override IQueryable<Group> GetList()

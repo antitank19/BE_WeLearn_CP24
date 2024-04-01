@@ -14,6 +14,8 @@ namespace DataLayer.DbObject
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? ImagePath { get; set; }
+        public int BanCounter { get; set; } = 0;
+        public bool IsBanned { get; set; } = false;
 
         #region Group Member
         public virtual ICollection<GroupMember> GroupMembers { get; set; } = new Collection<GroupMember>();
@@ -36,6 +38,11 @@ namespace DataLayer.DbObject
         #endregion
 
         public virtual ICollection<Report> ReportedReports { get; set; } = new Collection<Report>();
+
+        public virtual ICollection<Discussion> Discussions { get; set; } = new Collection<Discussion>();
+
+        public virtual ICollection<DocumentFile> DocumentFiles { get; set; } = new Collection<DocumentFile>();
+
 
     }
 }

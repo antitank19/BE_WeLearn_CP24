@@ -41,6 +41,9 @@ namespace DataLayer.DbObject
         [Column("Dob")]
         public DateTime? DateOfBirth { get; set; }
 
+        public int ReportCounter { get; set; } = 0;
+
+        public bool IsBanned { get; set; } = false;
 
         //Role
         [ForeignKey("RoleId")]

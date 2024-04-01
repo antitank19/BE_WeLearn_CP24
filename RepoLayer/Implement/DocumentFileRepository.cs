@@ -32,5 +32,11 @@ namespace RepoLayer.Implement
         {
             return base.UpdateAsync(entity);
         }
+
+        public async Task UpdateRangeAsync(List<DocumentFile> entities)
+        {
+            dbContext.UpdateRange(entities);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

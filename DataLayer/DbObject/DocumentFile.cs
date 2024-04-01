@@ -17,6 +17,7 @@ public class DocumentFile
 
     public Boolean Approved { get; set; }
     public DateTime CreatedDate { get; set; }
+    public bool IsActive { get; set; } = true;
     #region Group
     public int GroupId { get; set; }
     public Group Group { get; set; }

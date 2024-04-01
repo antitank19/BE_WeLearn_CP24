@@ -26,7 +26,7 @@ namespace API.Controllers
             //this.validators = validators;
         }
 
-        [HttpGet("Get")]
+        [HttpGet("api/Document/Get/{groupId}")]
         public async Task<IActionResult> GetDocumentFilesInGroup(int groupId)
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
 
-        [HttpPost("Upload")]
+        [HttpPost("api/Document/Upload")]
         public async Task<IActionResult> UploadDocumentFile(IFormFile file, int groupId, int accountId)
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -59,7 +59,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("Aprove/Reject")]
+        [HttpPost("api/Document/AproveOrReject")]
         public async Task<IActionResult> ApproveRejectDocumentFile(int documentId, Boolean check)
         {
             ValidatorResult valResult = new ValidatorResult();

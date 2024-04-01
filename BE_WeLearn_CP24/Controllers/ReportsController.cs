@@ -2,6 +2,7 @@
 using APIExtension.Validator;
 using DataLayer.DbObject;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
@@ -162,6 +163,21 @@ namespace API.Controllers
                 //valResult.ValidateParams(dto);
                 int reporterId = HttpContext.User.GetUserId();
                 services.Reports.CreateReport(dto, reporterId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> SolveReport(int reportId, bool isApproved)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                await services.Reports.ResolveReport(reportId, isApproved);
                 return Ok();
             }
             catch (Exception ex)

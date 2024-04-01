@@ -229,42 +229,42 @@ namespace ServiceLayer.DbSeeding
                 Id = 1,
                 Name = "BE toàn tập",
                 Description = "Nhóm học tập siêng năng",
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fbetoantap.jpg?alt=media&token=8c8275d3-622b-417a-a41c-3ef59d825caf"
             },
             new Group
             {
                 Id = 2,
                 Name = "Fullstack toàn tập",
                 Description = "Nhóm học tập siêng năng",
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Ffullstack.jpg?alt=media&token=18a2bd88-0168-4c9d-abaa-77818a3c64d9"
             } ,
             new Group
             {
                 Id = 3,
                 Name = "Fullstack",
                 Description = "Nhóm học tập siêng năng",
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Ffullstactv2.jpg?alt=media&token=c8321b48-0988-477c-ae2a-9e13b5c73e57"
             } ,
             new Group
             {
                 Id = 4,
                 Name = "Thiết kế web đẹp",
                 Description = "Nhóm học tập siêng năng",
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2FwebdesignV2.jpg?alt=media&token=f8ab2bcb-f4d6-475d-a6c2-94a063fe1aca"
             },
             new Group
             {
                 Id = 5,
                 Name = "Design web",
                 Description = "Nhóm học tập siêng năng",
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fwebdesign.jpg?alt=media&token=4c9e8acf-2a10-4ddd-8ce3-82967fd31a80"
             },
             new Group
             {
                 Id = 6,
                 Name = "Design mobile",
                 Description = "Nhóm học tập siêng năng",
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
             },
         };
         public static GroupMember[] GroupMembers = new GroupMember[]
@@ -1029,9 +1029,10 @@ namespace ServiceLayer.DbSeeding
                 Id=1,
                 AccountId=1,
                 GroupId=1,
-                Question="Question 1"  ,              
+                Question="Question 1"  ,
                 Content="In the heart of the forest, where ancient trees whispered secrets to the wind, there stood a forgotten shrine,",
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                FilePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DiscussionFiles%2Fforest.jpg?alt=media&token=58859acc-bfb8-4e56-9a37-558741dd4126",
             } ,
             new Discussion
             {

@@ -26,7 +26,8 @@ namespace ServiceLayer.DTOs
         }
         public IFormFile? Image { get; set; }
         //public int ClassId { get; set; }
-        public virtual ICollection<SubjectEnum> SubjectIds { get; set; }
+        //public virtual ICollection<SubjectEnum> SubjectIds { get; set; }
+        public virtual ICollection<int> SubjectIds { get; set; }
 
     }
 }

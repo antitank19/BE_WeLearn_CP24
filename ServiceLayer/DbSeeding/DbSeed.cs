@@ -228,31 +228,43 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 1,
                 Name = "BE toàn tập",
+                Description = "Nhóm học tập siêng năng",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             },
             new Group
             {
                 Id = 2,
                 Name = "Thánh gánh tem",
+                Description = "Nhóm học tập siêng năng",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             } ,
             new Group
             {
                 Id = 3,
                 Name = "Fullstack",
+                Description = "Nhóm học tập siêng năng",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             } ,
             new Group
             {
                 Id = 4,
                 Name = "Thiết kế web đẹp",
+                Description = "Nhóm học tập siêng năng",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             },
             new Group
             {
                 Id = 5,
                 Name = "Design web",
+                Description = "Nhóm học tập siêng năng",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             },
             new Group
             {
                 Id = 6,
                 Name = "Design mobile",
+                Description = "Nhóm học tập siêng năng",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             },
         };
         public static GroupMember[] GroupMembers = new GroupMember[]
@@ -1023,7 +1035,7 @@ namespace ServiceLayer.DbSeeding
             } ,
             new Discussion
             {
-                Id=1,
+                Id=2,
                 AccountId=2,
                 GroupId=1,
                 Question="Question 2"  ,

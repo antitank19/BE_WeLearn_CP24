@@ -292,6 +292,10 @@ namespace ShareResource.Mapper
             CreateMap<DiscussionDto, Discussion>()
                 .ForMember(dest => dest.AnswerDiscussion, opt => opt.MapFrom(src => src.AnswerDiscussions));
 
+            CreateMap<Discussion, DiscussionInGroupDto>()
+               .ForMember(dest => dest.AnswerDiscussions, opt => opt.MapFrom(src => src.AnswerDiscussion))
+               .PreserveReferences();
+
             CreateMap<Discussion, UploadDiscussionDto>();
             CreateMap<UploadDiscussionDto, Discussion>();
         }

@@ -11,6 +11,7 @@ namespace ServiceLayer.DTOs
         public string? ImagePath { get; set; }
         public int MemberCount { get; set; }
         //public int ClassId { get; set; }
+        public ICollection<DiscussionInGroupDto> Discussions { get; set; }=new Collection<DiscussionInGroupDto>();
         public ICollection<string> Subjects { get; set; }=new Collection<string>();
     }
 }

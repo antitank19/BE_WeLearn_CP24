@@ -19,6 +19,7 @@ namespace ServiceLayer.DTOs
         public string? FilePath { get; set; }
         public DateTime CreateAt { get; set; }
         public AccountProfileDto Account { get; set; }
+        public bool IsActive { get; set; } 
         public virtual ICollection<AnswerDiscussionDto> AnswerDiscussions { get; set; }
     }
 }

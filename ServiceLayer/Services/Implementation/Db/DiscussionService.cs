@@ -75,6 +75,7 @@ namespace ServiceLayer.Services.Implementation.Db
             Discussion discussion = _mapper.Map<Discussion>(discussionDto);
             discussion.GroupId = groupId;
             discussion.AccountId = accountId;
+            discussion.IsActive = true;
 
             if (discussionDto.File != null && discussionDto.File.Length > 0)
             {

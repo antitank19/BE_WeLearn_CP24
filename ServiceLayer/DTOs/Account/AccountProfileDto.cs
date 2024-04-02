@@ -23,6 +23,8 @@ namespace ServiceLayer.DTOs
         public DateTime? DateOfBirth { get; set; }
 
         public string? ImagePath { get; set; }
+        public int ReportCounter { get; set; }
+        public bool IsBanned { get; set; }
 
         //Parent
         public virtual ICollection<string> Parents { get; set; }

@@ -15,6 +15,8 @@ namespace ServiceLayer.DTOs
         public string? ImagePath { get; set; }
 
         //public int ClassId { get; set; }
+        public int BanCounter { get; set; }
+        public bool IsBanned { get; set; }
 
         public ICollection<StudentGetDto> Members { get; set; }
         public virtual ICollection<LiveMeetingGetDto> LiveMeetings { get; set; }

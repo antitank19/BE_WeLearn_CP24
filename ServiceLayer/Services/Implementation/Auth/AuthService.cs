@@ -40,6 +40,10 @@ namespace ServiceLayer.Services.Implementation.Auth
             {
                 return null;
             }
+            if(account.IsBanned == true)
+            {
+                throw new Exception("Tài khoản đã bị vô hiệu");
+            }
             LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
             loginInfoDto.Token = await GenerateJwtAsync(account, loginModel.RememberMe);
             return loginInfoDto;

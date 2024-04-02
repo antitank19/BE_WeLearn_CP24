@@ -72,7 +72,8 @@ namespace ServiceLayer.Services.Implementation.Db
             AnswerDiscussion answerDiscussion = _mapper.Map<AnswerDiscussion>(answerDiscussionDto);
             answerDiscussion.DiscussionId = discussionId;
             answerDiscussion.AccountId = accountId;
-
+            answerDiscussion.IsActive = true;
+         
             if (answerDiscussionDto.File != null && answerDiscussionDto.File.Length > 0)
             {
                 // Initialize FirebaseStorage instance

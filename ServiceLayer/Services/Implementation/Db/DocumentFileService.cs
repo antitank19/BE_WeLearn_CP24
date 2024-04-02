@@ -68,6 +68,7 @@ public class DocumentFileService : IDocumentFileService
             file.GroupId = groupId;
             file.AccountId = accountId;
             file.CreatedDate = DateTime.UtcNow;
+            file.IsActive = true;
 
             await repos.DocumentFiles.CreateAsync(file);
         }

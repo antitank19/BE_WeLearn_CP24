@@ -20,6 +20,8 @@ namespace ServiceLayer.DTOs
         public string? Schhool { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? ImagePath { get; set; }
+        public int ReportCounter { get; set; }
+        public bool IsBanned { get; set; }
         //Role
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }

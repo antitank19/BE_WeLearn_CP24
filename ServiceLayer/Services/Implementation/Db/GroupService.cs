@@ -181,9 +181,12 @@ namespace ServiceLayer.Services.Implementation.Db
             entity.GroupMembers.Add(new GroupMember
             {
                 AccountId = creatorId,
-                MemberRole = GroupMemberRole.Leader
+                MemberRole = GroupMemberRole.Leader,
+                IsActive = true
             });
             entity.ImagePath = filePath;
+            entity.BanCounter = 0;
+            entity.IsBanned = false;
 
             await repos.Groups.CreateAsync(entity);
         }

@@ -86,7 +86,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 EndDate = dto.ScheduleRangeEnd,
                 StartTime = dto.ScheduleStartTime,
                 EndTime = dto.ScheduleEndTime,
-                Meetings = creatingMeetings
+                Meetings = creatingMeetings,
+                IsActive = true
             };
             schedule.ScheduleSubjects = dto.SubjectIds.Select(sId => new ScheduleSubject() { SubjectId = (int)sId }).ToList();
             //return await repos.Meetings.MassCreateAsync(creatingMeetings);

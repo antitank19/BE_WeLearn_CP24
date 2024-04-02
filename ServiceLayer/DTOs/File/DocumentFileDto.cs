@@ -13,5 +13,7 @@ public class DocumentFileDto
     public DateTime CreatedDate { get; set; }
     public int GroupId { get; set; }
     public string GroupName { get; set; }
+    public bool IsActive { get; set; }
+
 
 }

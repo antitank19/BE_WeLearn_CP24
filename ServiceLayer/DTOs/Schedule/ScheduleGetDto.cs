@@ -16,7 +16,7 @@ namespace ServiceLayer.DTOs
         public string DaysOfWeek { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-
+        public bool IsActive { get; set; }
         public LiveMeetingGetDto CurrentLiveMeeting { get; set; }
         public virtual ICollection<ScheduleMeetingGetDto> ScheduleMeetings { get; set; } = new Collection<ScheduleMeetingGetDto>();
     }

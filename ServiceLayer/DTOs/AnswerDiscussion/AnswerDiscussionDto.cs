@@ -17,5 +17,6 @@ namespace ServiceLayer.DTOs
         public string? Content { get; set; }
         public string? FilePath { get; set; }
         public DateTime CreateAt { get; set; }
+        public bool IsActive { get; set; } 
     }
 }

@@ -27,6 +27,22 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
+                var discussions = await services.Discussions.GetDiscussionsByGroupId(groupId);
+                return Ok(discussions);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        [HttpGet("api/Discussion/Get/{discussionId}")]
+        public async Task<IActionResult> GetDiscussionDetail(int dicussionId)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
                 var discussions = await services.Discussions.GetDocumentFilesByGroupId(groupId);
                 return Ok(discussions);
             }
@@ -36,6 +52,7 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
+
 
 
         [HttpPost("api/Discussion/Upload")]

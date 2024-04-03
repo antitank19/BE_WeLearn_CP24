@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -29,7 +30,15 @@ namespace ServiceLayer.Services.Implementation.Db
             _repos = repoWrapper;
             _webHostEnvironment = webHostEnvironment;
         }
-        public async Task<List<DiscussionDto>> GetDocumentFilesByGroupId(int groupId)
+
+        public async Task<DiscussionDto> GetDiscussionById(int discussionId)
+        {
+            var discussion = await _repos.Discussions.GetByIdAsync(discussionId);
+            var mapper = _mapper.Map<DiscussionDto>(discussion);
+            return mapper;
+        }
+
+        public async Task<List<DiscussionDto>> GetDiscussionsByGroupId(int groupId)
         {
             var discussion = await _repos.Discussions.GetDocumentFilesByGroupId(groupId);
             var mapper = _mapper.Map<List<DiscussionDto>>(discussion);

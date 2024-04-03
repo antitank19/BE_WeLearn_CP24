@@ -11,7 +11,8 @@ namespace ServiceLayer.Services.Interface.Db
 {
     public interface IDiscussionService
     {
-        public Task<List<DiscussionDto>> GetDocumentFilesByGroupId(int groupId);
+        public Task<DiscussionDto> GetDiscussionById(int discussionid);
+        public Task<List<DiscussionDto>> GetDiscussionsByGroupId(int groupId);
         public Task UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto);
         public Task UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto);
     }

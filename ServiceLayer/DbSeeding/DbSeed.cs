@@ -161,9 +161,9 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
-                RoleId = 2
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
-v                ReportCounter = 0,
+                ReportCounter = 0,
                 IsBanned = false
             },
             new Account

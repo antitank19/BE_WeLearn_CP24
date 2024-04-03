@@ -37,13 +37,13 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("api/Discussion/Get/{discussionId}")]
+        [HttpGet("api/Discussion/GetByDiscussionId/{discussionId}")]
         public async Task<IActionResult> GetDiscussionDetail(int dicussionId)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var discussions = await services.Discussions.GetDocumentFilesByGroupId(groupId);
+                var discussions = await services.Discussions.GetDiscussionById(dicussionId);
                 return Ok(discussions);
             }
             catch (Exception ex)

@@ -19,9 +19,12 @@ namespace RepoLayer.Implement
         {
             this.dbContext = dbContext;
         }
-        public override Task<Discussion> GetByIdAsync(int id)
+        public override async Task<Discussion> GetByIdAsync(int id)
         {
-            return base.GetByIdAsync(id);
+            return await dbContext.Discussions
+                 .Include(x => x.Account)
+                 .Include(x => x.AnswerDiscussion)
+                 .FirstOrDefaultAsync(x => x.Id == id);
         }
         public override Task CreateAsync(Discussion entity)
         {

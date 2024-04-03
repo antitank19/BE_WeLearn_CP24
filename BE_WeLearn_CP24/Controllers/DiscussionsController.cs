@@ -37,7 +37,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("api/Discussion/GetByDiscussionId/{discussionId}")]
+        [HttpGet("api/Discussion/GetByDiscussionId/")]
         public async Task<IActionResult> GetDiscussionDetail(int dicussionId)
         {
             ValidatorResult valResult = new ValidatorResult();

@@ -479,7 +479,12 @@ namespace API.SignalRHub
             var usersInMeeting = repos.Connections.GetList()
                .Where(e => e.MeetingId == meeting.Id && e.End == null)
                .Select(e => e.UserName).ToHashSet();
-            await EndFocus(new FocusInput (){ roomId= roomId, peerId=peerId });
+            //await EndFocus(new FocusInput (){ roomId= roomId, peerId=peerId });
+            List<FocusItem> focusList = FocusMap[roomId];
+            FocusItem focus = focusList.FirstOrDefault(e => e.peerId == input.peerId);
+            focusList.Remove(focus);
+            await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
+
             await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
             if (usersInMeeting.Count == 0)
             {

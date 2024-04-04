@@ -8,7 +8,7 @@ namespace APIExtension.Validator
 {
     public interface IAccountValidator
     {
-        Task<ValidatorResult> ValidateParams(AccountUpdateDto dto);
+        Task<ValidatorResult> ValidateParams(int accountId, AccountUpdateDto dto);
         Task<ValidatorResult> ValidateParams(StudentRegisterDto dto);
         Task<ValidatorResult> ValidateParams(ParentRegisterDto dto);
         Task<ValidatorResult> ValidateParams(AccountChangePasswordDto dto);
@@ -219,11 +219,11 @@ namespace APIExtension.Validator
             return validatorResult;
         }
 
-        public async Task<ValidatorResult> ValidateParams(AccountUpdateDto dto)
+        public async Task<ValidatorResult> ValidateParams(int accountId, AccountUpdateDto dto)
         {
             try
             {
-                if (!await services.Accounts.ExistAsync(dto.Id))
+                if (!await services.Accounts.ExistAsync(accountId))
                 {
                     // validatorResult.Failures.Add("Tài khoản không tồn tại");
                     validatorResult.Add("Tài khoản không tồn tại", ValidateErrType.NotFound);
@@ -499,11 +499,11 @@ namespace APIExtension.Validator
             return validatorResult;
         }
 
-        public static async Task<ValidatorResult> ValidateParams(this ValidatorResult validatorResult, IServiceWrapper services, AccountUpdateDto dto)
+        public static async Task<ValidatorResult> ValidateParams(this ValidatorResult validatorResult, IServiceWrapper services, AccountUpdateDto dto, int accountId)
         {
             try
             {
-                if (!await services.Accounts.ExistAsync(dto.Id))
+                if (!await services.Accounts.ExistAsync(accountId))
                 {
                    // validatorResult.Failures.Add("Tài khoản không tồn tại");
                     validatorResult.Add("Tài khoản không tồn tại", ValidateErrType.NotFound);

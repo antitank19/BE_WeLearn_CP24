@@ -20,7 +20,7 @@ namespace ServiceLayer.Services.Interface.Db
         /// <param name="creatorId">id of creator account id</param>
         /// <returns></returns>
         public Task CreateAsync(Account account, IFormFile? image);
-        public Task UpdateAsync(AccountUpdateDto account);
+        public Task<AccountProfileDto> UpdateAsync(int accountId, AccountUpdateDto account);
         public Task UpdatePasswordAsync(AccountChangePasswordDto dto);
         public Task RemoveAsync(int id);
         public Task<Account> GetAccountByUserNameAsync(string userName);

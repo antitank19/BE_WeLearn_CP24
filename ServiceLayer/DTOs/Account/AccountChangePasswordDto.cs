@@ -5,8 +5,6 @@ namespace ServiceLayer.DTOs
 {
     public class AccountChangePasswordDto : BaseUpdateDto
     {
-        [Key]
-        public int Id { get; set; }
         private string oldPassword;
 
         public string OldPassword

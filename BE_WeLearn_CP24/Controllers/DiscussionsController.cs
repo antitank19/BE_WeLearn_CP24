@@ -61,8 +61,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.Discussions.UploadDiscussion(accountId, groupId, dto);
-                return Ok();
+                var discussion = await services.Discussions.UploadDiscussion(accountId, groupId, dto);
+                return Ok(discussion);
             }
             catch (Exception ex)
             {
@@ -77,8 +77,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.Discussions.UdateDiscussion(discussionId, dto);
-                return Ok();
+                var discussion = await services.Discussions.UdateDiscussion(discussionId, dto);
+                return Ok(discussion);
             }
             catch (Exception ex)
             {

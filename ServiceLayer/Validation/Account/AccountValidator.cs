@@ -11,7 +11,7 @@ namespace APIExtension.Validator
         Task<ValidatorResult> ValidateParams(int accountId, AccountUpdateDto dto);
         Task<ValidatorResult> ValidateParams(StudentRegisterDto dto);
         Task<ValidatorResult> ValidateParams(ParentRegisterDto dto);
-        Task<ValidatorResult> ValidateParams(AccountChangePasswordDto dto);
+        Task<ValidatorResult> ValidateParams(int accountId, AccountChangePasswordDto dto);
     }
     public class AccountValidator : BaseValidator, IAccountValidator
     {
@@ -269,7 +269,7 @@ namespace APIExtension.Validator
         }
         private static string FAIL_CONFIRM_PASSWORD_MSG => "Xác nhận mật khẩu thất bại";
 
-        public async Task<ValidatorResult> ValidateParams(AccountChangePasswordDto dto)
+        public async Task<ValidatorResult> ValidateParams(int accountId, AccountChangePasswordDto dto)
         {
             try
             {
@@ -278,7 +278,7 @@ namespace APIExtension.Validator
                     // validatorResult.Failures.Add(FAIL_CONFIRM_PASSWORD_MSG);
                     validatorResult.Add(FAIL_CONFIRM_PASSWORD_MSG, nameof(dto.ConfirmPassword));
                 }
-                var account = await services.Accounts.GetByIdAsync<Account>(dto.Id);
+                var account = await services.Accounts.GetByIdAsync<Account>(accountId);
                 if (account == null)
                 {
                     // validatorResult.Failures.Add("Tài khoản không tồn tại");
@@ -549,7 +549,7 @@ namespace APIExtension.Validator
         }
         private static string FAIL_CONFIRM_PASSWORD_MSG => "Xác nhận mật khẩu thất bại";
 
-        public static async Task<ValidatorResult> ValidateParams(this ValidatorResult validatorResult, IServiceWrapper services, AccountChangePasswordDto dto)
+        public static async Task<ValidatorResult> ValidateParams(this ValidatorResult validatorResult, IServiceWrapper services, AccountChangePasswordDto dto, int accountId)
         {
             try
             {
@@ -558,7 +558,7 @@ namespace APIExtension.Validator
                    // validatorResult.Failures.Add(FAIL_CONFIRM_PASSWORD_MSG);
                     validatorResult.Add(FAIL_CONFIRM_PASSWORD_MSG, nameof(dto.ConfirmPassword));
                 }
-                var account = await services.Accounts.GetByIdAsync<Account>(dto.Id);
+                var account = await services.Accounts.GetByIdAsync<Account>(accountId);
                 if (account == null)
                 {
                    // validatorResult.Failures.Add("Tài khoản không tồn tại");

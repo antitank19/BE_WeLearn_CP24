@@ -5,7 +5,6 @@ namespace ServiceLayer.DTOs
 {
     public class GroupUpdateDto : BaseUpdateDto
     {
-        public int Id { get; set; }
         private string? name;
         public string? Name
         {

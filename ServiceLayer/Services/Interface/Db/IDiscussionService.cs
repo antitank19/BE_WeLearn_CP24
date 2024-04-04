@@ -13,7 +13,7 @@ namespace ServiceLayer.Services.Interface.Db
     {
         public Task<DiscussionDto> GetDiscussionById(int discussionid);
         public Task<List<DiscussionDto>> GetDiscussionsByGroupId(int groupId);
-        public Task UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto);
-        public Task UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto);
+        public Task<DiscussionDto> UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto);
+        public Task<DiscussionDto> UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto);
     }
 }

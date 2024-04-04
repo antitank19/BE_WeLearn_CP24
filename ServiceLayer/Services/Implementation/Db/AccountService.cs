@@ -189,11 +189,14 @@ namespace ServiceLayer.Services.Implementation.Db
             var mapped = mapper.Map<AccountProfileDto>(account);
             return mapped;
         }
-        public async Task UpdatePasswordAsync(AccountChangePasswordDto dto)
+        public async Task<AccountProfileDto> UpdatePasswordAsync(int accountId , AccountChangePasswordDto dto)
         {
-            var account = await repos.Accounts.GetByIdAsync(dto.Id);
+            var account = await repos.Accounts.GetByIdAsync(accountId);
             account.Password = dto.Password;
             await repos.Accounts.UpdateAsync(account);
+
+            var mapped = mapper.Map<AccountProfileDto>(account);
+            return mapped;
         }
 
         public async Task<bool> ExistAsync(int id)

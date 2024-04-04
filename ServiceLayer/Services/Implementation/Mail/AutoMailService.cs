@@ -244,9 +244,8 @@ namespace ServiceLayer.Services.Implementation.Mail
             string newPassword = PasswordUtil.RandomPassword(9);
             //account.Password = newPassword.CustomHash();
             //await accountsService.UpdateAsync(account);
-            await accountsService.UpdatePasswordAsync(new AccountChangePasswordDto()
+            await accountsService.UpdatePasswordAsync(account.Id, new AccountChangePasswordDto()
             {
-                Id = account.Id,
                 OldPassword = account.Password,
                 Password = newPassword,
                 ConfirmPassword = newPassword

@@ -33,7 +33,7 @@ namespace ServiceLayer.Services.Implementation.Db
             return await _repos.AnswerDiscussions.GetAnswerDiscussionsByDiscussionId(discussionId);
         }
 
-        public async Task UpdateAnswerDiscussion(int answeDiscussionId, UploadAnswerDiscussionDto answerDiscussionDto)
+        public async Task<AnswerDiscussionDto> UpdateAnswerDiscussion(int answeDiscussionId, UploadAnswerDiscussionDto answerDiscussionDto)
         {
             var answerDiscussion = await _repos.AnswerDiscussions.GetByIdAsync(answeDiscussionId);
 
@@ -64,9 +64,13 @@ namespace ServiceLayer.Services.Implementation.Db
             answerDiscussion.PatchUpdate(answerDiscussionDto);
 
             await _repos.AnswerDiscussions.UpdateAsync(answerDiscussion);
+
+            var mapped = _mapper.Map<AnswerDiscussionDto>(answerDiscussion);
+            return mapped;
+
         }
 
-        public async Task UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto)
+        public async Task<AnswerDiscussionDto> UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto)
         {
             string filePath;
             AnswerDiscussion answerDiscussion = _mapper.Map<AnswerDiscussion>(answerDiscussionDto);
@@ -99,6 +103,9 @@ namespace ServiceLayer.Services.Implementation.Db
             }
 
             await _repos.AnswerDiscussions.CreateAsync(answerDiscussion);
+
+            var mapped = _mapper.Map<AnswerDiscussionDto>(answerDiscussion);
+            return mapped;
         }
     }
 }

@@ -303,9 +303,9 @@ namespace API.Controllers
                     return BadRequest(valResult);
                 }
                 //Group group = mapper.Map<Group>(dto);
-                await services.Groups.CreateAsync(dto, creatorId);
+                var group = await services.Groups.CreateAsync(dto, creatorId);
 
-                return Ok();
+                return Ok(group);
             }
             catch (Exception ex)
             {
@@ -326,11 +326,11 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                if (groupId != dto.Id)
-                {
-                    valResult.Add("Group Id không trùng", ValidateErrType.IdNotMatch);
-                    return BadRequest(valResult);
-                }
+                //if (groupId != dto.Id)
+                //{
+                //    valResult.Add("Group Id không trùng", ValidateErrType.IdNotMatch);
+                //    return BadRequest(valResult);
+                //}
                 int studentId = HttpContext.User.GetUserId();
                 //List<int> leadGroupIds = (await services.Groups.GetLeaderGroupsIdAsync(studentId));
 
@@ -346,7 +346,7 @@ namespace API.Controllers
                 }
 
                 //Group group = await services.Groups.GetFullByIdAsync<Group>(groupId);
-                GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
+                var group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
                 if (group == null)
                 {
                     valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
@@ -354,9 +354,9 @@ namespace API.Controllers
                 }
                 try
                 {
-                    await services.Groups.UpdateAsync(dto);
+                    var obj = await services.Groups.UpdateAsync(groupId, dto);
                     //var mapped = mapper.Map<GroupDetailForLeaderGetDto>(group);
-                    return Ok();
+                    return Ok(obj);
                 }
                 catch (Exception ex)
                 {

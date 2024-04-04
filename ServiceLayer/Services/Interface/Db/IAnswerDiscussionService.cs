@@ -13,8 +13,8 @@ namespace ServiceLayer.Services.Interface.Db
     public interface IAnswerDiscussionService
     {
         public Task<List<AnswerDiscussion>> GetAnswerDiscussionByDiscussionId(int discussionId);
-        public Task UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto);
-        public Task UpdateAnswerDiscussion(int discussionId, UploadAnswerDiscussionDto answerDiscussionDto);
+        public Task<AnswerDiscussionDto> UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto);
+        public Task<AnswerDiscussionDto> UpdateAnswerDiscussion(int discussionId, UploadAnswerDiscussionDto answerDiscussionDto);
 
     }
 }

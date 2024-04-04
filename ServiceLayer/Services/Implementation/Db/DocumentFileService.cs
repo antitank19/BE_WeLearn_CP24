@@ -30,16 +30,19 @@ public class DocumentFileService : IDocumentFileService
         var mapped = mapper.Map<List<DocumentFileDto>>(documentFiles);
         return mapped;
     }
-    public async Task ApproveRejectFile(int documentId ,Boolean check)
+    public async Task<DocumentFileDto> ApproveRejectFile(int documentId ,Boolean check)
     {
         var file = await repos.DocumentFiles.GetByIdAsync(documentId);
         file.Approved = check;
         
         await repos.DocumentFiles.ApproveRejectAsync(file);
+        return mapper.Map<DocumentFileDto>(file);
     }
 
-    public async Task UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId)
+    public async Task<DocumentFileDto> UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId)
     {
+        var file = new DocumentFile();
+
         if (fileUpload != null && fileUpload.Length > 0)
         {
             // Initialize FirebaseStorage instance
@@ -62,7 +65,6 @@ public class DocumentFileService : IDocumentFileService
 
             // Update the discussion entity with the download URL
 
-            DocumentFile file = new DocumentFile();
             file.HttpLink = downloadUrl;
             file.Approved = false;
             file.GroupId = groupId;
@@ -72,6 +74,8 @@ public class DocumentFileService : IDocumentFileService
 
             await repos.DocumentFiles.CreateAsync(file);
         }
+
+        return mapper.Map<DocumentFileDto>(file);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataLayer.DbObject;
+using Microsoft.AspNetCore.Http;
 using ServiceLayer.DTOs;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace ServiceLayer.Services.Interface.Db
         /// <param name="group"></param>
         /// <param name="creatorId">id of creator account id</param>
         /// <returns></returns>
-        public Task CreateAsync(GroupCreateDto dto, int creatorId);
+        public Task<Group> CreateAsync(GroupCreateDto dto, int creatorId);
         //public Task UpdateAsync(Group group);
-        public Task UpdateAsync(GroupUpdateDto dto);
+        public Task<GroupDetailForLeaderGetDto> UpdateAsync(int groupId, GroupUpdateDto dto);
         /// <summary>
         /// DO NOT USE
         /// </summary>

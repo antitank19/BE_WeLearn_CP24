@@ -94,13 +94,14 @@ namespace ServiceLayer.Services.Implementation.Db
             return mapped;
         }
 
-        public async Task CreateReport(ReportCreateDto dto, int senderId)
+        public async Task<Report> CreateReport(ReportCreateDto dto, int senderId)
         {
             var report = mapper.Map<Report>(dto);
             report.SenderId = senderId;
             report.State = RequestStateEnum.Waiting;
 
             await repos.Reports.CreateAsync(report);
+            return report;
         }
 
         public async Task<bool> IsReportExist(int reportId)
@@ -108,7 +109,7 @@ namespace ServiceLayer.Services.Implementation.Db
             return await repos.Requests.IdExistAsync(reportId);
         }
 
-        public async Task ResolveReport(int reportId, bool isApproved)
+        public async Task<Report> ResolveReport(int reportId, bool isApproved)
         {
             var report = await repos.Reports.GetByIdAsync(reportId);
             if(isApproved == true)
@@ -334,6 +335,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 report.State = RequestStateEnum.Decline;
             }
             await repos.Reports.UpdateAsync(report);
+            return report;
         }
 
     }

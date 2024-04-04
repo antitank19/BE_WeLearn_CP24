@@ -43,8 +43,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.AnswersDiscussions.UploadAnswerDiscussion(accountId, discussionId, dto);
-                return Ok();
+                var ansDis = await services.AnswersDiscussions.UploadAnswerDiscussion(accountId, discussionId, dto);
+                return Ok(ansDis);
             }
             catch (Exception ex)
             {
@@ -59,8 +59,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             { 
-                await services.AnswersDiscussions.UpdateAnswerDiscussion(discussionId, dto);
-                return Ok();
+                var ansDis = await services.AnswersDiscussions.UpdateAnswerDiscussion(discussionId, dto);
+                return Ok(ansDis);
             }
             catch (Exception ex)
             {

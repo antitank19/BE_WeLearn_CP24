@@ -21,7 +21,7 @@ namespace ServiceLayer.Services.Interface.Db
         /// <returns></returns>
         public Task CreateAsync(Account account, IFormFile? image);
         public Task<AccountProfileDto> UpdateAsync(int accountId, AccountUpdateDto account);
-        public Task UpdatePasswordAsync(AccountChangePasswordDto dto);
+        public Task<AccountProfileDto> UpdatePasswordAsync(int accountId, AccountChangePasswordDto dto);
         public Task RemoveAsync(int id);
         public Task<Account> GetAccountByUserNameAsync(string userName);
         public Task<Account> GetAccountByEmailAsync(string email);

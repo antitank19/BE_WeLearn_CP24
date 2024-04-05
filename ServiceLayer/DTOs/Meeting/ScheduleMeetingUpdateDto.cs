@@ -8,6 +8,8 @@ namespace ServiceLayer.DTOs
 {
     public class ScheduleMeetingUpdateDto  : BaseUpdateDto
     {
+        public int Id { get; set; }
+
         private string name;
 
         public string Name

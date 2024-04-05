@@ -50,6 +50,8 @@ namespace API.SignalRHub
         public static string GetMessagesMsg => "get-messages";
 
         public static string GetFocusMsg => "get-focusList";
+        public static string GetShowCamsMsg => "get-showcamList";
+        
         #endregion
 
         IMapper mapper;
@@ -335,6 +337,7 @@ namespace API.SignalRHub
         //public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
         public static readonly Dictionary<string, List<IMessage>> Chats = new Dictionary<string, List<IMessage>> ();
         public static readonly Dictionary<string, List<FocusItem>> FocusMap = new Dictionary<string, List<FocusItem>> ();
+        public static readonly Dictionary<string, List<ShowCamItem>> CamMap = new Dictionary<string, List<ShowCamItem>> ();
         public class CreateRoomInput
         {
             public string peerId { get; set; }
@@ -380,6 +383,11 @@ namespace API.SignalRHub
             {
                 FocusMap.Add(roomId, new List<FocusItem>());
             }
+            bool isShowCamListExisted = CamMap.ContainsKey(roomId);
+            if (!isShowCamListExisted)
+            {
+                CamMap.Add(roomId, new List<ShowCamItem>());
+            }
             Peer peer = new Peer
             {
                 peerId = peerId,
@@ -389,10 +397,11 @@ namespace API.SignalRHub
 
             //Help stablize fe
             System.Threading.Thread.Sleep(1000);
-            //await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
-            await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
+            await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
+            //await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
             await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
             await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
+            await Clients.Group(roomId).SendAsync(GetShowCamsMsg, CamMap[roomId]);
         }
 
         public class FocusInput
@@ -413,6 +422,14 @@ namespace API.SignalRHub
             public string peerId { get; set; }
             public List<string> actions { get; set; }
         }
+
+        public class ShowCamItem
+        {
+            public string roomId { get; set; }
+            public string peerId { get; set; }
+            public string imagePath { get; set; }
+        }
+
         public async Task StartFocus(FocusInput input)
         {
             string roomId = input.roomId;
@@ -421,7 +438,7 @@ namespace API.SignalRHub
             if (FocusMap.ContainsKey(roomId))
             {
                 List<FocusItem> focusList = FocusMap[roomId];
-                FocusItem focus = focusList.FirstOrDefault(e=>e.peerId == input.peerId);
+                FocusItem focus = focusList.FirstOrDefault(e=>e.peerId == peerId);
                 if(focus != null)
                 {
                     focus.actions.Add(action);
@@ -437,6 +454,8 @@ namespace API.SignalRHub
             }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
+    
+       
         public async Task EndFocus(FocusInput input)
         {
             string roomId = input.roomId;
@@ -445,7 +464,7 @@ namespace API.SignalRHub
             if (FocusMap.ContainsKey(roomId))
             {
                 List<FocusItem> focusList = FocusMap[roomId];
-                FocusItem focus = focusList.FirstOrDefault(e => e.peerId == input.peerId);
+                FocusItem focus = focusList.FirstOrDefault(e => e.peerId == peerId);
                 if (focus != null)
                 {
                     focus.actions.Remove(action);
@@ -457,7 +476,44 @@ namespace API.SignalRHub
             }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
-
+        public async Task StartCam(ShowCamItem input)
+        {
+            string roomId = input.roomId;
+            string peerId = input.peerId;
+            if (CamMap.ContainsKey(roomId))
+            {
+                List<ShowCamItem> showCamList = CamMap[roomId];
+                ShowCamItem cam = showCamList.FirstOrDefault(e => e.peerId == peerId);
+                if (cam == null)
+                {
+                    showCamList.Add(input);
+                }
+                else
+                {
+                    cam.imagePath = input.imagePath;
+                }
+            }
+            else
+            {
+                CamMap.Add(roomId, new List<ShowCamItem>() { input });
+            }
+            await Clients.Groups(roomId).SendAsync(GetFocusMsg, CamMap[roomId]);
+        }
+        public async Task EndCam(ShowCamItem input)
+        {
+            string roomId = input.roomId;
+            string peerId = input.peerId;
+            if (FocusMap.ContainsKey(roomId))
+            {
+                List<ShowCamItem> showCamList = CamMap[roomId];
+                ShowCamItem cam = showCamList.FirstOrDefault(e => e.peerId == peerId);
+                if (cam != null)
+                {
+                    showCamList.Remove(cam);
+                }
+            }
+            await Clients.Groups(roomId).SendAsync(GetFocusMsg, CamMap[roomId]);
+        }
         public class LeaveRoomInput
         {
             public string roomId { get; set; }
@@ -496,6 +552,7 @@ namespace API.SignalRHub
                 await repos.Meetings.UpdateAsync(meeting);
                 Chats.Remove(roomId);
                 FocusMap.Remove(roomId);
+                CamMap.Remove(roomId);
                 DrawHub.Drawings.Remove(roomId);
             }
             else

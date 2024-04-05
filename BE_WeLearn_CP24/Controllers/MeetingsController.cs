@@ -360,12 +360,12 @@ namespace API.Controllers
                     return Unauthorized("Bạn không phải thành viên của nhóm này");
                 }
                 //dto.Date=dto.Date.AddDays(1);
-                await valResult.ValidateParams(services, dto, studentId);
+                await valResult.ValidateParams(services, dto, studentId, id);
                 if (!valResult.IsValid)
                 {
                     return BadRequest(valResult);
                 }
-                await services.Meetings.UpdateScheduleMeetingAsync(dto);
+                await services.Meetings.UpdateScheduleMeetingAsync(id, dto);
                 //Meeting updated = await services.Meetings.GetByIdAsync(id);
                 //var updatedDto = mapper.Map<ScheduleMeetingGetDto>(updated);
                 ScheduleMeetingGetDto mappedUpdated = await services.Meetings.GetByIdAsync<ScheduleMeetingGetDto>(id);

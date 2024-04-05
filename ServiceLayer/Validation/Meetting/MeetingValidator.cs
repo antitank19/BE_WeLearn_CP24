@@ -8,7 +8,7 @@ namespace APIExtension.Validator
     {
         public Task<ValidatorResult> ValidateParams(ScheduleMeetingCreateDto? dto, int studentId);
         public Task<ValidatorResult> ValidateParams(InstantMeetingCreateDto? dto, int studentId);
-        public Task<ValidatorResult> ValidateParams(ScheduleMeetingUpdateDto? dto, int studentId);
+        public Task<ValidatorResult> ValidateParams(ScheduleMeetingUpdateDto? dto, int studentId, int meetingId);
         public Task<ValidatorResult> ValidateParams(ScheduleMeetingMassCreateDto? dto, int studentId);
     }
     public class MeetingValidator : BaseValidator, IMeetingValidator
@@ -112,11 +112,11 @@ namespace APIExtension.Validator
             return validatorResult;
         }
 
-        public async Task<ValidatorResult> ValidateParams(ScheduleMeetingUpdateDto? dto, int studentId)
+        public async Task<ValidatorResult> ValidateParams(ScheduleMeetingUpdateDto? dto, int studentId, int meetingId)
         {
             try
             {
-                Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(dto.Id);
+                Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(meetingId);
                 if (meeting == null)
                 {
                     //validatorResult.Failures.Add("Buổi học không tồn tại");
@@ -327,11 +327,11 @@ namespace APIExtension.Validator
             return validatorResult;
         }
 
-        public static async Task<ValidatorResult> ValidateParams(this ValidatorResult validatorResult, IServiceWrapper services, ScheduleMeetingUpdateDto? dto, int studentId)
+        public static async Task<ValidatorResult> ValidateParams(this ValidatorResult validatorResult, IServiceWrapper services, ScheduleMeetingUpdateDto? dto, int studentId, int meetingId)
         {
             try
             {
-                Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(dto.Id);
+                Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(meetingId);
                 if (meeting == null)
                 {
                     //validatorResult.Failures.Add("Buổi học không tồn tại");

@@ -241,12 +241,12 @@ namespace ServiceLayer.Services.Implementation.Db
             return scheduleMeetingsOfJoinedGroups.ProjectTo<LiveMeetingGetDto>(mapper.ConfigurationProvider);
         }
 
-        public async Task UpdateScheduleMeetingAsync(ScheduleMeetingUpdateDto dto)
+        public async Task UpdateScheduleMeetingAsync(int meetingId, ScheduleMeetingUpdateDto dto)
         {
-            Meeting existed = await repos.Meetings.GetByIdAsync(dto.Id);
+            Meeting existed = await repos.Meetings.GetByIdAsync(meetingId);
             Meeting updated = new Meeting
             {
-                Id = dto.Id,
+                Id = meetingId,
                 Name = dto.Name,
                 Content = dto.Content,
                 ScheduleStart = dto.Date.Date.Add(dto.ScheduleStartTime),

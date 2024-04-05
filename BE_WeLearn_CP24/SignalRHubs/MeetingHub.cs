@@ -497,7 +497,7 @@ namespace API.SignalRHub
             {
                 CamMap.Add(roomId, new List<ShowCamItem>() { input });
             }
-            await Clients.Groups(roomId).SendAsync(GetFocusMsg, CamMap[roomId]);
+            await Clients.Groups(roomId).SendAsync(GetShowCamsMsg, CamMap[roomId]);
         }
         public async Task EndCam(ShowCamItem input)
         {
@@ -512,7 +512,7 @@ namespace API.SignalRHub
                     showCamList.Remove(cam);
                 }
             }
-            await Clients.Groups(roomId).SendAsync(GetFocusMsg, CamMap[roomId]);
+            await Clients.Groups(roomId).SendAsync(GetShowCamsMsg, CamMap[roomId]);
         }
         public class LeaveRoomInput
         {
@@ -540,6 +540,11 @@ namespace API.SignalRHub
             FocusItem focus = focusList.FirstOrDefault(e => e.peerId == input.peerId);
             focusList.Remove(focus);
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
+
+            List<ShowCamItem> camList = CamMap[roomId];
+            ShowCamItem cam = camList.FirstOrDefault(e => e.peerId == input.peerId);
+            camList.Remove(cam);
+            await Clients.Groups(input.roomId).SendAsync(GetShowCamsMsg, CamMap[input.roomId]);
 
             await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
             if (usersInMeeting.Count == 0)

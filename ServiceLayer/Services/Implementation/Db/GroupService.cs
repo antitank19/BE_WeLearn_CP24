@@ -133,7 +133,7 @@ namespace ServiceLayer.Services.Implementation.Db
         }
 
 
-        public async Task CreateAsync(GroupCreateDto dto, int creatorId)
+        public async Task<Group> CreateAsync(GroupCreateDto dto, int creatorId)
         {
             string filePath = null;
             if (dto.Image != null && dto.Image.Length > 0)
@@ -189,6 +189,7 @@ namespace ServiceLayer.Services.Implementation.Db
             entity.IsBanned = false;
 
             await repos.Groups.CreateAsync(entity);
+            return entity;
         }
 
         public async Task RemoveAsync(int id)
@@ -201,9 +202,9 @@ namespace ServiceLayer.Services.Implementation.Db
         //    await repos.Groups.UpdateAsync(entity);
         //}
 
-        public async Task UpdateAsync(GroupUpdateDto dto)
+        public async Task<GroupDetailForLeaderGetDto> UpdateAsync(int groupId, GroupUpdateDto dto)
         {
-            var group = await repos.Groups.GetByIdAsync(dto.Id);
+            var group = await repos.Groups.GetByIdAsync(groupId);
 
             //Image
             if(dto.Image != null && dto.Image.Length > 0)
@@ -259,6 +260,8 @@ namespace ServiceLayer.Services.Implementation.Db
             //}
             //group.GroupSubjects = dto.SubjectIds.Select(subId => new GroupSubject { GroupId = dto.Id, SubjectId = (int)subId }).ToList();
             await repos.Groups.UpdateAsync(group);
+            var mapped = mapper.Map<GroupDetailForLeaderGetDto>(group);
+            return mapped;
         }
 
         public async Task<List<int>> GetLeaderGroupsIdAsync(int studentId)

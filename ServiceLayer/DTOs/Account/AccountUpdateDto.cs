@@ -5,9 +5,6 @@ namespace ServiceLayer.DTOs
 {
     public class AccountUpdateDto  : BaseUpdateDto
     {
-        [Key]
-        public int Id { get; set; }
-
         private string? fullName;
         public string? FullName
         {

@@ -162,8 +162,8 @@ namespace API.Controllers
             {
                 //valResult.ValidateParams(dto);
                 int reporterId = HttpContext.User.GetUserId();
-                await services.Reports.CreateReport(dto, reporterId);
-                return Ok();
+                var report = await services.Reports.CreateReport(dto, reporterId);
+                return Ok(report);
             }
             catch (Exception ex)
             {
@@ -177,8 +177,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.Reports.ResolveReport(reportId, isApproved);
-                return Ok();
+                var report = await services.Reports.ResolveReport(reportId, isApproved);
+                return Ok(report);
             }
             catch (Exception ex)
             {

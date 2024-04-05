@@ -122,11 +122,11 @@ namespace API.Controllers
                     valResult.Add("Không thể thay đổi profile của người khác", ValidateErrType.Unauthorized);
                     return Unauthorized(valResult);
                 }
-                if (accountId != dto.Id)
-                {
-                    valResult.Add("2 Id không trùng", ValidateErrType.IdNotMatch);
-                    return BadRequest(valResult);
-                }
+                //if (accountId != dto.Id)
+                //{
+                //    valResult.Add("2 Id không trùng", ValidateErrType.IdNotMatch);
+                //    return BadRequest(valResult);
+                //}
 
                 var existedAccount = await services.Accounts.ExistAsync(accountId);
                 if (!existedAccount)
@@ -134,15 +134,15 @@ namespace API.Controllers
                     return NotFound();
                 }
                 //ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
-                await valResult.ValidateParams(services, dto);
+                await valResult.ValidateParams(services, dto, accountId);
                 if (!valResult.IsValid)
                 {
                     return BadRequest(valResult);
                 }
                 try
                 {
-                    await services.Accounts.UpdateAsync(dto);
-                    return Ok();
+                    var account = await services.Accounts.UpdateAsync( accountId, dto);
+                    return Ok(account);
                 }
                 catch (Exception ex)
                 {
@@ -182,13 +182,13 @@ namespace API.Controllers
                     valResult.Add("Không thể thay đổi profile của người khác", ValidateErrType.Unauthorized);
                     return Unauthorized(valResult);
                 }
-                if (accountId != dto.Id)
-                {
-                    valResult.Add("2 Id không trùng", ValidateErrType.IdNotMatch);
-                    return BadRequest(valResult);
-                }
+                //if (accountId != dto.Id)
+                //{
+                //    valResult.Add("2 Id không trùng", ValidateErrType.IdNotMatch);
+                //    return BadRequest(valResult);
+                //}
                 //ValidatorResult valResult = await validators.Accounts.ValidateParams(dto);
-                await valResult.ValidateParams(services, dto);
+                await valResult.ValidateParams(services, dto, accountId);
                 if (!valResult.IsValid)
                 {
                     return BadRequest(valResult);
@@ -211,8 +211,8 @@ namespace API.Controllers
                 {
                     //account.PatchUpdate<Account, AccountChangePasswordDto>(dto);
                     //await services.Accounts.UpdateAsync(account);
-                    await services.Accounts.UpdatePasswordAsync(dto);
-                    return Ok();
+                    var account = await services.Accounts.UpdatePasswordAsync(accountId, dto);
+                    return Ok(account);
                 }
                 catch (Exception ex)
                 {

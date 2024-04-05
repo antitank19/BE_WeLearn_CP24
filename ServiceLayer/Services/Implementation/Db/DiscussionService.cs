@@ -45,7 +45,7 @@ namespace ServiceLayer.Services.Implementation.Db
             return mapper;
         }
 
-        public async Task UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto)
+        public async Task<DiscussionDto> UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto)
         {
             var discussion = await _repos.Discussions.GetByIdAsync(discussionId);
                       
@@ -76,9 +76,11 @@ namespace ServiceLayer.Services.Implementation.Db
             discussion.PatchUpdate(discussionDto);
 
             await _repos.Discussions.UpdateAsync(discussion);
+            var mapped = _mapper.Map<DiscussionDto>(discussion);
+            return mapped;
         }
 
-        public async Task UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto)
+        public async Task<DiscussionDto> UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto)
         {
             string filePath;
             Discussion discussion = _mapper.Map<Discussion>(discussionDto);
@@ -111,6 +113,9 @@ namespace ServiceLayer.Services.Implementation.Db
             }
             discussion.CreateAt = DateTime.Now;
             await _repos.Discussions.CreateAsync(discussion);
+            var mapped = _mapper.Map<DiscussionDto>(discussion);
+            return mapped;
+
         }
     }
 }

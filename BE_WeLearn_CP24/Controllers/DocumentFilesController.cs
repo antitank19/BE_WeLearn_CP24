@@ -49,8 +49,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.Documents.UploadDocumentFIle(file, groupId, accountId);
-                return Ok();
+                var doc = await services.Documents.UploadDocumentFIle(file, groupId, accountId);
+                return Ok(doc);
             }
             catch (Exception ex)
             {
@@ -65,8 +65,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                await services.Documents.ApproveRejectFile(documentId, check);
-                return Ok();
+                var doc = await services.Documents.ApproveRejectFile(documentId, check);
+                return Ok(doc);
             }
             catch (Exception ex)
             {

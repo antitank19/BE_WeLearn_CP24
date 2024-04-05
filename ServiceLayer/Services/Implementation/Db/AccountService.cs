@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using static System.Net.Mime.MediaTypeNames;
 using Firebase.Storage;
 using ServiceLayer.Validation.FileUpload;
+using APIExtension.Validator;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -149,10 +150,10 @@ namespace ServiceLayer.Services.Implementation.Db
             await repos.Accounts.RemoveAsync(id);
         }
 
-        public async Task UpdateAsync(AccountUpdateDto dto)
+        public async Task<AccountProfileDto> UpdateAsync(int accountId, AccountUpdateDto dto)
         {
             string filePath;
-            Account account = await repos.Accounts.GetByIdAsync(dto.Id);
+            Account account = await repos.Accounts.GetByIdAsync(accountId);
             //Image
             if (dto.Image != null && dto.Image.Length > 0)
             {
@@ -179,17 +180,23 @@ namespace ServiceLayer.Services.Implementation.Db
                 }
                 else
                 {
-                    throw new ArgumentException("Not support file type!", nameof(dto.Image.FileName));
+                    throw new Exception("Not support file type" + nameof(dto.Image.FileName).ToString());
                 }
             }
                 account.PatchUpdate(dto);
             await repos.Accounts.UpdateAsync(account);
+            
+            var mapped = mapper.Map<AccountProfileDto>(account);
+            return mapped;
         }
-        public async Task UpdatePasswordAsync(AccountChangePasswordDto dto)
+        public async Task<AccountProfileDto> UpdatePasswordAsync(int accountId , AccountChangePasswordDto dto)
         {
-            var account = await repos.Accounts.GetByIdAsync(dto.Id);
+            var account = await repos.Accounts.GetByIdAsync(accountId);
             account.Password = dto.Password;
             await repos.Accounts.UpdateAsync(account);
+
+            var mapped = mapper.Map<AccountProfileDto>(account);
+            return mapped;
         }
 
         public async Task<bool> ExistAsync(int id)

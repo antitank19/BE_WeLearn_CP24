@@ -50,7 +50,7 @@ namespace API.SignalRHub
         public static string GetMessagesMsg => "get-messages";
 
         public static string GetFocusMsg => "get-focusList";
-        public static string GetShowCamsMsg => "get-showcamList";
+        public static string GetAvaMsg => "get-showAvaList";
         
         #endregion
 
@@ -337,7 +337,7 @@ namespace API.SignalRHub
         //public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
         public static readonly Dictionary<string, List<IMessage>> Chats = new Dictionary<string, List<IMessage>> ();
         public static readonly Dictionary<string, List<FocusItem>> FocusMap = new Dictionary<string, List<FocusItem>> ();
-        public static readonly Dictionary<string, List<ShowCamItem>> CamMap = new Dictionary<string, List<ShowCamItem>> ();
+        public static readonly Dictionary<string, List<ShowAvaInput>> AvaMap = new Dictionary<string, List<ShowAvaInput>> ();
         public class CreateRoomInput
         {
             public string peerId { get; set; }
@@ -383,10 +383,10 @@ namespace API.SignalRHub
             {
                 FocusMap.Add(roomId, new List<FocusItem>());
             }
-            bool isShowCamListExisted = CamMap.ContainsKey(roomId);
+            bool isShowCamListExisted = AvaMap.ContainsKey(roomId);
             if (!isShowCamListExisted)
             {
-                CamMap.Add(roomId, new List<ShowCamItem>());
+                AvaMap.Add(roomId, new List<ShowAvaInput>());
             }
             Peer peer = new Peer
             {
@@ -401,7 +401,7 @@ namespace API.SignalRHub
             //await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
             await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
             await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
-            await Clients.Group(roomId).SendAsync(GetShowCamsMsg, CamMap[roomId]);
+            await Clients.Group(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
         }
 
         public class FocusInput
@@ -423,7 +423,7 @@ namespace API.SignalRHub
             public List<string> actions { get; set; }
         }
 
-        public class ShowCamItem
+        public class ShowAvaInput
         {
             public string roomId { get; set; }
             public string peerId { get; set; }
@@ -476,43 +476,43 @@ namespace API.SignalRHub
             }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
-        public async Task StartCam(ShowCamItem input)
+        public async Task StartAva(ShowAvaInput input)
         {
             string roomId = input.roomId;
             string peerId = input.peerId;
-            if (CamMap.ContainsKey(roomId))
+            if (AvaMap.ContainsKey(roomId))
             {
-                List<ShowCamItem> showCamList = CamMap[roomId];
-                ShowCamItem cam = showCamList.FirstOrDefault(e => e.peerId == peerId);
-                if (cam == null)
+                List<ShowAvaInput> showAvaList = AvaMap[roomId];
+                ShowAvaInput ava = showAvaList.FirstOrDefault(e => e.peerId == peerId);
+                if (ava == null)
                 {
-                    showCamList.Add(input);
+                    showAvaList.Add(input);
                 }
                 else
                 {
-                    cam.imagePath = input.imagePath;
+                    ava.imagePath = input.imagePath;
                 }
             }
             else
             {
-                CamMap.Add(roomId, new List<ShowCamItem>() { input });
+                AvaMap.Add(roomId, new List<ShowAvaInput>() { input });
             }
-            await Clients.Groups(roomId).SendAsync(GetShowCamsMsg, CamMap[roomId]);
+            await Clients.Groups(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
         }
-        public async Task EndCam(ShowCamItem input)
+        public async Task EndAva(ShowAvaInput input)
         {
             string roomId = input.roomId;
             string peerId = input.peerId;
             if (FocusMap.ContainsKey(roomId))
             {
-                List<ShowCamItem> showCamList = CamMap[roomId];
-                ShowCamItem cam = showCamList.FirstOrDefault(e => e.peerId == peerId);
-                if (cam != null)
+                List<ShowAvaInput> showAvaList = AvaMap[roomId];
+                ShowAvaInput ava = showAvaList.FirstOrDefault(e => e.peerId == peerId);
+                if (ava != null)
                 {
-                    showCamList.Remove(cam);
+                    showAvaList.Remove(ava);
                 }
             }
-            await Clients.Groups(roomId).SendAsync(GetShowCamsMsg, CamMap[roomId]);
+            await Clients.Groups(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
         }
         public class LeaveRoomInput
         {
@@ -541,10 +541,10 @@ namespace API.SignalRHub
             focusList.Remove(focus);
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
 
-            List<ShowCamItem> camList = CamMap[roomId];
-            ShowCamItem cam = camList.FirstOrDefault(e => e.peerId == input.peerId);
+            List<ShowAvaInput> camList = AvaMap[roomId];
+            ShowAvaInput cam = camList.FirstOrDefault(e => e.peerId == input.peerId);
             camList.Remove(cam);
-            await Clients.Groups(input.roomId).SendAsync(GetShowCamsMsg, CamMap[input.roomId]);
+            await Clients.Groups(input.roomId).SendAsync(GetAvaMsg, AvaMap[input.roomId]);
 
             await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
             if (usersInMeeting.Count == 0)
@@ -557,7 +557,7 @@ namespace API.SignalRHub
                 await repos.Meetings.UpdateAsync(meeting);
                 Chats.Remove(roomId);
                 FocusMap.Remove(roomId);
-                CamMap.Remove(roomId);
+                AvaMap.Remove(roomId);
                 DrawHub.Drawings.Remove(roomId);
             }
             else

@@ -50,6 +50,8 @@ namespace API.SignalRHub
         public static string GetMessagesMsg => "get-messages";
 
         public static string GetFocusMsg => "get-focusList";
+        public static string GetAvaMsg => "get-showAvaList";
+        
         #endregion
 
         IMapper mapper;
@@ -335,6 +337,7 @@ namespace API.SignalRHub
         //public static readonly Dictionary<string, Dictionary<string, Peer>> Rooms = new Dictionary<string, Dictionary<string, Peer>>();
         public static readonly Dictionary<string, List<IMessage>> Chats = new Dictionary<string, List<IMessage>> ();
         public static readonly Dictionary<string, List<FocusItem>> FocusMap = new Dictionary<string, List<FocusItem>> ();
+        public static readonly Dictionary<string, List<ShowAvaInput>> AvaMap = new Dictionary<string, List<ShowAvaInput>> ();
         public class CreateRoomInput
         {
             public string peerId { get; set; }
@@ -380,6 +383,11 @@ namespace API.SignalRHub
             {
                 FocusMap.Add(roomId, new List<FocusItem>());
             }
+            bool isShowCamListExisted = AvaMap.ContainsKey(roomId);
+            if (!isShowCamListExisted)
+            {
+                AvaMap.Add(roomId, new List<ShowAvaInput>());
+            }
             Peer peer = new Peer
             {
                 peerId = peerId,
@@ -389,10 +397,11 @@ namespace API.SignalRHub
 
             //Help stablize fe
             System.Threading.Thread.Sleep(1000);
-            //await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
-            await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
+            await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
+            //await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
             await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
             await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
+            await Clients.Group(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
         }
 
         public class FocusInput
@@ -413,6 +422,14 @@ namespace API.SignalRHub
             public string peerId { get; set; }
             public List<string> actions { get; set; }
         }
+
+        public class ShowAvaInput
+        {
+            public string roomId { get; set; }
+            public string peerId { get; set; }
+            public string imagePath { get; set; }
+        }
+
         public async Task StartFocus(FocusInput input)
         {
             string roomId = input.roomId;
@@ -421,7 +438,7 @@ namespace API.SignalRHub
             if (FocusMap.ContainsKey(roomId))
             {
                 List<FocusItem> focusList = FocusMap[roomId];
-                FocusItem focus = focusList.FirstOrDefault(e=>e.peerId == input.peerId);
+                FocusItem focus = focusList.FirstOrDefault(e=>e.peerId == peerId);
                 if(focus != null)
                 {
                     focus.actions.Add(action);
@@ -437,6 +454,8 @@ namespace API.SignalRHub
             }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
+    
+       
         public async Task EndFocus(FocusInput input)
         {
             string roomId = input.roomId;
@@ -445,7 +464,7 @@ namespace API.SignalRHub
             if (FocusMap.ContainsKey(roomId))
             {
                 List<FocusItem> focusList = FocusMap[roomId];
-                FocusItem focus = focusList.FirstOrDefault(e => e.peerId == input.peerId);
+                FocusItem focus = focusList.FirstOrDefault(e => e.peerId == peerId);
                 if (focus != null)
                 {
                     focus.actions.Remove(action);
@@ -457,7 +476,44 @@ namespace API.SignalRHub
             }
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
-
+        public async Task StartAva(ShowAvaInput input)
+        {
+            string roomId = input.roomId;
+            string peerId = input.peerId;
+            if (AvaMap.ContainsKey(roomId))
+            {
+                List<ShowAvaInput> showAvaList = AvaMap[roomId];
+                ShowAvaInput ava = showAvaList.FirstOrDefault(e => e.peerId == peerId);
+                if (ava == null)
+                {
+                    showAvaList.Add(input);
+                }
+                else
+                {
+                    ava.imagePath = input.imagePath;
+                }
+            }
+            else
+            {
+                AvaMap.Add(roomId, new List<ShowAvaInput>() { input });
+            }
+            await Clients.Groups(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
+        }
+        public async Task EndAva(ShowAvaInput input)
+        {
+            string roomId = input.roomId;
+            string peerId = input.peerId;
+            if (FocusMap.ContainsKey(roomId))
+            {
+                List<ShowAvaInput> showAvaList = AvaMap[roomId];
+                ShowAvaInput ava = showAvaList.FirstOrDefault(e => e.peerId == peerId);
+                if (ava != null)
+                {
+                    showAvaList.Remove(ava);
+                }
+            }
+            await Clients.Groups(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
+        }
         public class LeaveRoomInput
         {
             public string roomId { get; set; }
@@ -485,6 +541,11 @@ namespace API.SignalRHub
             focusList.Remove(focus);
             await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
 
+            List<ShowAvaInput> camList = AvaMap[roomId];
+            ShowAvaInput cam = camList.FirstOrDefault(e => e.peerId == input.peerId);
+            camList.Remove(cam);
+            await Clients.Groups(input.roomId).SendAsync(GetAvaMsg, AvaMap[input.roomId]);
+
             await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
             if (usersInMeeting.Count == 0)
             {
@@ -496,6 +557,7 @@ namespace API.SignalRHub
                 await repos.Meetings.UpdateAsync(meeting);
                 Chats.Remove(roomId);
                 FocusMap.Remove(roomId);
+                AvaMap.Remove(roomId);
                 DrawHub.Drawings.Remove(roomId);
             }
             else

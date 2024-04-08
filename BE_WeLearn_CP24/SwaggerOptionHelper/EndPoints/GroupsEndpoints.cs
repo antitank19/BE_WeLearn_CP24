@@ -16,6 +16,7 @@ namespace API.SwaggerOption.Endpoints
         public const string UpdateGroup = $"[{Actor.Leader}/{Finnished.True}] Update group for leader";
         public const string GetGroups = $"[{Actor.Student}/{Finnished.True}]Get list of groups";
         public const string GetGroup = $"[{Actor.Test}/{Finnished.True}] Get group by Id";
+        public const string GetNotJoinedGroups = $"[{Actor.Student}/{Finnished.True}]Get list of groups which is not joined";
 
     }
 }

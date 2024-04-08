@@ -397,6 +397,31 @@ namespace API.Controllers
             return Ok(mapped);
         }
 
+        [Authorize(Roles = Actor.Student)]
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.GetNotJoinedGroups,
+           Description = GroupsDescriptions.GetNotJoinedGroups
+)]
+        [HttpGet("NotJoined")]
+        public async Task<IActionResult> GetGroupsNotJoined()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+
+                int accountId = HttpContext.User.GetUserId();
+                var mapped = services.Groups.GetGroupsNotJoined<GroupGetListDto>(accountId);
+
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+
         [Tags(Actor.Test)]
         [SwaggerOperation(
         Summary = GroupsEndpoints.GetGroup,

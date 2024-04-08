@@ -98,6 +98,7 @@ namespace ServiceLayer.Services.Interface.Db
         /// <returns></returns>
         public Task<IQueryable<T>> SearchGroups<T>(string search, int studentId, bool newGroup);
         public Task<IQueryable<T>> SearchGroupsBySubject<T>(string search, int studentId, bool newGroup);
+        public IQueryable<T> GetGroupsNotJoined<T>(int accountId);
         public Task<bool> ExistsAsync(int groupId);
     }
 }

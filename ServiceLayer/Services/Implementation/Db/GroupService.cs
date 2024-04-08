@@ -319,5 +319,15 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             return await repos.Groups.IdExistAsync(groupId);
         }
+
+        public IQueryable<T> GetGroupsNotJoined<T>(int accountId)
+        {
+            var groups = repos.Groups.GetList()
+                    .Include(e => e.GroupMembers)
+                    .Where(e => !e.GroupMembers.Any(e => e.AccountId == accountId));
+
+            var mapped = groups.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
     }
 }

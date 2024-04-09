@@ -6,21 +6,21 @@ namespace API.SignalRHub
     /// <summary>
     /// Use to count number of ppl in rooms
     /// </summary>
-    [Authorize]
+    //[Authorize]
     public class DrawHub : Hub
     {
         public override async Task OnConnectedAsync()
         {
             HttpContext httpContext = Context.GetHttpContext();
             string meetingIdString = httpContext.Request.Query["meetingId"].ToString();
+            await Groups.AddToGroupAsync(Context.ConnectionId, meetingIdString);
 
             bool isDrawExisted = Drawings.ContainsKey(meetingIdString);
             if (!isDrawExisted)
             {
                 Drawings.Add(meetingIdString, new List<Drawing>());
             }
-            Clients.Caller.SendAsync("get-drawings", Drawings[meetingIdString]);
-            await Groups.AddToGroupAsync(Context.ConnectionId, meetingIdString);
+            await Clients.Caller.SendAsync("get-drawings", Drawings[meetingIdString]);
             base.OnConnectedAsync();
         }
 

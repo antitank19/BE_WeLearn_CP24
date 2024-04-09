@@ -45,7 +45,7 @@ namespace ServiceLayer.DbSeeding
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava5.jpg?alt=media&token=e3a0c21a-0a3b-4930-910f-ccd1184e82c2",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava13.jpg?alt=media&token=71817884-6a89-48df-b17f-6026d06d3b68",
                 ReportCounter = 0,
                 IsBanned = false
             },
@@ -60,7 +60,7 @@ namespace ServiceLayer.DbSeeding
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava2.jpg?alt=media&token=bb5ee78f-a12e-4a64-a648-84c654961dd4",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava12.jpg?alt=media&token=ef8d1682-3909-415b-9d90-91751291cef2",
                 ReportCounter = 0,
                 IsBanned = false
             },
@@ -75,7 +75,7 @@ namespace ServiceLayer.DbSeeding
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava3.jpg?alt=media&token=63c4e04b-5c9e-4100-a2bf-dad509591aad",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava14.jpg?alt=media&token=09808c4f-4b63-4313-9be9-d04c2d12696f",
                 ReportCounter = 0,
                 IsBanned = false
             },
@@ -89,7 +89,7 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava4.jpg?alt=media&token=0f0d959f-27e9-4fa7-9cab-26cc213215ae",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava15.jpg?alt=media&token=25fded7b-4825-44d2-9a4c-610d8997daea",
                 ReportCounter = 0,
                 IsBanned = false
             },
@@ -119,7 +119,7 @@ namespace ServiceLayer.DbSeeding
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava11.png?alt=media&token=d1b4019b-f0f5-46e0-bd4b-f33c4a3115a0",
                 ReportCounter = 0,
                 IsBanned = false
             },
@@ -133,7 +133,7 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava16.jpg?alt=media&token=185e4fdc-f8c4-48c6-9000-776633f6d932",
                 ReportCounter = 0,
                 IsBanned = false
             }
@@ -148,7 +148,7 @@ namespace ServiceLayer.DbSeeding
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava17.jpg?alt=media&token=0072919a-68e7-4b46-8475-65bfb433d27d",
                 ReportCounter = 0,
                 IsBanned = false
             }, new Account
@@ -162,7 +162,7 @@ namespace ServiceLayer.DbSeeding
                 Career="THCS Minh Đức",
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava18.jpg?alt=media&token=eb7dcb09-965b-4ce7-8cb3-60b72a36f4b7",
                 ReportCounter = 0,
                 IsBanned = false
             },
@@ -176,7 +176,7 @@ namespace ServiceLayer.DbSeeding
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
                 RoleId = 1,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava19.jpg?alt=media&token=e2b6d853-8f99-4c49-b772-578039fdc5ac",
                 ReportCounter = 0,
                 IsBanned = false
             }  ,

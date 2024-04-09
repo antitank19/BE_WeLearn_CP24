@@ -32,20 +32,21 @@ namespace API.Controllers
         public async Task<IActionResult> GetSubject()
         {
             ValidatorResult valResult = new ValidatorResult();
-            try { 
-            IQueryable<SubjectGetDto> list = services.Subjects.GetList<SubjectGetDto>();
-          if (list == null|| !list.Any())
-          {
-              return NotFound();
-          }
+            try
+            { 
+                IQueryable<SubjectGetDto> list = services.Subjects.GetList<SubjectGetDto>();
+                if (list == null|| !list.Any())
+                {
+                   return NotFound();
+                }
 
-            return Ok(list);
-        }
+                return Ok(list);
+            }
             catch (Exception ex)
             {
                 valResult.Add(ex.ToString());
                 return BadRequest(valResult);
-    }
-}
+            }
+        }
     }
 }

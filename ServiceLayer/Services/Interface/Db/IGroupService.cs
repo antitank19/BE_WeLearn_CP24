@@ -19,7 +19,7 @@ namespace ServiceLayer.Services.Interface.Db
         /// <param name="group"></param>
         /// <param name="creatorId">id of creator account id</param>
         /// <returns></returns>
-        public Task<Group> CreateAsync(GroupCreateDto dto, int creatorId);
+        public Task CreateAsync(GroupCreateDto dto, int creatorId);
         //public Task UpdateAsync(Group group);
         public Task<GroupDetailForLeaderGetDto> UpdateAsync(int groupId, GroupUpdateDto dto);
         /// <summary>

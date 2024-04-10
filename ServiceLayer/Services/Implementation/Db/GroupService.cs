@@ -133,7 +133,7 @@ namespace ServiceLayer.Services.Implementation.Db
         }
 
 
-        public async Task<Group> CreateAsync(GroupCreateDto dto, int creatorId)
+        public async Task CreateAsync(GroupCreateDto dto, int creatorId)
         {
             string filePath = null;
             if (dto.Image != null && dto.Image.Length > 0)
@@ -189,7 +189,6 @@ namespace ServiceLayer.Services.Implementation.Db
             entity.IsBanned = false;
 
             await repos.Groups.CreateAsync(entity);
-            return entity;
         }
 
         public async Task RemoveAsync(int id)

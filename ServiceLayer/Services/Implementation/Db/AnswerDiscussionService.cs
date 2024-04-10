@@ -10,6 +10,7 @@ using ServiceLayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -77,6 +78,7 @@ namespace ServiceLayer.Services.Implementation.Db
             answerDiscussion.DiscussionId = discussionId;
             answerDiscussion.AccountId = accountId;
             answerDiscussion.IsActive = true;
+            answerDiscussion.CreateAt = DateTime.Now;
          
             if (answerDiscussionDto.File != null && answerDiscussionDto.File.Length > 0)
             {

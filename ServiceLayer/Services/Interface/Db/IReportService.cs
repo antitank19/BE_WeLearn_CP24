@@ -17,7 +17,7 @@ namespace ServiceLayer.Services.Interface.Db
         public IQueryable<T> GetReportedGroupList<T>();
         public IQueryable<T> GetReportedFileList<T>();
         public IQueryable<T> GetReportedDiscussionList<T>();
-        public Task<Report> ResolveReport(int reportId, bool isApproved);
+        public Task ResolveReport(int reportId, bool isApproved);
         public Task<Report> CreateReport(ReportCreateDto dto, int reporterId);
         public Task<bool> IsReportExist(int reportId);
 

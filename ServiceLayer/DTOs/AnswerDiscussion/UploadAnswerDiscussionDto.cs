@@ -10,7 +10,6 @@ namespace ServiceLayer.DTOs
     public class UploadAnswerDiscussionDto
     {
         public string? Content { get; set; }
-        public DateTime CreateAt { get; set; }
         public IFormFile? File { get; set; }
     }
 }

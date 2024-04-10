@@ -291,7 +291,7 @@ namespace API.Controllers
        )]
         [Authorize(Roles = Actor.Student)]
         [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup([FromForm] GroupCreateDto dto)
+        public async Task<IActionResult> CreateGroup([FromForm] GroupCreateDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
@@ -303,9 +303,9 @@ namespace API.Controllers
                     return BadRequest(valResult);
                 }
                 //Group group = mapper.Map<Group>(dto);
-                var group = await services.Groups.CreateAsync(dto, creatorId);
+                await services.Groups.CreateAsync(dto, creatorId);
 
-                return Ok(group);
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -177,8 +177,8 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var report = await services.Reports.ResolveReport(reportId, isApproved);
-                return Ok(report);
+                await services.Reports.ResolveReport(reportId, isApproved);
+                return Ok(isApproved);
             }
             catch (Exception ex)
             {

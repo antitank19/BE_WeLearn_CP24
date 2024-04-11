@@ -11,7 +11,7 @@ namespace ServiceLayer.Services.Interface.Db
         public IQueryable<LiveMeetingGetDto> GetLiveMeetingsForGroup(int groupId);
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForStudent(int studentId);
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForStudentByMonth(int studentId, DateTime month);
-        public IQueryable<ScheduleMeetingForMemberGetDto> GetScheduleMeetingsForStudent(int studentId);
+        public List<ScheduleMeetingForMemberGetDto> GetScheduleMeetingsForStudent(int studentId);
         public IQueryable<ScheduleMeetingForMemberGetDto> GetScheduleMeetingsForStudentByDate(int studentId, DateTime date);
         public IQueryable<LiveMeetingGetDto> GetLiveMeetingsForStudent(int studentId);
         public Task<T> GetByIdAsync<T>(int id);

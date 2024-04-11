@@ -240,14 +240,20 @@ namespace ShareResource.Mapper
             CreateMap<Meeting, ScheduleMeetingGetDto>()
                .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                    src => src.Schedule.Group.Name))
+               .ForMember(dest => dest.CanStart, opt => opt.MapFrom(
+                    src => src.ScheduleStart.Value < DateTime.Now))
                .PreserveReferences();
             CreateMap<Meeting, ScheduleMeetingForMemberGetDto>()
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                     src => src.Schedule.Group.Name))
+                .ForMember(dest => dest.CanStart, opt => opt.MapFrom(
+                    src => src.ScheduleStart.Value < DateTime.Now))
                 .PreserveReferences();
             CreateMap<Meeting, ScheduleMeetingForLeaderGetDto>()
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                     src => src.Schedule.Group.Name))
+                .ForMember(dest => dest.CanStart, opt => opt.MapFrom(
+                    src => src.ScheduleStart.Value < DateTime.Now.AddHours(1)))
                 .PreserveReferences();
 
             CreateMap<Meeting, LiveMeetingGetDto>()

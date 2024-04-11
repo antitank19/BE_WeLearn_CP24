@@ -16,6 +16,7 @@ namespace ServiceLayer.DTOs
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
         public int GroupId { get; set; }
+        public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
         public int CountMember { get; set; }
         //public ICollection<ChatGetDto> Chats { get; set; }

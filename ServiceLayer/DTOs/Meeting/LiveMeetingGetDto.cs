@@ -15,6 +15,7 @@ namespace ServiceLayer.DTOs
         public DateTime? ScheduleEnd { get; set; }
         public DateTime Start { get; set; }
         public int GroupId { get; set; }
+        public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
         public int CountMember { get; set; }
 

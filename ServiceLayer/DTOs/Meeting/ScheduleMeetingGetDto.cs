@@ -16,7 +16,7 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
-        public bool CanStart => ScheduleStart.Value < DateTime.Now;
+        public bool CanStart { get; set; }
 
     }
     public class ScheduleMeetingForMemberGetDto : ScheduleMeetingGetDto
@@ -29,7 +29,7 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
-        public bool CanStart => ScheduleStart.Value < DateTime.Now;
+        public bool CanStart { get; set; } 
 
     }
     public class ScheduleMeetingForLeaderGetDto : ScheduleMeetingGetDto
@@ -42,7 +42,7 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
-        public bool CanStart => ScheduleStart.Value < DateTime.Now.AddHours(1);
+        public bool CanStart { get; set; } 
 
     }
 }

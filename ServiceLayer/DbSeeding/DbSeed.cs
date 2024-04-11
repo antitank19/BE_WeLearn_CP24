@@ -701,7 +701,7 @@ namespace ServiceLayer.DbSeeding
                           new GroupMember
                         {
                             //Id = 20,
-                            Id = 19,
+                            Id = 29,
                             GroupId = 16,
                             AccountId = 3,
                             MemberRole = GroupMemberRole.Leader,
@@ -711,7 +711,7 @@ namespace ServiceLayer.DbSeeding
                           new GroupMember
                         {
                             //Id = 20,
-                            Id = 19,
+                            Id = 21,
                             GroupId = 17,
                             AccountId = 3,
                             MemberRole = GroupMemberRole.Leader,
@@ -721,7 +721,7 @@ namespace ServiceLayer.DbSeeding
                           new GroupMember
                         {
                             //Id = 20,
-                            Id = 19,
+                            Id = 22,
                             GroupId = 18,
                             AccountId = 3,
                             MemberRole = GroupMemberRole.Leader,
@@ -731,7 +731,7 @@ namespace ServiceLayer.DbSeeding
                           new GroupMember
                         {
                             //Id = 20,
-                            Id = 19,
+                            Id = 23,
                             GroupId = 19,
                             AccountId = 3,
                             MemberRole = GroupMemberRole.Leader,

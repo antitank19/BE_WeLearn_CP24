@@ -14,6 +14,7 @@ namespace ServiceLayer.DTOs
         public DateTime? ScheduleStart { get; set; }
         public DateTime? ScheduleEnd { get; set; }
         public int GroupId { get; set; }
+        public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
         public bool CanStart => ScheduleStart.Value < DateTime.Now;
 
@@ -26,6 +27,7 @@ namespace ServiceLayer.DTOs
         public DateTime? ScheduleStart { get; set; }
         public DateTime? ScheduleEnd { get; set; }
         public int GroupId { get; set; }
+        public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
         public bool CanStart => ScheduleStart.Value < DateTime.Now;
 
@@ -38,6 +40,7 @@ namespace ServiceLayer.DTOs
         public DateTime? ScheduleStart { get; set; }
         public DateTime? ScheduleEnd { get; set; }
         public int GroupId { get; set; }
+        public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
         public bool CanStart => ScheduleStart.Value < DateTime.Now.AddHours(1);
 

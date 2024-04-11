@@ -308,6 +308,111 @@ namespace ServiceLayer.DbSeeding
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
             },
+            new Group
+            {
+                Id = 7,
+                Name = "Mobile Design",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
+            },
+            new Group
+            {
+                Id = 8,
+                Name = "DESIGN A",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
+            },
+            new Group
+            {
+                Id = 9,
+                Name = "DESIGN V",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
+            },
+            new Group
+            {
+                Id = 10,
+                Name = "DESIGN BA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
+            },
+            new Group
+            {
+                Id = 11,
+                Name = "DESIGN CA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 12,
+                Name = "DESIGN DA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 13,
+                Name = "DESIGN FA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 14,
+                Name = "DESIGN GA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 15,
+                Name = "DESIGN HA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 16,
+                Name = "DESIGN IA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 17,
+                Name = "DESIGN JA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 18,
+                Name = "DESIGN KA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+            new Group
+            {
+                Id = 19,
+                Name = "DESIGN LA",
+                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                IsBanned = false,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+            },
+
         };
         public static GroupMember[] GroupMembers = new GroupMember[]
         {
@@ -494,7 +599,7 @@ namespace ServiceLayer.DbSeeding
                             AccountId = 3,
                             MemberRole = GroupMemberRole.Leader,
                             IsActive = true,
-                        }
+                        },
                         // new GroupMember
                         //{
                         //    Id = 21,
@@ -512,6 +617,127 @@ namespace ServiceLayer.DbSeeding
                         //    //RequestMessage = "Nhóm của bạn rất hay. Bạn cho mình vô nha"
                         //},
                         #endregion
+                         new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 11,
+                            GroupId = 7,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 12,
+                            GroupId = 8,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 13 ,
+                            GroupId = 9,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 14,
+                            GroupId = 10,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 15,
+                            GroupId = 11,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 16,
+                            GroupId = 12,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 17,
+                            GroupId = 13,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 18,
+                            GroupId = 14,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 19,
+                            GroupId = 15,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 19,
+                            GroupId = 16,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 19,
+                            GroupId = 17,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 19,
+                            GroupId = 18,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 19,
+                            GroupId = 19,
+                            AccountId = 3,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
+
         };
         public static GroupSubject[] GroupSubjects = new GroupSubject[]
         {
@@ -1088,6 +1314,57 @@ namespace ServiceLayer.DbSeeding
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
+            new Discussion
+            {
+                Id=3,
+                AccountId=1,
+                GroupId=1,
+                Question="Question 3"  ,
+                Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=4,
+                AccountId=1,
+                GroupId=1,
+                Question="Question 4"  ,
+                Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=5,
+                AccountId=1,
+                GroupId=1,
+                Question="Question 5"  ,
+                Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=6,
+                AccountId=1,
+                GroupId=1,
+                Question="Question 6"  ,
+                Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=7,
+                AccountId=1,
+                GroupId=1,
+                Question="Question 7"  ,
+                Content="Within the shrine's shadows, a sense of reverence lingered, as if the spirits of the land themselves sought refuge within its walls",
+                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+
         };
         public static AnswerDiscussion[] AnswerDiscussions = new AnswerDiscussion[]
         {

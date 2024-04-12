@@ -1,4 +1,6 @@
-﻿using APIExtension.Validator;
+﻿using API.SwaggerOption.Const;
+using APIExtension.Validator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
@@ -21,6 +23,7 @@ namespace API.Controllers
             //this.validators = validators;
         }
 
+        [Authorize(Roles = Actor.Student)]
         [HttpGet("api/AnswerDiscussion/Get")]
         public async Task<IActionResult> GetAnswerDiscussionByDiscussionId(int discussionId)
         {
@@ -37,6 +40,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = Actor.Student)]
         [HttpPost("api/AnswerDiscussion/Upload")]
         public async Task<IActionResult> UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto dto)
         {
@@ -53,6 +57,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = Actor.Student)]
         [HttpPut("api/AnswerDiscussion/Update")]
         public async Task<IActionResult> UpdateAnswerDiscussion(int discussionId, UploadAnswerDiscussionDto dto)
         {

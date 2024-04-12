@@ -1,6 +1,7 @@
 ﻿using API.Extension.ClaimsPrinciple;
 using API.SwaggerOption.Const;
 using APIExtension.Validator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
@@ -26,6 +27,7 @@ namespace API.Controllers
             //this.validators = validators;
         }
 
+        [Authorize(Roles = Actor.Student)]
         [HttpGet("api/Document/Get/{groupId}")]
         public async Task<IActionResult> GetDocumentFilesInGroup(int groupId)
         {
@@ -42,7 +44,7 @@ namespace API.Controllers
             }
         }
 
-
+        [Authorize(Roles = Actor.Student)]
         [HttpPost("api/Document/Upload")]
         public async Task<IActionResult> UploadDocumentFile(IFormFile file, int groupId, int accountId)
         {
@@ -59,12 +61,19 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = Actor.Student)]
         [HttpPost("api/Document/AproveOrReject")]
-        public async Task<IActionResult> ApproveRejectDocumentFile(int documentId, Boolean check)
+        public async Task<IActionResult> ApproveRejectDocumentFile(int documentId, int groupId, Boolean check)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
+                if (!isLeader)
+                {
+                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                }
                 var doc = await services.Documents.ApproveRejectFile(documentId, check);
                 return Ok(doc);
             }

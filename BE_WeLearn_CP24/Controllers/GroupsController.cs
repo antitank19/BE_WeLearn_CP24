@@ -192,7 +192,7 @@ namespace API.Controllers
                 else
                 {
                     //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
-                    GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(groupId);
+                    GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
                     if (group == null)
                     {
                         valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);
@@ -267,7 +267,7 @@ namespace API.Controllers
                 else
                 {
                     //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
-                    GroupDetailForLeaderGetDto group = await services.Groups.GetFullByIdAsync<GroupDetailForLeaderGetDto>(id);
+                    GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(id);
                     if (group == null)
                     {
                         valResult.Add("Không tìm thấy group", ValidateErrType.NotFound);

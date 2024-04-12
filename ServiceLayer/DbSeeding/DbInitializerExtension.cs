@@ -155,6 +155,12 @@ namespace ServiceLayer.DbSeeding
                     context.AnswerDiscussions.AddRange(DbSeed.AnswerDiscussions);
                 }
                 #endregion
+                #region seed DocumentFile
+                if (!context.DocumentFiles.Any())
+                {
+                    context.DocumentFiles.AddRange(DbSeed.DocumentFiles);
+                }
+                #endregion
 
                 context.SaveChanges();
             }

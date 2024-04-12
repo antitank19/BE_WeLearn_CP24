@@ -828,9 +828,106 @@ namespace ServiceLayer.DbSeeding
             new GroupSubject
             {
                 Id = 13,
-                GroupId = 6,
+                GroupId = 7,
                 SubjectId = (int)SubjectEnum.Flutter
             },
+            new GroupSubject
+            {
+                Id = 14,
+                GroupId = 8,
+                SubjectId = (int)SubjectEnum.Flutter
+            },
+            new GroupSubject
+            {
+                Id = 15,
+                GroupId = 9,
+                SubjectId = (int)SubjectEnum.Flutter
+            },
+            new GroupSubject
+            {
+                Id = 16,
+                GroupId = 10,
+                SubjectId = (int)SubjectEnum.Flutter
+            },
+            new GroupSubject
+            {
+                Id = 17,
+                GroupId = 11,
+                SubjectId = (int)SubjectEnum.CSharp
+            },
+            new GroupSubject
+            {
+                Id = 18,
+                GroupId = 12,
+                SubjectId = (int)SubjectEnum.Java
+            },
+            new GroupSubject
+            {
+                Id = 19,
+                GroupId = 13,
+                SubjectId = (int)SubjectEnum.BE
+            },
+            new GroupSubject
+            {
+                Id = 20,
+                GroupId = 14,
+                SubjectId = (int)SubjectEnum.CPlusPlus
+            },
+            new GroupSubject
+            {
+                Id = 21,
+                GroupId = 15,
+                SubjectId = (int)SubjectEnum.BE
+            },
+            new GroupSubject
+            {
+                Id = 22,
+                GroupId = 16,
+                SubjectId = (int)SubjectEnum.BE
+            },
+            new GroupSubject
+            {
+                Id = 23,
+                GroupId = 17,
+                SubjectId = (int)SubjectEnum.Python
+            },
+            new GroupSubject
+            {
+                Id = 24,
+                GroupId = 18,
+                SubjectId = (int)SubjectEnum.BE
+            },
+            new GroupSubject
+            {
+                Id = 25,
+                GroupId = 19,
+                SubjectId = (int)SubjectEnum.FE
+            },
+            new GroupSubject
+            {
+                Id = 26,
+                GroupId = 19,
+                SubjectId = (int)SubjectEnum.React
+            },
+            new GroupSubject
+            {
+                Id = 27,
+                GroupId = 18,
+                SubjectId = (int)SubjectEnum.Python
+            },
+            new GroupSubject
+            {
+                Id = 28,
+                GroupId = 13,
+                SubjectId = (int)SubjectEnum.Python
+            },
+            new GroupSubject
+            {
+                Id = 29,
+                GroupId = 13,
+                SubjectId = (int)SubjectEnum.FE
+            },
+
         };
         public static Meeting[] Meetings = new Meeting[]
    {

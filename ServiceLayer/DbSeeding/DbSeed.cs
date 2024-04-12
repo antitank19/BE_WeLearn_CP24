@@ -319,15 +319,15 @@ namespace ServiceLayer.DbSeeding
             new Group
             {
                 Id = 8,
-                Name = "DESIGN A",
+                Name = "Mobile Starter ",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fandroid.jpg?alt=media&token=7eaee239-cb80-436f-a336-9da659694fe2"
             },
             new Group
             {
                 Id = 9,
-                Name = "DESIGN V",
+                Name = "Mobile Sharing Community",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
@@ -335,15 +335,15 @@ namespace ServiceLayer.DbSeeding
             new Group
             {
                 Id = 10,
-                Name = "DESIGN BA",
+                Name = "Android Studio Beginner",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fandroid.jpg?alt=media&token=7eaee239-cb80-436f-a336-9da659694fe2"
             },
             new Group
             {
                 Id = 11,
-                Name = "DESIGN CA",
+                Name = "C# Starter",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
@@ -351,47 +351,47 @@ namespace ServiceLayer.DbSeeding
             new Group
             {
                 Id = 12,
-                Name = "DESIGN DA",
+                Name = "FU Java OOP",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fjava.jpg?alt=media&token=912e4114-0347-4bbe-ba53-51796fbcfc0a"
             },
             new Group
             {
                 Id = 13,
-                Name = "DESIGN FA",
+                Name = "Operating System Study",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2FOS.jpg?alt=media&token=5aa509eb-5b12-42b6-92a6-22212f71bb1b"
             },
             new Group
             {
                 Id = 14,
-                Name = "DESIGN GA",
+                Name = "C Plus Plus ",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2FC%2B%2B.jpg?alt=media&token=994fa5e4-20a7-41e7-8626-56d3e50b44aa"
             },
             new Group
             {
                 Id = 15,
-                Name = "DESIGN HA",
+                Name = "SQL Tutorial For Beginner",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fsql.jpg?alt=media&token=8fab2278-1187-4e62-8752-ec155de94a5f"
             },
             new Group
             {
                 Id = 16,
-                Name = "DESIGN IA",
+                Name = "SQl Query",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fsql.jpg?alt=media&token=8fab2278-1187-4e62-8752-ec155de94a5f"
             },
             new Group
             {
                 Id = 17,
-                Name = "DESIGN JA",
+                Name = "A I Future",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
@@ -399,18 +399,18 @@ namespace ServiceLayer.DbSeeding
             new Group
             {
                 Id = 18,
-                Name = "DESIGN KA",
+                Name = "Python Python",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fpython.jpg?alt=media&token=c2b3fbe7-7e18-4b97-aa96-51c82c8354bd"
             },
             new Group
             {
                 Id = 19,
-                Name = "DESIGN LA",
+                Name = "React",
                 Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
                 IsBanned = false,
-                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Freact.jpg?alt=media&token=27b9137f-87a0-4ddb-9d7d-a32ffa533ba1"
             },
 
         };
@@ -1396,6 +1396,46 @@ namespace ServiceLayer.DbSeeding
                 GroupId = 1,
                 HttpLink = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DocumentFiles%2F8883342f-6895-4ea8-92d8-4d5c4dfbd0ba_ChangeUI21-3.docx?alt=media&token=62f43e85-c128-4268-91d6-93bc0a943e20",
                 Approved = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            },
+            new DocumentFile
+            {
+                Id = 2,
+                AccountId = 2,
+                GroupId = 1,
+                HttpLink = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DocumentFiles%2Ffb858a9d-363c-4bc1-8d5e-61d60c15e32e_Template1.docx?alt=media&token=cfde2b72-22c1-45aa-aa36-82ffa64fcad7",
+                Approved = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            },
+            new DocumentFile
+            {
+                Id = 3,
+                AccountId = 2,
+                GroupId = 1,
+                HttpLink = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DocumentFiles%2Ffd8c9e81-7d36-43f7-98b0-e751f63929b8_Template%202.xlsx?alt=media&token=3ad50333-35cd-43d8-9d68-8d67dc85ed77",
+                Approved = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            },
+            new DocumentFile
+            {
+                Id = 4,
+                AccountId = 2,
+                GroupId = 1,
+                HttpLink = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DocumentFiles%2Fb460c55e-bc90-4edc-95b5-a028b9c6fe8b_ManyDiagram-System%20Functional%20Overview.jpg?alt=media&token=9c1dfa5f-7bff-4683-986f-4ce68fa79a78",
+                Approved = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+            },
+            new DocumentFile
+            {
+                Id = 5,
+                AccountId = 2,
+                GroupId = 1,
+                HttpLink = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/DocumentFiles%2F5e020679-7843-4c1f-909e-7d45372588a0_database.png?alt=media&token=134d6b7c-ad9c-4156-8bcc-25572602bf9d",
+                Approved = false,
                 IsActive = true,
                 CreatedDate = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
             }

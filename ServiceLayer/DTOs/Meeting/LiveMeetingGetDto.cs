@@ -18,6 +18,7 @@ namespace ServiceLayer.DTOs
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
         public int CountMember { get; set; }
+        public ICollection<SubjectGetDto> Subjects { get; set; }
 
     }
 }

@@ -26,7 +26,11 @@ namespace RepoLayer.Implemention
             return await dbContext.Groups
                 //.Include(e=>e.Class)
                 .Include(e=>e.GroupSubjects).ThenInclude(e=>e.Subject)
-                .Include(e=>e.Schedules).ThenInclude(a => a.Meetings)//.ThenInclude(m=>m.Chats).ThenInclude(c=>c.Account)
+                .Include(e => e.Schedules).ThenInclude(a => a.Meetings)//.ThenInclude(m=>m.Chats).ThenInclude(c=>c.Account)
+                .Include(e=>e.Schedules)
+                .ThenInclude(s => s.ScheduleSubjects)
+                .ThenInclude(ss => ss.Subject)
+
                 .Include(e=>e.GroupMembers).ThenInclude(e=>e.Account)
                 .Include(e => e.JoinInvites).ThenInclude(e => e.Account)
                 .Include(e=>e.JoinRequests).ThenInclude(e=>e.Account)

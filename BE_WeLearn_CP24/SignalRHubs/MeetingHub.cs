@@ -14,8 +14,6 @@ namespace API.SignalRHub
     public class MeetingHub : Hub
     {
         #region Message
-        //Thông báo có người mới vào meeting
-        //BE SendAsync(UserOnlineInGroupMsg, MemberSignalrDto)
         public static string UserOnlineInMeetingMsg => "UserOnlineInMeeting";
 
         //Thông báo tình trạng muteMic của username. Chỉ dùng để thay đổi icon mic trên 
@@ -49,20 +47,20 @@ namespace API.SignalRHub
 
         public static string GetMessagesMsg => "get-messages";
 
+        public static string GetFocusScreenMsg => "get-focusScreenList";
         public static string GetFocusMsg => "get-focusList";
         public static string GetAvaMsg => "get-showAvaList";
-        
+
         #endregion
 
         IMapper mapper;
         IHubContext<GroupHub> groupHub;
-        //PresenceTracker presenceTracker;
         IRepoWrapper repos;
 
-        public MeetingHub(IRepoWrapper repos, IHubContext<GroupHub> presenceHubContext, IMapper mapper)
+        public MeetingHub(IRepoWrapper repos, IHubContext<GroupHub> groupHubContext, IMapper mapper)
         {
             this.repos = repos;
-            this.groupHub = presenceHubContext;
+            groupHub = groupHubContext;
             this.mapper = mapper;
         }
         public override async Task OnConnectedAsync()
@@ -400,7 +398,8 @@ namespace API.SignalRHub
             await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
             //await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
             await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
-            await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
+            await SendFocusList(roomId);
+            //await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
             await Clients.Group(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
         }
 
@@ -438,10 +437,12 @@ namespace API.SignalRHub
             if (FocusMap.ContainsKey(roomId))
             {
                 List<FocusItem> focusList = FocusMap[roomId];
-                FocusItem focus = focusList.FirstOrDefault(e=>e.peerId == peerId);
-                if(focus != null)
+                FocusItem focus = focusList.FirstOrDefault(e => e.peerId == peerId);
+                if (focus != null)
                 {
+                    focusList.Remove(focus);
                     focus.actions.Add(action);
+                    focusList.Add(focus);
                 }
                 else
                 {
@@ -450,12 +451,23 @@ namespace API.SignalRHub
             }
             else
             {
-                FocusMap.Add(roomId, new List<FocusItem>() { new FocusItem(input)});
+                FocusMap.Add(roomId, new List<FocusItem>() { new FocusItem(input) });
             }
-            await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
+            await SendFocusList(input.roomId);
         }
-    
-       
+
+        private async Task SendFocusList(string roomId)
+        {
+            List<FocusItem> focusList = new List<FocusItem>();
+            FocusItem last = FocusMap[roomId].LastOrDefault(); 
+            if   (last != null)
+            {
+                focusList.Add(last);
+            }
+            await Clients.Groups(roomId).SendAsync(GetFocusScreenMsg, focusList);
+            await Clients.Groups(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
+        }
+
         public async Task EndFocus(FocusInput input)
         {
             string roomId = input.roomId;
@@ -474,7 +486,8 @@ namespace API.SignalRHub
                     }
                 }
             }
-            await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
+            await SendFocusList(roomId);
+            //await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
         }
         public async Task StartAva(ShowAvaInput input)
         {
@@ -539,7 +552,9 @@ namespace API.SignalRHub
             List<FocusItem> focusList = FocusMap[roomId];
             FocusItem focus = focusList.FirstOrDefault(e => e.peerId == input.peerId);
             focusList.Remove(focus);
-            await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
+
+            await SendFocusList(input.roomId);
+            //await Clients.Groups(input.roomId).SendAsync(GetFocusMsg, FocusMap[input.roomId]);
 
             List<ShowAvaInput> camList = AvaMap[roomId];
             ShowAvaInput cam = camList.FirstOrDefault(e => e.peerId == input.peerId);
@@ -579,6 +594,7 @@ namespace API.SignalRHub
             await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
 
         }
+
 
         public async Task SendMessage(IMessage message)
         {

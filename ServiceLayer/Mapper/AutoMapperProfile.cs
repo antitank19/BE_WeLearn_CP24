@@ -6,7 +6,7 @@ using ServiceLayer.DTOs;
 
 namespace ShareResource.Mapper
 {
-    public class AutoMapperProfile  : Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {
@@ -17,7 +17,7 @@ namespace ShareResource.Mapper
             MapMeeting();
             MapSubject();
             MapDocumentFile();
-            MapSchedule(); 
+            MapSchedule();
             MapReview();
             MapChat();
             MapReport();
@@ -242,27 +242,37 @@ namespace ShareResource.Mapper
                    src => src.Schedule.Group.Name))
                .ForMember(dest => dest.CanStart, opt => opt.MapFrom(
                     src => src.ScheduleStart.Value < DateTime.Now))
+                .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
+                    src => src.Schedule.ScheduleSubjects.Select(gs => gs.Subject)))
                .PreserveReferences();
             CreateMap<Meeting, ScheduleMeetingForMemberGetDto>()
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                     src => src.Schedule.Group.Name))
                 .ForMember(dest => dest.CanStart, opt => opt.MapFrom(
                     src => src.ScheduleStart.Value < DateTime.Now))
+                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
+                    src => src.Schedule.ScheduleSubjects.Select(gs => gs.Subject)))
                 .PreserveReferences();
             CreateMap<Meeting, ScheduleMeetingForLeaderGetDto>()
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                     src => src.Schedule.Group.Name))
                 .ForMember(dest => dest.CanStart, opt => opt.MapFrom(
                     src => src.ScheduleStart.Value < DateTime.Now.AddHours(1)))
+                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
+                    src => src.Schedule.ScheduleSubjects.Select(gs => gs.Subject)))
                 .PreserveReferences();
 
             CreateMap<Meeting, LiveMeetingGetDto>()
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                     src => src.Schedule.Group.Name))
+                .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
+                    src => src.Schedule.ScheduleSubjects.Select(gs => gs.Subject)))
                 .PreserveReferences();
             CreateMap<Meeting, PastMeetingGetDto>()
                 .ForMember(dest => dest.GroupName, opt => opt.MapFrom(
                     src => src.Schedule.Group.Name))
+                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
+                    src => src.Schedule.ScheduleSubjects.Select(gs => gs.Subject)))
                 .PreserveReferences();
 
             CreateMap<ScheduleMeetingCreateDto, Meeting>()

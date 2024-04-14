@@ -82,6 +82,12 @@ namespace ServiceLayer.DbSeeding
                 }
                 #endregion
 
+                #region seed schedule subject
+                if (!context.ScheduleSubjects.Any())
+                {
+                    context.ScheduleSubjects.AddRange(DbSeed.ScheduleSubjects);
+                }
+                #endregion
                 #region seed invite
                 if (!context.Invites.Any())
                 {

@@ -16,6 +16,7 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
+        public ICollection<SubjectGetDto> Subjects { get; set; }
         public bool CanStart { get; set; }
 
     }
@@ -29,6 +30,7 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
+        public ICollection<SubjectGetDto> Subjects { get; set; }
         public bool CanStart { get; set; } 
 
     }
@@ -42,6 +44,7 @@ namespace ServiceLayer.DTOs
         public int GroupId { get; set; }
         public int ScheduleGroupId { get; set; }
         public string GroupName { get; set; }
+        public ICollection<SubjectGetDto> Subjects { get; set; }
         public bool CanStart { get; set; } 
 
     }

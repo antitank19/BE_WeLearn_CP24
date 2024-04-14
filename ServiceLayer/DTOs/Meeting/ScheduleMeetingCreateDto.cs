@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLayer.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,7 @@ namespace ServiceLayer.DTOs
 
         public TimeSpan ScheduleStartTime { get; set; }
         public TimeSpan ScheduleEndTime { get; set; }
+        public virtual ICollection<SubjectEnum> SubjectIds { get; set; }
 
     }
 }

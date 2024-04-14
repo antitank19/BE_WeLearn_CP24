@@ -825,6 +825,8 @@ namespace ServiceLayer.DbSeeding
                 SubjectId = (int)SubjectEnum.MO
             },
             #endregion
+
+            #region Subject other groups 
             new GroupSubject
             {
                 Id = 13,
@@ -927,6 +929,7 @@ namespace ServiceLayer.DbSeeding
                 GroupId = 13,
                 SubjectId = (int)SubjectEnum.FE
             },
+            #endregion
 
         };
         public static Meeting[] Meetings = new Meeting[]
@@ -937,8 +940,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 1,
                 ScheduleId = 1,
-                Name=$"Ôn tập kiểm tra 15p",
-                Content=$"Ôn tập kiểm tra 15p {DateTime.Now.AddDays(-3).ToShortDateString()}",
+                Name=$"Ôn tập kiểm tra C#",
+                Content=$"Ôn tập kiểm tra 15p C# {DateTime.Now.AddDays(-3).ToShortDateString()}",
                 ScheduleStart = DateTime.Now.AddDays(-3),
                 ScheduleEnd = DateTime.Now.AddDays(-3).AddHours(1),
             },
@@ -947,8 +950,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 2,
                 ScheduleId = 2,
-                Name=$"Ôn tập kiểm tra 1 tiết",
-                Content=$"Ôn tập kiểm tra 1 tiết {DateTime.Now.AddMonths(-2).AddDays(-2).ToShortDateString()}",
+                Name=$"Ôn tập kiểm tra 1 tiết C++",
+                Content=$"Ôn tập kiểm tra 1 tiết C++{DateTime.Now.AddMonths(-2).AddDays(-2).ToShortDateString()}",
                 ScheduleStart = DateTime.Now.AddMonths(-2).AddDays(-2).AddMinutes(15),
                 ScheduleEnd = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1),
                 Start = DateTime.Now.AddMonths(-2).AddDays(-2).AddMinutes(30),
@@ -960,8 +963,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 3,
                 ScheduleId = 3,
-                Name=$"Ôn tập thi toán",
-                Content=$"Ôn tập thi toán {DateTime.Now.AddDays(-2).ToShortDateString()}",
+                Name=$"Ôn tập thi C#",
+                Content=$"Ôn tập thi C# {DateTime.Now.AddDays(-2).ToShortDateString()}",
                 Start = DateTime.Now.AddDays(-2).AddMinutes(30),
                 End = DateTime.Now.AddDays(-2).AddHours(2),
                 CountMember = 1,
@@ -971,8 +974,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 4,
                 ScheduleId = 4,
-                Name=$"Ôn tập kiểm tra lí",
-                Content=$"Ôn tập kiểm tra lí {DateTime.Now.ToShortDateString()}",
+                Name=$"Ôn tập kiểm tra 1 tiết C++",
+                Content=$"Ôn tập kiểm tra 1 tiết C++{DateTime.Now.ToShortDateString()}",
                 ScheduleStart = DateTime.Now.AddMinutes(15),
                 ScheduleEnd = DateTime.Now.AddHours(1),
                 Start = DateTime.Now.AddMinutes(30),
@@ -982,8 +985,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 5,
                 ScheduleId = 5,
-                Name=$"Ôn tập kiểm tra",
-                Content=$"Ôn tập kiểm tra {DateTime.Now.ToShortDateString()}",
+                Name=$"Ôn tập kiểm tra C#",
+                Content=$"Ôn tập kiểm tra C# {DateTime.Now.ToShortDateString()}",
                 Start = DateTime.Now.AddMinutes(-30),
             },
             //Future Schedule meeting
@@ -991,8 +994,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 6,
                 ScheduleId = 6,
-                Name=$"Ôn tập thi toán",
-                Content=$"Ôn tập thi toán {DateTime.Now.ToShortDateString()}",
+                Name=$"Ôn tập thi C++",
+                Content=$"Ôn tập thi C++ {DateTime.Now.ToShortDateString()}",
                 ScheduleStart = DateTime.Now.AddMinutes(-15),
                 ScheduleEnd = DateTime.Now.AddHours(1),
             },
@@ -1000,8 +1003,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 7,
                 ScheduleId = 7,
-                Name=$"Ôn tập thi lí",
-                Content=$"Ôn tập thi lí {DateTime.Now.ToShortDateString()}",
+                Name=$"Ôn tập thi C#",
+                Content=$"Ôn tập thi C# {DateTime.Now.ToShortDateString()}",
                 ScheduleStart = DateTime.Now.AddMinutes(15),
                 ScheduleEnd = DateTime.Now.AddHours(1),
             },
@@ -1009,8 +1012,8 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 8,
                 ScheduleId = 8,
-                Name=$"Ôn tập thi Toán",
-                Content=$"Ôn tập thi Toán {DateTime.Now.AddDays(1).ToShortDateString()}",
+                Name=$"Ôn tập thi C++",
+                Content=$"Ôn tập thi C++ {DateTime.Now.AddDays(1).ToShortDateString()}",
                 ScheduleStart = DateTime.Now.AddDays(1).AddMinutes(15),
                 ScheduleEnd = DateTime.Now.AddDays(1).AddHours(1),
             },
@@ -1023,7 +1026,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 1,
-                Name=$"Ôn tập kiểm tra 15p",
+                Name=$"Ôn tập kiểm tra 15p C#",
                 StartDate = DateTime.Now.AddDays(-3),
                 EndDate = DateTime.Now.AddDays(-3),
                 StartTime = DateTime.Now.AddDays(-3).TimeOfDay,
@@ -1036,7 +1039,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 2,
-                Name=$"Ôn tập kiểm tra 1 tiết",
+                Name=$"Ôn tập kiểm tra 1 tiết C++",
                 StartDate = DateTime.Now.AddMonths(-2).AddDays(-2).Date,
                 EndDate = DateTime.Now.AddMonths(-2).AddDays(-2).Date,
                 StartTime = DateTime.Now.AddMonths(-2).AddDays(-2).AddMinutes(30).TimeOfDay,
@@ -1048,7 +1051,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 3,
-                Name=$"Ôn tập thi toán",
+                Name=$"Ôn tập thi C#",
                  StartDate = DateTime.Now.AddMonths(-2).AddDays(-2).Date,
                 EndDate = DateTime.Now.AddMonths(-2).AddDays(-2).Date,
                 DaysOfWeek = "Chủ Nhật, Thứ Hai, Thứ Ba, Thứ Tư, , Thứ Năm, , Thứ Sáu, Thứ Bảy",
@@ -1058,7 +1061,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 4,
-                Name=$"Ôn tập kiểm tra lí",
+                Name=$"Ôn tập kiểm tra C++",
                 StartDate = DateTime.Now.Date,
                 EndDate = DateTime.Now.Date,
                 StartTime = DateTime.Now.AddMinutes(15).TimeOfDay,
@@ -1070,7 +1073,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 5,
-                Name=$"Ôn tập kiểm tra",
+                Name=$"Ôn tập kiểm tra C#",
                 StartDate = DateTime.Now.Date,
                 EndDate = DateTime.Now.Date,
                 StartTime = DateTime.Now.AddMinutes(-30).TimeOfDay,
@@ -1081,7 +1084,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 6,
-                Name=$"Ôn tập thi toán",
+                Name=$"Ôn tập thi C++",
                 StartDate = DateTime.Now.Date,
                 EndDate = DateTime.Now.Date,
                 StartTime = DateTime.Now.AddMinutes(-15).TimeOfDay,
@@ -1092,7 +1095,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 7,
-                Name=$"Ôn tập thi lí",
+                Name=$"Ôn tập thi C#",
                 StartDate = DateTime.Now.Date,
                 EndDate = DateTime.Now.Date,
                 StartTime = DateTime.Now.AddMinutes(15).TimeOfDay,
@@ -1103,7 +1106,7 @@ namespace ServiceLayer.DbSeeding
             new Schedule
             {
                 Id = 8,
-                Name=$"Ôn tập thi Toán",
+                Name=$"Ôn tập thi C++",
                 StartDate = DateTime.Now.Date,
                 EndDate = DateTime.Now.Date,
                 StartTime = DateTime.Now.AddDays(1).AddMinutes(15).TimeOfDay,
@@ -1113,6 +1116,57 @@ namespace ServiceLayer.DbSeeding
             },
            #endregion
        };
+        public static ScheduleSubject[] ScheduleSubjects = new ScheduleSubject[]
+        {
+            new ScheduleSubject
+            {
+                Id =  1,
+                ScheduleId = 1,
+                SubjectId = (int)SubjectEnum.CSharp
+            },
+             new ScheduleSubject
+            {
+                Id=   2,
+                ScheduleId= 2,
+                SubjectId = (int)SubjectEnum.CPlusPlus
+            },
+              new ScheduleSubject
+            {
+                Id=    3,
+                ScheduleId=  3,
+                SubjectId = (int)SubjectEnum.CSharp
+            },
+               new ScheduleSubject
+            {
+                Id=    4,
+                ScheduleId=  4,
+                SubjectId = (int)SubjectEnum.CPlusPlus
+            },
+                new ScheduleSubject
+            {
+                Id= 5,
+                ScheduleId=   5,
+                SubjectId = (int)SubjectEnum.CSharp
+            },
+                 new ScheduleSubject
+            {
+                Id=   6,
+                ScheduleId= 6,
+                SubjectId = (int)SubjectEnum.CPlusPlus
+            },
+                  new ScheduleSubject
+            {
+                Id=    7,
+                ScheduleId=  7,
+                SubjectId = (int)SubjectEnum.CSharp
+            },
+                   new ScheduleSubject
+            {
+                Id =   8,
+                ScheduleId = 8,
+                SubjectId = (int)SubjectEnum.CPlusPlus
+            }
+        };
         public static Invite[] Invites = new Invite[]
         {
             #region Group 1

@@ -369,7 +369,7 @@ namespace API.Controllers
                 //Meeting updated = await services.Meetings.GetByIdAsync(id);
                 //var updatedDto = mapper.Map<ScheduleMeetingGetDto>(updated);
                 ScheduleMeetingGetDto mappedUpdated = await services.Meetings.GetByIdAsync<ScheduleMeetingGetDto>(id);
-                await groupHub.Clients.Group(mappedUpdated.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} cập nhật cuộc họp {mappedUpdated.Name}");
+                await groupHub.Clients.Group(mappedUpdated.ScheduleGroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} cập nhật cuộc họp {mappedUpdated.Name}");
                 return Ok(mappedUpdated);
             }
             catch (Exception ex) {

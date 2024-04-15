@@ -141,7 +141,8 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<T> GetByIdAsync<T>(int id)
         {
-            return mapper.Map<T>(await repos.Meetings.GetByIdAsync(id));
+            Meeting m = await repos.Meetings.GetByIdAsync(id);
+            return mapper.Map<T>(m);
         }
 
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForGroup(int groupId)

@@ -8,8 +8,8 @@ namespace ServiceLayer.DTOs
 {
     public class StatGetDto
     {
-        public string StudentUsername { get; set; }
-        public string StudentFullname { get; set; }
+        public string? StudentUsername { get; set; }
+        public string? StudentFullname { get; set; }
         public DateTime Month { get; set; }
         //public IQueryable TotalMeetings { get; set; }
         public int TotalMeetingsCount { get; set; }
@@ -18,6 +18,8 @@ namespace ServiceLayer.DTOs
         public int MissedMeetingsCount { get; set; }
         public string TotalMeetingTme { get; set; }
         public double AverageVoteResult { get; set; } 
+        public int TotalDiscussionsCount { get; set; }
+        public int TotalAnswerDiscussionsCount { get; set; }
         public string ToHtml()
         {
             StringBuilder sb = new StringBuilder();
@@ -28,6 +30,8 @@ namespace ServiceLayer.DTOs
             sb.AppendLine($"Số buổi học vắng: {MissedMeetingsCount}");
             sb.AppendLine($"Tổng thời gian học: {TotalMeetingTme}");
             sb.AppendLine($"Trung bình điểm trả bài: {AverageVoteResult}");
+            sb.AppendLine($"Tổng discusion: {TotalDiscussionsCount}");
+            sb.AppendLine($"Tổng answer discusion: {TotalAnswerDiscussionsCount}");
             return sb.ToString();
         }
     }
@@ -42,6 +46,10 @@ namespace ServiceLayer.DTOs
         public int MissedMeetingsCount { get; set; }
         public TimeSpan TotalMeetingTme { get; set; }
         public double AverageVoteResult { get; set; }
+        public int TotalDiscussionCount { get; set; }
+        public int ToTalAnswerDiscussionCount { get; set; }
+
+
         public string ToHtml()
         {
             StringBuilder sb = new StringBuilder();

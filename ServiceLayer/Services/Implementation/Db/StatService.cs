@@ -19,12 +19,12 @@ namespace ServiceLayer.Services.Implementation.Db
             this.mapper = mapper;
         }
 
-        public async Task<StatGetDto> GetStatForStudentInMonth(int studentId, DateTime month)
+        public async Task<StatGetDto> GetStatForAccountInMonth(int accountId, DateTime month)
         {
             DateTime start = new DateTime(month.Year, month.Month, 1, 0, 0, 0).Date;
             DateTime end = start.AddMonths(1);
 
-            Account student = await repos.Accounts.GetByIdAsync(studentId);
+            Account student = await repos.Accounts.GetByIdAsync(accountId);
 
             //Nếu tháng này thì chỉ lấy past meeting
             IQueryable<Meeting> allMeetingsOfJoinedGroups = month.Month == DateTime.Now.Month
@@ -34,7 +34,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
                 .Include(m => m.Reviews).ThenInclude(r => r.Details)
                 .Where(e => (e.ScheduleStart >= start && e.ScheduleStart.Value.Date < end || e.Start >= start && e.Start.Value.Date < end)
-                    && e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
+                    && e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == accountId)
                     //lấy past meeting
                     && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
                 : repos.Meetings.GetList()
@@ -43,12 +43,12 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
                 .Include(m => m.Reviews).ThenInclude(r => r.Details)
                 .Where(c => c.ScheduleStart >= start && c.ScheduleStart.Value.Date < end
-                    && c.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId));
+                    && c.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == accountId));
             //int totalMeetingsCount = allMeetingsOfJoinedGroups.Count() == 0
             //    ? 0 : allMeetingsOfJoinedGroups.Count();
             int totalMeetingsCount = allMeetingsOfJoinedGroups.Count();
             IQueryable<Meeting> atendedMeetings = allMeetingsOfJoinedGroups
-                .Where(e => e.Connections.Any(c => c.AccountId == studentId));
+                .Where(e => e.Connections.Any(c => c.AccountId == accountId));
             //int atendedMeetingsCount = allMeetingsOfJoinedGroups.Count() == 0
             //    ? 0 : allMeetingsOfJoinedGroups
             //    .Where(e => e.Connections.Any(c => c.AccountId == studentId)).Count();
@@ -63,7 +63,17 @@ namespace ServiceLayer.Services.Implementation.Db
                 .SelectMany(r => r.Details);
             var averageVoteResult = !reviewDetails.Any() ? 0
                 : await reviewDetails.Select(e => (int)e.Result).AverageAsync();
-            //var totalMeetingTime = allMeetingsOfJoinedGroups.SelectMany(m => m.Connections);//.Select(e=>e.End.Value-e.Start).Select(ts=>ts.Ticks).Sum(); 
+            //var totalMeetingTime = allMeetizngsOfJoinedGroups.SelectMany(m => m.Connections);//.Select(e=>e.End.Value-e.Start).Select(ts=>ts.Ticks).Sum(); 
+            
+            IQueryable<Discussion> discussions = repos.Discussions.GetList()
+                .Include(x => x.AnswerDiscussion)
+                .Where(x => x.AccountId == accountId 
+                        && (x.CreateAt >= start && x.CreateAt < end));
+
+            IQueryable<AnswerDiscussion> answerdiscussions = repos.AnswerDiscussions.GetList()
+                .Include(x => x.Discussion)
+                .Where(x => x.AccountId == accountId
+                        && (x.CreateAt >= start && x.CreateAt < end));
 
             return new StatGetDto
             {
@@ -77,9 +87,82 @@ namespace ServiceLayer.Services.Implementation.Db
                 MissedMeetingsCount = totalMeetingsCount - atendedMeetingsCount,
                 TotalMeetingTme = totalMeetingTime == 0 ? "Chưa tham gia buổi học nào"
                     : $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút {timeSpan.Seconds} giây",
-                AverageVoteResult = averageVoteResult
+                AverageVoteResult = averageVoteResult,
+                TotalDiscussionsCount = discussions.Count(),
+                TotalAnswerDiscussionsCount = answerdiscussions.Count()
             };
         }
+
+        public async Task<StatGetDto> GetStatForGroupInMonth(int groupId, DateTime month)
+        {
+            DateTime start = new DateTime(month.Year, month.Month, 1, 0, 0, 0).Date;
+            DateTime end = start.AddMonths(1);
+
+            //Nếu tháng này thì chỉ lấy past meeting
+            IQueryable<Meeting> allMeetingsOfJoinedGroups = month.Month == DateTime.Now.Month
+                ? repos.Meetings.GetList()
+                .Include(m => m.Chats).ThenInclude(c => c.Account)
+                .Include(c => c.Connections)
+                .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
+                .Include(m => m.Reviews).ThenInclude(r => r.Details)
+                .Where(e => (e.ScheduleStart >= start && e.ScheduleStart.Value.Date < end || e.Start >= start && e.Start.Value.Date < end)
+                    && e.Schedule.Group.Id == groupId
+                    //lấy past meeting
+                    && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+                : repos.Meetings.GetList()
+                .Include(m => m.Chats).ThenInclude(c => c.Account)
+                .Include(c => c.Connections)
+                .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
+                .Include(m => m.Reviews).ThenInclude(r => r.Details)
+                .Where(c => c.ScheduleStart >= start && c.ScheduleStart.Value.Date < end
+                    && c.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == groupId));
+            //int totalMeetingsCount = allMeetingsOfJoinedGroups.Count() == 0
+            //    ? 0 : allMeetingsOfJoinedGroups.Count();
+            int totalMeetingsCount = allMeetingsOfJoinedGroups.Count();
+            IQueryable<Meeting> atendedMeetings = allMeetingsOfJoinedGroups
+                .Where(e => e.Connections.Any(c => c.AccountId == groupId));
+            //int atendedMeetingsCount = allMeetingsOfJoinedGroups.Count() == 0
+            //    ? 0 : allMeetingsOfJoinedGroups
+            //    .Where(e => e.Connections.Any(c => c.AccountId == studentId)).Count();
+            int atendedMeetingsCount = allMeetingsOfJoinedGroups.Count() == 0
+                ? 0 : atendedMeetings.Count();
+            long totalMeetingTime = atendedMeetings.Count() == 0 ? 0
+                : atendedMeetings.SelectMany(m => m.Connections)
+                    .Select(e => e.End.Value - e.Start).Select(ts => ts.Ticks).Sum();
+            TimeSpan timeSpan = new TimeSpan(totalMeetingTime);
+            IQueryable<ReviewDetail> reviewDetails = atendedMeetings
+                .SelectMany(m => m.Reviews)
+                .SelectMany(r => r.Details);
+            var averageVoteResult = !reviewDetails.Any() ? 0
+                : await reviewDetails.Select(e => (int)e.Result).AverageAsync();
+            //var totalMeetingTime = allMeetizngsOfJoinedGroups.SelectMany(m => m.Connections);//.Select(e=>e.End.Value-e.Start).Select(ts=>ts.Ticks).Sum(); 
+
+            IQueryable<Discussion> discussions = repos.Discussions.GetList()
+                .Include(x => x.AnswerDiscussion)
+                .Where(x => x.GroupId == groupId
+                        && (x.CreateAt >= start && x.CreateAt < end));
+
+            IQueryable<AnswerDiscussion> answerdiscussions = repos.AnswerDiscussions.GetList()
+                .Include(x => x.Discussion)
+                .Where(x => x.Discussion.GroupId == groupId
+                        && (x.CreateAt >= start && x.CreateAt < end));
+
+            return new StatGetDto
+            {
+                Month = start,
+                //TotalMeetings = allMeetingsOfJoinedGroups.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider),
+                TotalMeetingsCount = totalMeetingsCount,
+                AtendedMeetings = atendedMeetings.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider),
+                AtendedMeetingsCount = atendedMeetingsCount,
+                MissedMeetingsCount = totalMeetingsCount - atendedMeetingsCount,
+                TotalMeetingTme = totalMeetingTime == 0 ? "Chưa tham gia buổi học nào"
+                    : $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút {timeSpan.Seconds} giây",
+                AverageVoteResult = averageVoteResult,
+                TotalDiscussionsCount = discussions.Count(),
+                TotalAnswerDiscussionsCount = answerdiscussions.Count()
+            };
+        }
+
         public async Task<IList<StatGetListDto>> GetStatsForStudent(int studentId)
         {
             DateTime month = DateTime.Now;
@@ -87,6 +170,7 @@ namespace ServiceLayer.Services.Implementation.Db
             List<DateTime> startDates = new List<DateTime>();
             DateTime start1 = new DateTime(month.Year, month.Month, 1, 0, 0, 0).Date;
             startDates.Add(start1);
+
             Account student = await repos.Accounts.GetByIdAsync(studentId);
             for (int i = 1; i <= 4; i++)
             {

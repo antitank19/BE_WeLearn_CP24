@@ -80,7 +80,7 @@ namespace ServiceLayer.Services.Implementation.Mail
             List<MimeMessage> mimeMessages = new List<MimeMessage>();
             foreach (var student in students)
             {
-                StatGetDto stat = await statService.GetStatForStudentInMonth(student.Id, DateTime.Now);
+                StatGetDto stat = await statService.GetStatForAccountInMonth(student.Id, DateTime.Now);
                 mimeMessages.AddRange(CreateMimeMessageForMonthlyStat(student, stat));
             }
             foreach (var mimeMessage in mimeMessages)

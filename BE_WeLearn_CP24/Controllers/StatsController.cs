@@ -23,12 +23,12 @@ namespace API.Controllers
         }
 
         [SwaggerOperation(
-            Summary = StatsEndpoints.GetStatForStudentInMonthNew
-            , Description = StatsDescriptions.GetStatForStudentInMonthNew
+            Summary = StatsEndpoints.GetStatForAccountInMonthNew
+            , Description = StatsDescriptions.GetStatForAccountInMonthNew
         )]
-        [HttpGet("{studentId}/{month}")]
+        [HttpGet("Account/{studentId}/{month}")]
         [Authorize(Roles = Actor.Student_Parent)]
-        public async Task<IActionResult> GetStatForStudentInMonthNew(int studentId, DateTime month)
+        public async Task<IActionResult> GetStatForAccountInMonth(int studentId, DateTime month)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
@@ -41,7 +41,7 @@ namespace API.Controllers
                 {
                     return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
                 }
-                StatGetDto mappedStat = await services.Stats.GetStatForStudentInMonth(studentId, month);
+                var mappedStat = await services.Stats.GetStatForAccountInMonth(studentId, month);
                 return Ok(mappedStat);
             }
             catch (Exception ex)
@@ -52,25 +52,25 @@ namespace API.Controllers
         }
 
         [SwaggerOperation(
-            Summary = StatsEndpoints.GetStatForStudent
-            , Description = StatsDescriptions.GetStatForStudent
+            Summary = StatsEndpoints.GetStatForGroupInMonthNew
+            , Description = StatsDescriptions.GetStatForGroupInMonthNew
         )]
-        [HttpGet("{studentId}")]
+        [HttpGet("Group/{groupId}/{month}")]
         [Authorize(Roles = Actor.Student_Parent)]
-        public async Task<IActionResult> GetStatForStudent(int studentId)
+        public async Task<IActionResult> GetStatForGroupInMonth(int groupId, DateTime month)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                if (studentId < 0)
+                if (groupId < 0)
                 {
                     return NotFound();
                 }
-                if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
-                {
-                    return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
-                }
-                IList<StatGetListDto> mappedStat = await services.Stats.GetStatsForStudent(studentId);
+                //if (HttpContext.User.GetUserId())
+                //{
+                //    return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+                //}
+                var mappedStat = await services.Stats.GetStatForGroupInMonth(groupId, month);
                 return Ok(mappedStat);
             }
             catch (Exception ex)
@@ -79,5 +79,34 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
+
+        //[SwaggerOperation(
+        //    Summary = StatsEndpoints.GetStatForStudent
+        //    , Description = StatsDescriptions.GetStatForStudent
+        //)]
+        //[HttpGet("{studentId}")]
+        //[Authorize(Roles = Actor.Student_Parent)]
+        //public async Task<IActionResult> GetStatForStudent(int studentId)
+        //{
+        //    ValidatorResult valResult = new ValidatorResult();
+        //    try
+        //    {
+        //        if (studentId < 0)
+        //        {
+        //            return NotFound();
+        //        }
+        //        if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
+        //        {
+        //            return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+        //        }
+        //        var mappedStat = await services.Stats.GetStatsForStudent(studentId);
+        //        return Ok(mappedStat);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        valResult.Add(ex.ToString());
+        //        return BadRequest(valResult);
+        //    }
+        //}
     }
 }

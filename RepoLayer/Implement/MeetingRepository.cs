@@ -28,9 +28,11 @@ namespace RepoLayer.Implemention
             return creatingMeetings;
         }
 
-        public override Task<Meeting> GetByIdAsync(int id)
+        public override async Task<Meeting> GetByIdAsync(int id)
         {
-            return base.GetByIdAsync(id);
+            return await dbContext.Meetings
+                .Include(m=>m.Schedule)
+                .SingleOrDefaultAsync(m=>m.Id==id);
         }
 
         public override IQueryable<Meeting> GetList()

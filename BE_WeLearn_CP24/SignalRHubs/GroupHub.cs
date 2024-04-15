@@ -8,7 +8,7 @@ namespace API.SignalRHub
     /// <summary>
     /// Use to count number of ppl in rooms
     /// </summary>
-    [Authorize]
+    //[Authorize]
     public class GroupHub : Hub
     {
         //BE: SendAsync(GroupHub.CountMemberInGroupMsg, new { meetingId: int, countMember: int })

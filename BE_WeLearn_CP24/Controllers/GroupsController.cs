@@ -30,11 +30,11 @@ namespace API.Controllers
             //this.validators = validators;
         }
 
-        // GET: api/Groups/Join
+        // GET: api/Groups/Search
         [SwaggerOperation(
            Summary = GroupsEndpoints.SearchGroup,
            Description = GroupsDescriptions.SearchGroup
-       )]
+        )]
         [Authorize(Roles = Actor.Student)]
         [HttpGet("Search")]
         public async Task<IActionResult> SearchGroup(string search, bool newGroup = true)
@@ -50,24 +50,44 @@ namespace API.Controllers
             return Ok(mapped);
         }
 
-      //  [SwaggerOperation(
-      //    Summary = GroupsEndpoints.SearchGroupByClass,
-      //    Description = GroupsDescriptions.SearchGroupByClassa
-      //)]
-      //  [Authorize(Roles = Actor.Student)]
-      //  [HttpGet("Search/Class")]
-      //  public async Task<IActionResult> SearchGroupByClass(string Class, bool newGroup = true)
-      //  {
-      //      int studentId = HttpContext.User.GetUserId();
-      //      //IQueryable<Group> list = await services.Groups.SearchGroupsByClass(Class, studentId, newGroup);
-      //      //if (list == null || !list.Any())
-      //      //{
-      //      //    return NotFound();
-      //      //}
-      //      //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
-      //      IQueryable<GroupGetListDto> mapped = await services.Groups.SearchGroupsByClass<GroupGetListDto>(Class, studentId, newGroup);
-      //      return Ok(mapped);
-      //  }
+        // GET: api/Groups/Search
+        [SwaggerOperation(
+           Summary = GroupsEndpoints.SearchGroupCode,
+           Description = GroupsDescriptions.SearchGroupCode
+        )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("Search/Code")]
+        public async Task<IActionResult> SearchGroupWithCode(string search, bool newGroup = true)
+        {
+            int studentId = HttpContext.User.GetUserId();
+            //IQueryable<Group> list = await services.Groups.SearchGroups(search, studentId, newGroup);
+            //if (list == null || !list.Any())
+            //{
+            //    return NotFound();
+            //}
+            //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+            IQueryable<GroupGetListDto> mapped = await services.Groups.SearchGroupsWithCode<GroupGetListDto>(search, studentId, newGroup);
+            return Ok(mapped);
+        }
+
+        //  [SwaggerOperation(
+        //    Summary = GroupsEndpoints.SearchGroupByClass,
+        //    Description = GroupsDescriptions.SearchGroupByClassa
+        //)]
+        //  [Authorize(Roles = Actor.Student)]
+        //  [HttpGet("Search/Class")]
+        //  public async Task<IActionResult> SearchGroupByClass(string Class, bool newGroup = true)
+        //  {
+        //      int studentId = HttpContext.User.GetUserId();
+        //      //IQueryable<Group> list = await services.Groups.SearchGroupsByClass(Class, studentId, newGroup);
+        //      //if (list == null || !list.Any())
+        //      //{
+        //      //    return NotFound();
+        //      //}
+        //      //var mapped = list.ProjectTo<GroupGetListDto>(mapper.ConfigurationProvider);
+        //      IQueryable<GroupGetListDto> mapped = await services.Groups.SearchGroupsByClass<GroupGetListDto>(Class, studentId, newGroup);
+        //      return Ok(mapped);
+        //  }
 
         [SwaggerOperation(
           Summary = GroupsEndpoints.SearchGroupBySubject,

@@ -5,6 +5,7 @@ namespace API.SwaggerOption.Endpoints
     public class GroupsEndpoints
     {
         public const string SearchGroup = $"[{Actor.Student}/{Finnished.True}]Search list of groups for student";
+        public const string SearchGroupCode = $"[{Actor.Student}/{Finnished.True}]Search list of groups for student with invite code";
         public const string SearchGroupByClass = $"[{Actor.Student}/{Finnished.True}]Search list of groups by classs for student";
         public const string SearchGroupBySubject = $"[{Actor.Student}/{Finnished.True}]Search list of groups by subject for student";
         public const string GetJoinedGroups = $"[{Actor.Student}/{Finnished.True}]Get list of groups student joined";

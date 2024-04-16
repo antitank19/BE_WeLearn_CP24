@@ -77,5 +77,15 @@ namespace ServiceLayer.Utils
                 return BitConverter.ToString(hash).Replace("-", String.Empty);
             }
         }
+        public static string CustomeEncode(this string originalString ){
+            byte[] bytesToEncode = Encoding.UTF8.GetBytes(originalString);
+            string base64String = Convert.ToBase64String(bytesToEncode);
+            return base64String;
+        }
+        public static string CustomDecode(this string base64String){
+            byte[] bytesDecoded = Convert.FromBase64String(base64String);
+            string decodedString = Encoding.UTF8.GetString(bytesDecoded);
+            return decodedString;
+        }
     }
 }

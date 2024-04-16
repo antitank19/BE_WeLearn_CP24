@@ -3,6 +3,7 @@ using DataLayer.DbObject;
 using DataLayer.Enums;
 using ServiceLayer.DTOs;
 using ServiceLayer.DTOs;
+using ServiceLayer.Utils;
 
 namespace ShareResource.Mapper
 {
@@ -114,6 +115,8 @@ namespace ShareResource.Mapper
                         .Where(e => e.State == RequestStateEnum.Decline)))
                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
                     src => src.GroupSubjects.Select(gs => gs.Subject)))
+                .ForMember(dest => dest.InviteCode, opt => opt.MapFrom(
+                    src => (src.Id + "!;!" + src.Name).CustomeEncode()))
 
                 //Past
                 .ForMember(dest => dest.PastMeetings, opt => opt.MapFrom(
@@ -136,6 +139,12 @@ namespace ShareResource.Mapper
                         .Select(e => e.Account)))
                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
                     src => src.GroupSubjects.Select(gs => gs.Subject)))
+                .ForMember(dest => dest.InviteCode, opt => opt.MapFrom(
+                    src => (src.Id + "!;!" + src.Name).CustomeEncode()))
+                //Past
+                .ForMember(dest => dest.PastMeetings, opt => opt.MapFrom(
+                    src => src.Schedules.SelectMany(s => s.Meetings)
+                        .Where(e => (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)))))
                 //Live
                 .ForMember(dest => dest.LiveMeetings, opt => opt.MapFrom(
                     src => src.Schedules.SelectMany(s => s.Meetings)

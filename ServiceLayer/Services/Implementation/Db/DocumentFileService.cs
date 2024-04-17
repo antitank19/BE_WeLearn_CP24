@@ -34,6 +34,7 @@ public class DocumentFileService : IDocumentFileService
     {
         var file = await repos.DocumentFiles.GetByIdAsync(documentId);
         file.Approved = check;
+        file.IsActive = check;
         
         await repos.DocumentFiles.ApproveRejectAsync(file);
         return mapper.Map<DocumentFileDto>(file);

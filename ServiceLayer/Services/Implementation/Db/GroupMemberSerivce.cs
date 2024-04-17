@@ -84,7 +84,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(e => e.Account)
                 .Include(e => e.Group)
                 .SingleOrDefaultAsync(e => e.AccountId == accountId
-                    && e.GroupId == groupId && e.State == RequestStateEnum.Waiting);
+                    && e.GroupId == groupId 
+                    && e.State == RequestStateEnum.Waiting);
             var mapped = mapper.Map<T>(invite);
             return mapped;
 

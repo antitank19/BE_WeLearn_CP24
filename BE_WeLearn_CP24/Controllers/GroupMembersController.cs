@@ -213,6 +213,7 @@ namespace API.Controllers
                                 valResult.Add("Học sinh đã tham gia nhóm này", ValidateErrType.Role);
                                 return BadRequest(valResult);
                             }
+                        #region old code
                         //Fix later
                         //case GroupMemberState.Inviting:
                         //    {
@@ -230,6 +231,7 @@ namespace API.Controllers
                         //    {
 
                         //    }
+                        #endregion
                         default:
                             {
                                 //GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
@@ -238,6 +240,19 @@ namespace API.Controllers
                                 return BadRequest(valResult);
                             }
                     }
+                }
+                JoinInviteForGroupGetDto exsitedInvite = await services.GroupMembers.GetInviteOfStudentAndGroupAsync<JoinInviteForGroupGetDto>(dto.AccountId, dto.GroupId);
+                if (exsitedInvite != null)
+                {
+                    valResult.Add("Học sinh đã được mời tham gia nhóm này từ trước", ValidateErrType.Role);
+                    return BadRequest(valResult);
+
+                }
+                Request exsitedRequest = await services.GroupMembers.GetRequestOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
+                if (exsitedRequest != null)
+                {
+                    valResult.Add("Học sinh đã yêu cầu tham gia nhóm này từ trước", ValidateErrType.Role);
+                    return BadRequest(valResult);
                 }
                 await valResult.ValidateParamsAsync(services, dto, studentId);
                 if (!valResult.IsValid)
@@ -306,6 +321,8 @@ namespace API.Controllers
                 //    return BadRequest("Đây không phải yêu cầu");
                 //}
                 await services.GroupMembers.AcceptOrDeclineRequestAsync(existedRequest, true);
+                
+                await groupHub.Clients.Group(existedRequest.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
                 return Ok();
             }
             catch (Exception ex)
@@ -367,6 +384,7 @@ namespace API.Controllers
                 //    return BadRequest("Đây không phải yêu cầu");
                 //}
                 await services.GroupMembers.AcceptOrDeclineRequestAsync(existedRequest, false);
+                await groupHub.Clients.Group(existedRequest.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
                 return Ok();
             }
             catch (Exception ex)
@@ -471,6 +489,7 @@ namespace API.Controllers
                                 valResult.Add("Bạn đã tham gia nhóm này", ValidateErrType.Role);
                                 return BadRequest(valResult);
                             }
+                        #region old code
                         //Fix later
                         //case GroupMemberState.Inviting:
                         //    {
@@ -494,6 +513,7 @@ namespace API.Controllers
                         //            Previous = getDto
                         //        });
                         //    }
+                        #endregion
                         default:
                             {
                                 valResult.Add("Bạn đã có liên quan đến nhóm", ValidateErrType.Role);
@@ -636,6 +656,7 @@ namespace API.Controllers
                     return BadRequest(valResult);
                 }
                 await services.GroupMembers.AcceptOrDeclineInviteAsync(existedInvite, false);
+                await groupHub.Clients.Group(existedInvite.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
                 return Ok();
             }
             catch (Exception ex)

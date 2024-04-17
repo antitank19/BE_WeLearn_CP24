@@ -199,37 +199,19 @@ namespace API.Controllers
                         //          await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
                         //GroupMemberGetDto getDto = await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
                         valResult.Add("Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại", ValidateErrType.Role);
-                        return BadRequest(new
-                        {
-                            IsValid = valResult.IsValid,
-                            Failures = valResult.Failures,
-                            FailuresMap = valResult.FailuresMap,
-                            Previous = exsited
-                        });
+                        return BadRequest(valResult);
                     }
                     switch (exsited.MemberRole)
                     {
                         case GroupMemberRole.Leader:
                             {
                                 valResult.Add("Học sinh đã tham gia nhóm này", ValidateErrType.Role);
-                                return BadRequest(new
-                                {
-                                    IsValid = valResult.IsValid,
-                                    Failures = valResult.Failures,
-                                    FailuresMap = valResult.FailuresMap,
-                                    Previous = exsited
-                                });
+                                return BadRequest(valResult);
                             }
                         case GroupMemberRole.Member:
                             {
                                 valResult.Add("Học sinh đã tham gia nhóm này", ValidateErrType.Role);
-                                return BadRequest(new
-                                {
-                                    IsValid = valResult.IsValid,
-                                    Failures = valResult.Failures,
-                                    FailuresMap = valResult.FailuresMap,
-                                    Previous = exsited
-                                });
+                                return BadRequest(valResult);
                             }
                         //Fix later
                         //case GroupMemberState.Inviting:
@@ -253,13 +235,7 @@ namespace API.Controllers
                                 //GroupMemberGetDto getDto = mapper.Map<GroupMemberGetDto>(
                                 //    await services.GroupMembers.GetGroupMemberOfStudentAndGroupAsync(dto.AccountId, dto.GroupId));
                                 valResult.Add("Học sinh đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại", ValidateErrType.Role);
-                                return BadRequest(new
-                                {
-                                    IsValid = valResult.IsValid,
-                                    Failures = valResult.Failures,
-                                    FailuresMap = valResult.FailuresMap,
-                                    Previous = exsited
-                                });
+                                return BadRequest(valResult);
                             }
                     }
                 }
@@ -481,37 +457,19 @@ namespace API.Controllers
                     if (!exsitedGroupMember.IsActive)
                     {
                         valResult.Add("Bạn đã từ chối/bị từ chối tham gia nhóm này từ trước. Hãy đợi tới tháng sau để thử lại", ValidateErrType.Role);
-                        return BadRequest(new
-                        {
-                            IsValid = valResult.IsValid,
-                            Failures = valResult.Failures,
-                            FailuresMap = valResult.FailuresMap,
-                            Previous = exsitedGroupMember
-                        });
+                        return BadRequest(valResult);
                     }
                     switch (exsitedGroupMember.MemberRole)
                     {
                         case GroupMemberRole.Leader:
                             {
                                 valResult.Add("Bạn đã tham gia nhóm này", ValidateErrType.Role);
-                                return BadRequest(new
-                                {
-                                    IsValid = valResult.IsValid,
-                                    Failures = valResult.Failures,
-                                    FailuresMap = valResult.FailuresMap,
-                                    Previous = exsitedGroupMember
-                                });
+                                return BadRequest(valResult);
                             }
                         case GroupMemberRole.Member:
                             {
                                 valResult.Add("Bạn đã tham gia nhóm này", ValidateErrType.Role);
-                                return BadRequest(new
-                                {
-                                    IsValid = valResult.IsValid,
-                                    Failures = valResult.Failures,
-                                    FailuresMap = valResult.FailuresMap,
-                                    Previous = exsitedGroupMember
-                                });
+                                return BadRequest(valResult);
                             }
                         //Fix later
                         //case GroupMemberState.Inviting:
@@ -539,13 +497,7 @@ namespace API.Controllers
                         default:
                             {
                                 valResult.Add("Bạn đã có liên quan đến nhóm", ValidateErrType.Role);
-                                return BadRequest(new
-                                {
-                                    IsValid = valResult.IsValid,
-                                    Failures = valResult.Failures,
-                                    FailuresMap = valResult.FailuresMap,
-                                    Previous = exsitedGroupMember
-                                });
+                                return BadRequest(valResult);
                             }
                     }
                 }
@@ -553,26 +505,14 @@ namespace API.Controllers
                 if (exsitedInvite != null)
                 {
                     valResult.Add("Bạn đã được mời tham gia nhóm này từ trước", ValidateErrType.Role);
-                    return BadRequest(new
-                    {
-                        IsValid = valResult.IsValid,
-                        Failures = valResult.Failures,
-                        FailuresMap = valResult.FailuresMap,
-                        Previous = exsitedInvite
-                    });
+                    return BadRequest(valResult);
 
                 }
                 Request exsitedRequest = await services.GroupMembers.GetRequestOfStudentAndGroupAsync(dto.AccountId, dto.GroupId);
                 if (exsitedRequest != null)
                 {
                     valResult.Add("Bạn đã yêu cầu tham gia nhóm này từ trước", ValidateErrType.Role);
-                    return BadRequest(new
-                    {
-                        IsValid = valResult.IsValid,
-                        Failures = valResult.Failures,
-                        FailuresMap = valResult.FailuresMap,
-                        Previous = exsitedRequest
-                    });
+                    return BadRequest(valResult);
                 }
 
                 await valResult.ValidateParamsAsync(services, dto);

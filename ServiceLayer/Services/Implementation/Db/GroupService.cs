@@ -70,25 +70,32 @@ namespace ServiceLayer.Services.Implementation.Db
         
         public async Task<IQueryable<T>> SearchGroupsWithCode<T>(string code, int studentId, bool newGroup)
         {
+            try
+            {
                 string decodeString = code.CustomDecode();
-                int groupId = int.Parse(decodeString.Split("!,!").FirstOrDefault());
-            if (newGroup)
-            {
-                var list = repos.Groups.GetList()
-                .Include(e => e.GroupMembers)
-                .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
-                .Where(e => !e.GroupMembers.Any(e => e.AccountId == studentId) && e.Id == groupId);
-                var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
-                return mapped;
+                string? idString = decodeString.Split("!;!").FirstOrDefault();
+                int groupId = int.Parse(idString);
+                if (newGroup)
+                {
+                    var list = repos.Groups.GetList()
+                    .Include(e => e.GroupMembers)
+                    .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
+                    .Where(e => !e.GroupMembers.Any(e => e.AccountId == studentId) && e.Id == groupId);
+                    var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+                    return mapped;
+                }
+                else
+                {
+                    var list = repos.Groups.GetList()
+                     .Include(e => e.GroupMembers)
+                     .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
+                     .Where(e => e.Id == groupId);
+                    var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+                    return mapped;
+                }
             }
-            else
-            {
-                var list = repos.Groups.GetList()
-                 .Include(e => e.GroupMembers)
-                 .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
-                 .Where(e => e.Id == groupId);
-                var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
-                return mapped;
+            catch { 
+                return new List<T>().AsQueryable();
             }
             
         }

@@ -4,6 +4,8 @@
     {
         public const string SearchGroup = "Search group theo name, class, môn, id<br>" +
                 "newGroup thành true nếu không muốn search những nhóm cũ (nên để)";
+        public const string SearchGroupCode = "Search group theo invite code<br>" +
+                "sẽ thông báo nếu đã tham gia nhóm";
         public const string SearchGroupByClassa = "Search group theo class<br>" +
                "newGroup thành true nếu không muốn search những nhóm cũ (nên để)";
         public const string SearchGroupBySubject = "Search group theo class<br>" +

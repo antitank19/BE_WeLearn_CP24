@@ -151,7 +151,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
                //.Where(e => e.GroupId == groupId && (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today && e.Start == null)))
-               .Where(e => e.Schedule.GroupId == groupId && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+               .Where(e => e.Schedule.GroupId == groupId 
+                    && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
                .ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
         }
 

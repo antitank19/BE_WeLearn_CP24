@@ -21,6 +21,7 @@ namespace ServiceLayer.DTOs
         public virtual ICollection<ScheduleMeetingForLeaderGetDto> ScheduleMeetings { get; set; }
         public ICollection<DiscussionInGroupDto> Discussions { get; set; }
         public ICollection<SubjectGetDto> Subjects { get; set; }
+        public string InviteCode { get; set; }
 
     }
 }

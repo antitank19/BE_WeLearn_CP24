@@ -37,7 +37,7 @@ namespace RepoLayer.Implement
                 .Include(e => e.Account)
                 .Include(e => e.Group)
                 .Include(e => e.AnswerDiscussion)
-                .Where(x => x.GroupId == groupId).ToListAsync();
+                .Where(x => x.GroupId == groupId).OrderBy(x => x.CreateAt).ToListAsync();
         }
     }
 }

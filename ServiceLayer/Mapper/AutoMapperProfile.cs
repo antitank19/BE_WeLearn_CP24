@@ -282,7 +282,10 @@ namespace ShareResource.Mapper
                     src => src.Schedule.Group.Name))
                  .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
                     src => src.Schedule.ScheduleSubjects.Select(gs => gs.Subject)))
+                 .ForMember(dest => dest.Chats, opt => opt.MapFrom(
+                    src => src.Chats))
                 .PreserveReferences();
+                            
 
             CreateMap<ScheduleMeetingCreateDto, Meeting>()
                 .ForMember(dest => dest.ScheduleStart, opt => opt.MapFrom(

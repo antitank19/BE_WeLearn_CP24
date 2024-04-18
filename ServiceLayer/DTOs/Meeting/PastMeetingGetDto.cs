@@ -20,7 +20,7 @@ namespace ServiceLayer.DTOs
         public string GroupName { get; set; }
         public int CountMember { get; set; }
         public ICollection<SubjectGetDto> Subjects { get; set; }
-        //public ICollection<ChatGetDto> Chats { get; set; }
+        public ICollection<ChatGetDto> Chats { get; set; }
         //public ICollection<ReviewSignalrDTO> Reviews { get; set; }
     }
 }

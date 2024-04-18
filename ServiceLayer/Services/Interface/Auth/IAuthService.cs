@@ -24,7 +24,7 @@ namespace ServiceLayer.Services.Interface.Auth
         /// <returns>jwtToken: String</returns>
         public Task<LoginInfoDto> LoginWithGoogleIdToken(string googleIdToken, bool rememberMe);
         public Task<LoginInfoDto> LoginWithGoogleAccessToken(string googleAccessToken, bool rememberMe);
-        public Task<string> GenerateJwtAsync(Account logined, bool rememberMe = true);
+        //public Task<string> GenerateJwtAsync(Account logined, bool rememberMe = true);
         public Task Register(Account register, RoleNameEnum role);
     }
 }

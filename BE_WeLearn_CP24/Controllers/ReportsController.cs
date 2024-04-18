@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         //[Authorize]
-        [HttpGet("api/Report/GetUnresolve")]
+        [HttpGet("Unresolve")]
         public async Task<IActionResult> GetUresolvedReports()
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -154,7 +154,7 @@ namespace API.Controllers
         }
 
         //[Authorize]
-        [HttpPost("api/Report/Create")]
+        [HttpPost()]
         public async Task<IActionResult> CreateReport(ReportCreateDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -171,7 +171,7 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
-        [HttpPost("api/Report/AdminSolve")]
+        [HttpPut()]
         public async Task<IActionResult> SolveReport(int reportId, bool isApproved)
         {
             ValidatorResult valResult = new ValidatorResult();

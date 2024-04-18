@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Auth;
+using ServiceLayer.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -33,20 +34,44 @@ namespace ServiceLayer.Services.Implementation.Auth
             this.mapper = mapper;
         }
 
-        public async Task<LoginInfoDto> LoginAsync(LoginModel loginModel)
+        public async Task<LoginInfoDto> LoginAsync(LoginModel login)
         {
-            Account account = await repos.Accounts.GetByUsernameOrEmailAndPasswordAsync(loginModel.UsernameOrEmail, loginModel.Password);
-            if (account == null)
+            if (login.UsernameOrEmail == configuration["Admin:Username"])
             {
-                return null;
+                if (login.Password == configuration["Admin:Password"].CustomHash())
+                {
+                    LoginInfoDto loginInfoDto = new LoginInfoDto()
+                    {
+                        Username= login.UsernameOrEmail ,
+                        Email= login.UsernameOrEmail,
+                        FullName = login.UsernameOrEmail ,
+                        RoleName = "Admin",
+                        LeadGroups= new List<GroupGetListDto>(), 
+                        JoinGroups= new List<GroupGetListDto>(),
+                    };
+                    loginInfoDto.Token = await GenerateAdminJwtAsync(loginInfoDto);
+                    return loginInfoDto;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            if(account.IsBanned == true)
+            else
             {
-                throw new Exception("Tài khoản đã bị vô hiệu");
+                Account account = await repos.Accounts.GetByUsernameOrEmailAndPasswordAsync(login.UsernameOrEmail, login.Password);
+                if (account == null)
+                {
+                    return null;
+                }
+                if (account.IsBanned == true)
+                {
+                    throw new Exception("Tài khoản đã bị vô hiệu");
+                }
+                LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
+                loginInfoDto.Token = await GenerateJwtAsync(account, login.RememberMe);
+                return loginInfoDto;
             }
-            LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
-            loginInfoDto.Token = await GenerateJwtAsync(account, loginModel.RememberMe);
-            return loginInfoDto;
         }
 
         public async Task<LoginInfoDto> LoginWithGoogleIdToken(string googleIdToken, bool rememberMe)
@@ -94,7 +119,7 @@ namespace ServiceLayer.Services.Implementation.Auth
             return loginInfoDto;
         }
 
-        public async Task<string> GenerateJwtAsync(Account logined, bool rememberMe)
+        private async Task<string> GenerateJwtAsync(Account logined, bool rememberMe)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -114,6 +139,31 @@ namespace ServiceLayer.Services.Implementation.Auth
                 configuration["Authentication:JwtToken:Audience"],
                 claims,
                 expires: rememberMe ? DateTime.Now.AddDays(30) : DateTime.Now.AddDays(1),
+                signingCredentials: credential
+            );
+            return jwtHandler.WriteToken(jwtSecurityToken);
+        }
+
+        private async Task<string> GenerateAdminJwtAsync(LoginInfoDto logined)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, logined.Id.ToString()),
+                new Claim(ClaimTypes.Name, logined.Username),
+                new Claim(ClaimTypes.Email, logined.Email),
+                new Claim(ClaimTypes.Role, logined.RoleName),
+                //new Claim("Email", logined.Email),
+                //new Claim("Role", logined.Role.Name)
+            };
+            var issuerSigningKey = new SymmetricSecurityKey(
+                         Encoding.UTF8.GetBytes(configuration["Authentication:JwtToken:TokenKey"]));
+            var credential = new SigningCredentials(issuerSigningKey, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+                configuration["Authentication:JwtToken:Issuer"],
+                configuration["Authentication:JwtToken:Audience"],
+                claims,
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: credential
             );
             return jwtHandler.WriteToken(jwtSecurityToken);

@@ -1425,22 +1425,22 @@ namespace ServiceLayer.DbSeeding
                 GroupId = 2,
                 State= RequestStateEnum.Waiting,
             },
-            //  new Report
-            //{
-            //    Id = 3, 
-            //    Detail = "Nội dung không phù hợp",
-            //    SenderId = 1,
-            //    DiscussionId = 2,
-            //    State= RequestStateEnum.Waiting,
-            //},
-            //   new Report
-            //{
-            //    Id = 4,
-            //    Detail = "Nội dung không phù hợp",
-            //    SenderId = 1,
-            //    FileId = 2,
-            //    State= RequestStateEnum.Waiting,
-            //},
+              new Report
+            {
+                Id = 3,
+                Detail = "Nội dung không phù hợp",
+                SenderId = 1,
+                DiscussionId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+               new Report
+            {
+                Id = 4,
+                Detail = "Nội dung không phù hợp",
+                SenderId = 1,
+                FileId = 2,
+                State= RequestStateEnum.Waiting,
+            },
         };
         public static Discussion[] Discussions = new Discussion[]
         {

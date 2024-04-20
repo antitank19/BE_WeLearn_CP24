@@ -27,7 +27,7 @@ namespace API.Controllers
         [SwaggerOperation(
             Summary = SubjectsEndpoints.GetSubject
         )]
-        [Authorize(Roles = Actor.Student_Parent)]
+        [Authorize(Roles = Actor.Student_Admin)]
         [HttpGet]
         public async Task<IActionResult> GetSubject()
         {

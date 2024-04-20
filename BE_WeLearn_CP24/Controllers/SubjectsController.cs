@@ -48,5 +48,26 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
+
+        [SwaggerOperation(
+           Summary = SubjectsEndpoints.CreateSubject
+       )]
+        [Authorize(Roles = Actor.Student_Admin)]
+        [HttpPost]
+        public async Task<IActionResult> CreateSubject(string name)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                await services.Subjects.CreateSubjectAsync(name);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
     }
 }

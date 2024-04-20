@@ -13,6 +13,12 @@ namespace RepoLayer.Implemention
             this.dbContext = dbContext;
         }
 
+        public async Task CreateSubjectAsync(string name)
+        {
+            await dbContext.Subjects.AddAsync(new Subject { Name = name }); 
+            await dbContext.SaveChangesAsync();
+        }
+
         public IQueryable<Subject> GetList()
         {
            return dbContext.Subjects.AsQueryable();

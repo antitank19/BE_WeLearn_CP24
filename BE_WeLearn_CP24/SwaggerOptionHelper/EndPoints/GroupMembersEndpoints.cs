@@ -16,5 +16,7 @@ namespace API.SwaggerOption.Endpoints
         public const string AcceptInvite = $"[{Actor.Member}/{Finnished.True}/{Auth.True}] Accpet join invite for student";
         public const string DeclineInvite = $"[{Actor.Member}/{Finnished.True}/{Auth.True}] Decline join invite for student";
         public const string BanMember = $"[{Actor.Leader}/{Finnished.True}/{Auth.True}] Banned user from group for leader";
+        public const string LeaveGroup = $"[{Actor.Member}/{Finnished.True}/{Auth.True}] Leave group";
+
     }
 }

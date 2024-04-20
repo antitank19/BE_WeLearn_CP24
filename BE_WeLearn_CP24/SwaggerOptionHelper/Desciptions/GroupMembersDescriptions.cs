@@ -15,5 +15,6 @@
         public const string BanMember = "Leader ban member khỏi nhóm<br>" +
                 "groupId: id của nhóm<br>" +
                 "banAccId: id của member bị ban";
+        public const string LeaveGroup = "Leave group";
     }
 }

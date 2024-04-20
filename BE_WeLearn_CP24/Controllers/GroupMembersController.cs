@@ -711,6 +711,33 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
+        [SwaggerOperation(
+           Summary = GroupMembersEndpoints.LeaveGroup
+           , Description = GroupMembersDescriptions.LeaveGroup
+       )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpPut("LeaveGroup")]
+        public async Task<IActionResult> LeaveGroup(int groupId)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var accountId = HttpContext.User.GetUserId();
+                bool isLead = await services.Groups.IsStudentLeadingGroupAsync(accountId, groupId);
+                if (isLead)
+                {
+                    valResult.Add("Bạn là nhóm trưởng của nhóm này, không thể rời nhóm", ValidateErrType.Role);
+                    return Unauthorized(valResult);
+                }
+                var check = await services.GroupMembers.LeaveGroup(accountId, groupId);
+                return Ok(check);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
         private async Task<bool> GroupMemberExists(int id)
         {
             return (await services.GroupMembers.AnyAsync(id));

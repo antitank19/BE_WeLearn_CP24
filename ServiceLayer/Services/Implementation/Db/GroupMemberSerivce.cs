@@ -204,5 +204,17 @@ namespace ServiceLayer.Services.Implementation.Db
             //await repos.GroupMembers.UpdateAsync(banned);
             await repos.GroupMembers.RemoveAsync(banned.Id);
         }
+
+        public async Task<bool> LeaveGroup(int accountId, int groupId)
+        {
+
+            var groupMember = await repos.GroupMembers.GetList()
+               .SingleOrDefaultAsync(e => e.AccountId == accountId && e.GroupId == groupId);
+
+            groupMember.IsActive = false;
+            await repos.GroupMembers.UpdateAsync(groupMember);
+
+            return true;
+        }
     }
 }

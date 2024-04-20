@@ -30,5 +30,6 @@ namespace ServiceLayer.Services.Interface.Db
         public Task BanUserFromGroupAsync(GroupMember banned);
         public Task<bool> AnyInviteAsync(int studentId, int groupId);
         public Task<bool> AnyRequestAsync(int studentId, int groupId);
+        public Task<bool> LeaveGroup(int accountId, int groupId);
     }
 }

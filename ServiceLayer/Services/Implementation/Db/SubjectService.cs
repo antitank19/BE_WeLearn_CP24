@@ -18,6 +18,11 @@ namespace ServiceLayer.Services.Implementation.Db
             this.mapper = mapper;
         }
 
+        public async Task CreateSubjectAsync(string name)
+        {
+            await repos.Subjects.CreateSubjectAsync(name);
+        }
+
         public IQueryable<T> GetList<T>()
         {
             return repos.Subjects.GetList().ProjectTo<T>(mapper.ConfigurationProvider);

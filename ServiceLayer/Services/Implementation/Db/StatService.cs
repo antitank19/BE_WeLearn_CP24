@@ -213,6 +213,16 @@ namespace ServiceLayer.Services.Implementation.Db
                 var averageVoteResult = !reviewDetails.Any() ? 0
                     : await reviewDetails.Select(e => (int)e.Result).AverageAsync();
 
+                IQueryable<Discussion> discussions = repos.Discussions.GetList()
+               .Include(x => x.AnswerDiscussion)
+               .Where(x => x.AccountId == studentId
+                       && (x.CreateAt >= start && x.CreateAt < end));
+
+                IQueryable<AnswerDiscussion> answerdiscussions = repos.AnswerDiscussions.GetList()
+                    .Include(x => x.Discussion)
+                    .Where(x => x.AccountId == studentId
+                            && (x.CreateAt >= start && x.CreateAt < end));
+
                 StatGetListDto newStat = new StatGetListDto
                 {
                     StudentFullname = student.FullName,
@@ -224,12 +234,87 @@ namespace ServiceLayer.Services.Implementation.Db
                     //TotalMeetingTme = totalMeetingTime == 0 ? "Chưa tham gia buổi học nào"
                     //    : $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút {timeSpan.Seconds} giây",
                     TotalMeetingTme = timeSpan,
-                    AverageVoteResult = averageVoteResult
+                    AverageVoteResult = averageVoteResult,
+                    TotalDiscussionCount = discussions.Count(),
+                    ToTalAnswerDiscussionCount = answerdiscussions.Count(),
                 };
                 stats.Add(newStat);
             }
             return stats;
         }
 
+        public async Task<IList<StatGetListDto>> GetStatsForGroup(int groupId)
+        {
+            DateTime month = DateTime.Now;
+            List<StatGetListDto> stats = new List<StatGetListDto>();
+            List<DateTime> startDates = new List<DateTime>();
+            DateTime start1 = new DateTime(month.Year, month.Month, 1, 0, 0, 0).Date;
+            startDates.Add(start1);
+
+            foreach (DateTime start in startDates)
+            {
+                DateTime end = start.AddMonths(1);
+                //Nếu tháng này thì chỉ lấy past meeting
+                IQueryable<Meeting> allMeetingsOfJoinedGroups = start.Month == DateTime.Now.Month
+                    ? repos.Meetings.GetList()
+                    .Include(m => m.Chats).ThenInclude(c => c.Account)
+                    .Include(c => c.Connections)
+                    .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
+                    .Include(m => m.Reviews).ThenInclude(r => r.Details)
+                    .Where(e => (e.ScheduleStart >= start && e.ScheduleStart.Value.Date < end || e.Start >= start && e.Start.Value.Date < end)
+                        && e.Schedule.Group.Id == groupId
+                        //lấy past meeting
+                        && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+                    : repos.Meetings.GetList()
+                    .Include(m => m.Chats).ThenInclude(c => c.Account)
+                    .Include(c => c.Connections)
+                    .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
+                    .Include(m => m.Reviews).ThenInclude(r => r.Details)
+                    .Where(c => c.ScheduleStart >= start && c.ScheduleStart.Value.Date < end
+                        && c.Schedule.Group.Id == groupId);
+                int totalMeetingsCount = allMeetingsOfJoinedGroups.Count();
+                IQueryable<Meeting> atendedMeetings = allMeetingsOfJoinedGroups;
+
+                int atendedMeetingsCount = allMeetingsOfJoinedGroups.Count() == 0
+                    ? 0 : atendedMeetings.Count();
+                long totalMeetingTime = atendedMeetings.Count() == 0 ? 0
+                    : atendedMeetings.SelectMany(m => m.Connections)
+                        .Select(e => e.End.Value - e.Start).Select(ts => ts.Ticks).Sum();
+                TimeSpan timeSpan = new TimeSpan(totalMeetingTime);
+                IQueryable<ReviewDetail> reviewDetails = atendedMeetings
+                    .SelectMany(m => m.Reviews)
+                    .SelectMany(r => r.Details);
+                var averageVoteResult = !reviewDetails.Any() ? 0
+                    : await reviewDetails.Select(e => (int)e.Result).AverageAsync();
+
+                IQueryable<Discussion> discussions = repos.Discussions.GetList()
+                    .Include(x => x.AnswerDiscussion)
+                    .Where(x => x.GroupId == groupId
+                            && (x.CreateAt >= start && x.CreateAt < end));
+
+                IQueryable<AnswerDiscussion> answerdiscussions = repos.AnswerDiscussions.GetList()
+                    .Include(x => x.Discussion)
+                    .Where(x => x.Discussion.GroupId == groupId
+                            && (x.CreateAt >= start && x.CreateAt < end));
+
+                StatGetListDto newStat = new StatGetListDto
+                {
+                    Month = start,
+                    TotalMeetingsCount = totalMeetingsCount,
+                    AtendedMeetingsCount = atendedMeetingsCount,
+                    MissedMeetingsCount = totalMeetingsCount - atendedMeetingsCount,
+                    //TotalMeetingTme = totalMeetingTime == 0 ? "Chưa tham gia buổi học nào"
+                    //    : $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút {timeSpan.Seconds} giây",
+                    TotalMeetingTme = timeSpan,
+                    AverageVoteResult = averageVoteResult,
+                    TotalDiscussionCount = discussions.Count(),
+                    ToTalAnswerDiscussionCount = answerdiscussions.Count(),
+                    
+                };
+                stats.Add(newStat);
+            }
+            return stats;
+
+        }
     }
 }

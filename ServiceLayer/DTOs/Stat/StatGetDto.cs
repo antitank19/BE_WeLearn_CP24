@@ -37,17 +37,17 @@ namespace ServiceLayer.DTOs
     }
     public class StatGetListDto
     {
-        public string StudentUsername { get; set; }
-        public string StudentFullname { get; set; }
+        public string? StudentUsername { get; set; }
+        public string? StudentFullname { get; set; }
         public DateTime Month { get; set; }
         //public IQueryable TotalMeetings { get; set; }
-        public int TotalMeetingsCount { get; set; }
-        public int AtendedMeetingsCount { get; set; }
-        public int MissedMeetingsCount { get; set; }
-        public TimeSpan TotalMeetingTme { get; set; }
-        public double AverageVoteResult { get; set; }
-        public int TotalDiscussionCount { get; set; }
-        public int ToTalAnswerDiscussionCount { get; set; }
+        public int? TotalMeetingsCount { get; set; }
+        public int? AtendedMeetingsCount { get; set; }
+        public int? MissedMeetingsCount { get; set; }
+        public TimeSpan? TotalMeetingTme { get; set; }
+        public double? AverageVoteResult { get; set; }
+        public int? TotalDiscussionCount { get; set; }
+        public int? ToTalAnswerDiscussionCount { get; set; }
 
 
         public string ToHtml()

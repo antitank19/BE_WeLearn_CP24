@@ -60,6 +60,12 @@ namespace ServiceLayer.Services.Implementation.Db
             schedule.ScheduleSubjects = dto.SubjectIds.Select(sId => new ScheduleSubject() { SubjectId = (int)sId }).ToList();
             Meeting meeting = mapper.Map<Meeting>(dto);
             meeting.Schedule = schedule;
+            //Meeting meeting = new Meeting { 
+            //    Name = dto.Name,
+            //    Content = dto.Content,
+            //    Schedule = schedule,
+            //    ScheduleStart = dto.Date.Add()
+            //};
             await repos.Meetings.CreateAsync(meeting);
         }
 

@@ -30,6 +30,8 @@ namespace ServiceLayer.DTOs
         {
             get { return date.Date; }
             set { date = value.Date; }
+            //get { return date; }
+            //set { date = value; }
         }
 
         public TimeSpan ScheduleStartTime { get; set; }

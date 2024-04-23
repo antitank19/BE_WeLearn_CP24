@@ -80,33 +80,58 @@ namespace API.Controllers
             }
         }
 
-        //[SwaggerOperation(
-        //    Summary = StatsEndpoints.GetStatForStudent
-        //    , Description = StatsDescriptions.GetStatForStudent
-        //)]
-        //[HttpGet("{studentId}")]
-        //[Authorize(Roles = Actor.Student_Parent)]
-        //public async Task<IActionResult> GetStatForStudent(int studentId)
-        //{
-        //    ValidatorResult valResult = new ValidatorResult();
-        //    try
-        //    {
-        //        if (studentId < 0)
-        //        {
-        //            return NotFound();
-        //        }
-        //        if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
-        //        {
-        //            return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
-        //        }
-        //        var mappedStat = await services.Stats.GetStatsForStudent(studentId);
-        //        return Ok(mappedStat);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        valResult.Add(ex.ToString());
-        //        return BadRequest(valResult);
-        //    }
-        //}
+        [SwaggerOperation(
+            Summary = StatsEndpoints.GetStatForStudent
+            , Description = StatsDescriptions.GetStatForStudent
+        )]
+        [HttpGet("ForStudentInMonths/{studentId}")]
+        [Authorize(Roles = Actor.Student_Parent)]
+        public async Task<IActionResult> GetStatForStudentInMonths(int studentId)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                if (studentId < 0)
+                {
+                    return NotFound();
+                }
+                if (HttpContext.User.IsInRole(Actor.Student) && HttpContext.User.GetUserId() != studentId)
+                {
+                    return Unauthorized("Bạn không thể xem dữ liệu của học sinh khác");
+                }
+                var mappedStat = await services.Stats.GetStatsForStudent(studentId);
+                return Ok(mappedStat);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        [SwaggerOperation(
+            Summary = StatsEndpoints.GetStatForGroup
+            , Description = StatsDescriptions.GetStatForGroup
+        )]
+        [HttpGet("ForGroupInMonths/{studentId}")]
+        [Authorize(Roles = Actor.Student_Parent)]
+        public async Task<IActionResult> GetStatForGroupinMonths(int groupId)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                if (groupId < 0)
+                {
+                    return NotFound();
+                }
+                var mappedStat = await services.Stats.GetStatsForGroup(groupId);
+                return Ok(mappedStat);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
     }
 }

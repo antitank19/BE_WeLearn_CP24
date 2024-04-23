@@ -178,8 +178,6 @@ namespace ShareResource.Mapper
                     src => src.Account.Email))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(
                     src => src.Account.FullName))
-                .ForMember(dest => dest.Schhool, opt => opt.MapFrom(
-                    src => src.Account.Career))
                 //.ForMember(dest => dest.Class, opt => opt.MapFrom(
                 //    src => src.Account.ClassId))
                 //.ForMember(dest => dest.Email, opt => opt.MapFrom(
@@ -219,8 +217,6 @@ namespace ShareResource.Mapper
                     src => src.Account.Email))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(
                     src => src.Account.FullName))
-                .ForMember(dest => dest.Schhool, opt => opt.MapFrom(
-                    src => src.Account.Career))
                 //.ForMember(dest => dest.Class, opt => opt.MapFrom(
                 //    src => src.Account.ClassId))
                 .PreserveReferences();

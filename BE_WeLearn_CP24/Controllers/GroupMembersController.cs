@@ -565,7 +565,7 @@ namespace API.Controllers
             {
                 int studentId = HttpContext.User.GetUserId();
                 Invite existedInvite = await services.GroupMembers.GetInviteByIdAsync(inviteId);
-                if (existedInvite == null)
+                if (existedInvite == null || existedInvite.Group.IsBanned == true)
                 {
                     valResult.Add("Lời mời tham gia không tồn tại", ValidateErrType.NotFound);
                     return BadRequest(valResult);

@@ -27,7 +27,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "trankhaiminhkhoi10a3@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
@@ -42,7 +42,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student2@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava13.jpg?alt=media&token=71817884-6a89-48df-b17f-6026d06d3b68",
@@ -57,7 +57,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student3@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava12.jpg?alt=media&token=ef8d1682-3909-415b-9d90-91751291cef2",
@@ -72,7 +72,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student4@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava14.jpg?alt=media&token=09808c4f-4b63-4313-9be9-d04c2d12696f",
@@ -101,7 +101,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student6@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2F03049ff2-ac7a-46c2-a25d-99ec3dd72da3_6b6f9b3707ab59367512c9066452f086.jpg?alt=media&token=63ac89d8-52cf-4ffd-8e19-a9a82e7ea918",
@@ -116,7 +116,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student7@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava11.png?alt=media&token=d1b4019b-f0f5-46e0-bd4b-f33c4a3115a0",
@@ -145,7 +145,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student9@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava17.jpg?alt=media&token=0072919a-68e7-4b46-8475-65bfb433d27d",
@@ -159,7 +159,7 @@ namespace ServiceLayer.DbSeeding
                 Email = "student10@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
-                Career="THCS Minh Đức",
+
                 DateOfBirth = new DateTime(2009,5, 5),
                 RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava18.jpg?alt=media&token=eb7dcb09-965b-4ce7-8cb3-60b72a36f4b7",

@@ -206,7 +206,6 @@ namespace API.Controllers
                     Password = dto.Password,
                     FullName = dto.FullName,
                     Phone = dto.Phone,
-                    Career = dto.Career,
                     DateOfBirth = dto.DateOfBirth,
                     ImagePath = downloadUrl,
                 };

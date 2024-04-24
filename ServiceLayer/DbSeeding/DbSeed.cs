@@ -835,7 +835,7 @@ namespace ServiceLayer.DbSeeding
                             //Id = 20,
                             Id = 25,
                             GroupId = 1,
-                            AccountId = 133,
+                            AccountId = 13,
                             MemberRole = GroupMemberRole.Member,
                             IsActive = true,
                         },

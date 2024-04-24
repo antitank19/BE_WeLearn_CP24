@@ -51,7 +51,10 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var doc = await services.Documents.UploadDocumentFIle(file, groupId, accountId);
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
+
+                var doc = await services.Documents.UploadDocumentFIle(file, groupId, accountId, isLeader);
                 return Ok(doc);
             }
             catch (Exception ex)

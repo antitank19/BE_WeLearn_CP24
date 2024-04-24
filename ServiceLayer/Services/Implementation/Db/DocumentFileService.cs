@@ -40,7 +40,7 @@ public class DocumentFileService : IDocumentFileService
         return mapper.Map<DocumentFileDto>(file);
     }
 
-    public async Task<DocumentFileDto> UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId)
+    public async Task<DocumentFileDto> UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId, bool isLeader)
     {
         var file = new DocumentFile();
 
@@ -67,11 +67,19 @@ public class DocumentFileService : IDocumentFileService
             // Update the discussion entity with the download URL
 
             file.HttpLink = downloadUrl;
-            file.Approved = false;
             file.GroupId = groupId;
             file.AccountId = accountId;
             file.CreatedDate = DateTime.UtcNow;
             file.IsActive = true;
+
+            if (!isLeader)
+            {
+                file.Approved = false;
+            }
+            else
+            {
+                file.Approved = true;
+            }
 
             await repos.DocumentFiles.CreateAsync(file);
         }

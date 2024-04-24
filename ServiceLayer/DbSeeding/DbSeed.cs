@@ -396,7 +396,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 7,
                 Name = "Mobile Design",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Join us to start design mobile",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
             },
@@ -404,7 +404,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 8,
                 Name = "Mobile Starter ",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Every year more and more people rely on mobile devices to meet their needs. Where websites used to be the gold-standard, people now rely on mobile apps. The technologies used to create these apps are expanding and improving quickly, so it’s an exciting time to start learning Mobile Development!",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fandroid.jpg?alt=media&token=7eaee239-cb80-436f-a336-9da659694fe2"
             },
@@ -412,7 +412,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 9,
                 Name = "Mobile Sharing Community",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Comunity foor sharing mobile experiences",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fmobile%20design.jpg?alt=media&token=e6f9ba15-1c9e-41ee-b026-99bdc0df2562"
             },
@@ -420,7 +420,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 10,
                 Name = "Android Studio Beginner",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Android Studio is the official Integrated Development Environment (IDE) for Android app development. Based on the powerful code editor and developer tools from IntelliJ IDEA , Android Studio offers even more features that enhance your productivity when building Android apps",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fandroid.jpg?alt=media&token=7eaee239-cb80-436f-a336-9da659694fe2"
             },

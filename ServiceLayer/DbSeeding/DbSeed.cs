@@ -175,7 +175,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava19.jpg?alt=media&token=e2b6d853-8f99-4c49-b772-578039fdc5ac",
                 ReportCounter = 0,
                 IsBanned = false
@@ -189,7 +189,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
                 ReportCounter = 0,
                 IsBanned = false
@@ -203,7 +203,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava13.jpg?alt=media&token=d5eafa6e-b7e3-4e08-ae77-59825df37794",
                 ReportCounter = 0,
                 IsBanned = false
@@ -217,7 +217,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava15.jpg?alt=media&token=8ab16455-e5d9-4342-a24f-db4a20b530f8",
                 ReportCounter = 0,
                 IsBanned = false
@@ -231,7 +231,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava14.jpg?alt=media&token=b910f818-464a-459f-98a3-fd89c5d9ff5b",
                 ReportCounter = 0,
                 IsBanned = false
@@ -245,7 +245,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava16.jpg?alt=media&token=0257c11f-5c96-41a9-a949-402a9c3786e6",
                 ReportCounter = 0,
                 IsBanned = false
@@ -259,7 +259,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava17.jpg?alt=media&token=a8a0568b-ff7b-40ff-bf3e-c3970e37ad9b",
                 ReportCounter = 0,
                 IsBanned = false
@@ -273,7 +273,7 @@ namespace ServiceLayer.DbSeeding
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
-                RoleId = 1,
+                RoleId = 2,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava18.jpg?alt=media&token=91e89058-a5c1-45f4-9430-ef63f0ec0905",
                 ReportCounter = 0,
                 IsBanned = false

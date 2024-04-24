@@ -169,7 +169,7 @@ namespace ServiceLayer.DbSeeding
             new Account
             {
                 Id = 11,
-                Username = "parent1",
+                Username = "student11",
                 FullName = "Trần Ba",
                 Email = "trankhaiminhkhoi@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
@@ -183,14 +183,98 @@ namespace ServiceLayer.DbSeeding
             new Account
             {
                 Id = 12,
-                Username = "parent2",
+                Username = "student12",
                 FullName = "Trần Văn Mạ",
-                Email = "parent2@gmail.com",
+                Email = "student12@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
                 RoleId = 1,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava1.jpg?alt=media&token=b546a8fc-70d7-453a-b3b2-f6bb9bc24e13",
+                ReportCounter = 0,
+                IsBanned = false
+            },
+            new Account
+            {
+                Id = 13,
+                Username = "student13",
+                FullName = "Trần Văn Mạnh",
+                Email = "student12@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0123456789",
+                DateOfBirth = new DateTime(1975,5, 5),
+                RoleId = 1,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava13.jpg?alt=media&token=d5eafa6e-b7e3-4e08-ae77-59825df37794",
+                ReportCounter = 0,
+                IsBanned = false
+            },
+            new Account
+            {
+                Id = 14,
+                Username = "student14",
+                FullName = "Trần Thi Nhu",
+                Email = "student12@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0123456789",
+                DateOfBirth = new DateTime(1975,5, 5),
+                RoleId = 1,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava15.jpg?alt=media&token=8ab16455-e5d9-4342-a24f-db4a20b530f8",
+                ReportCounter = 0,
+                IsBanned = false
+            },
+            new Account
+            {
+                Id = 15,
+                Username = "student15",
+                FullName = "Trần Khang Huy",
+                Email = "student12@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0123456789",
+                DateOfBirth = new DateTime(1975,5, 5),
+                RoleId = 1,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava14.jpg?alt=media&token=b910f818-464a-459f-98a3-fd89c5d9ff5b",
+                ReportCounter = 0,
+                IsBanned = false
+            },
+            new Account
+            {
+                Id = 16,
+                Username = "student16",
+                FullName = "Giông Ông Tố",
+                Email = "student12@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0123456789",
+                DateOfBirth = new DateTime(1975,5, 5),
+                RoleId = 1,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava16.jpg?alt=media&token=0257c11f-5c96-41a9-a949-402a9c3786e6",
+                ReportCounter = 0,
+                IsBanned = false
+            },
+            new Account
+            {
+                Id = 17,
+                Username = "student17",
+                FullName = "Quang Minh Long",
+                Email = "student12@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0123456789",
+                DateOfBirth = new DateTime(1975,5, 5),
+                RoleId = 1,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava17.jpg?alt=media&token=a8a0568b-ff7b-40ff-bf3e-c3970e37ad9b",
+                ReportCounter = 0,
+                IsBanned = false
+            },
+            new Account
+            {
+                Id = 18,
+                Username = "duylkse161102",
+                FullName = "Liêng Khánh Duy",
+                Email = "duylkse161102@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0123456789",
+                DateOfBirth = new DateTime(1975,5, 5),
+                RoleId = 1,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava18.jpg?alt=media&token=91e89058-a5c1-45f4-9430-ef63f0ec0905",
                 ReportCounter = 0,
                 IsBanned = false
             }
@@ -344,7 +428,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 11,
                 Name = "C# Starter",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "The C# language is the most popular language for the .NET platform, a free, cross-platform, open source development environment. C# programs can run on many different devices, from Internet of Things (IoT) devices to the cloud and everywhere in between. You can write apps for phone, desktop, and laptop computers and servers.",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             },
@@ -352,7 +436,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 12,
                 Name = "FU Java OOP",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Java is a popular programming language, created in 1995. It is owned by Oracle, and more than 3 billion devices run Java. Welcome to group",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fjava.jpg?alt=media&token=912e4114-0347-4bbe-ba53-51796fbcfc0a"
             },
@@ -360,7 +444,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 13,
                 Name = "Operating System Study",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "An Operating System (OS) is a crucial interface that connects a computer user with the computer's hardware. Falling under the system software category, it handles essential tasks like file management, memory handling, process management, and managing peripheral devices such as disk drives, printers, and networking hardware.",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2FOS.jpg?alt=media&token=5aa509eb-5b12-42b6-92a6-22212f71bb1b"
             },
@@ -368,7 +452,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 14,
                 Name = "C Plus Plus ",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "An Operating System (OS) is a crucial interface that connects a computer user with the computer's hardware. Falling under the system software category, it handles essential tasks like file management, memory handling, process management, and managing peripheral devices such as disk drives, printers, and networking hardware.",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2FC%2B%2B.jpg?alt=media&token=994fa5e4-20a7-41e7-8626-56d3e50b44aa"
             },
@@ -376,7 +460,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 15,
                 Name = "SQL Tutorial For Beginner",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "This SQL tutorial helps you get started with SQL quickly and effectively through many practical examples. If you are a software developer, database administrator, data analyst, or data scientist who wants to use SQL to analyze data, this tutorial is a good start.",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fsql.jpg?alt=media&token=8fab2278-1187-4e62-8752-ec155de94a5f"
             },
@@ -384,7 +468,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 16,
                 Name = "SQl Query",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "SQL stands for Structured Query Language designed to manipulate data in the Relational Database Management Systems (RDBMS).",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fsql.jpg?alt=media&token=8fab2278-1187-4e62-8752-ec155de94a5f"
             },
@@ -392,7 +476,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 17,
                 Name = "A I Future",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Artificial intelligence (AI) refers to computer systems capable of performing complex tasks that historically only a human could do, such as reasoning, making decisions, or solving problems. ",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fgroupdefault.jpg?alt=media&token=20ff8ea0-a346-4d91-83e5-5b8e792329cb"
             },
@@ -400,7 +484,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 18,
                 Name = "Python Python",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "Welcome! Are you completely new to programming? If not then we presume you will be looking for information about why and how to get started with Python. Fortunately an experienced programmer in any programming language (whatever it may be) can pick up Python very quickly. It's also easy for beginners to use and learn, so jump in!",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fpython.jpg?alt=media&token=c2b3fbe7-7e18-4b97-aa96-51c82c8354bd"
             },
@@ -408,7 +492,7 @@ namespace ServiceLayer.DbSeeding
             {
                 Id = 19,
                 Name = "React",
-                Description = "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                Description = "React apps are made out of components. A component is a piece of the UI (user interface) that has its own logic and appearance. A component can be as small as a button, or as large as an entire page.",
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Freact.jpg?alt=media&token=27b9137f-87a0-4ddb-9d7d-a32ffa533ba1"
             },
@@ -737,7 +821,69 @@ namespace ServiceLayer.DbSeeding
                             MemberRole = GroupMemberRole.Leader,
                             IsActive = true,
                         },
-
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 24,
+                            GroupId = 1,
+                            AccountId = 12,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 25,
+                            GroupId = 1,
+                            AccountId = 133,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 26,
+                            GroupId = 1,
+                            AccountId = 14,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 27,
+                            GroupId = 1,
+                            AccountId = 15,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 28,
+                            GroupId = 1,
+                            AccountId = 16,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 30,
+                            GroupId = 1,
+                            AccountId = 17,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 23,
+                            GroupId = 1,
+                            AccountId = 18,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = true,
+                        },
         };
         public static GroupSubject[] GroupSubjects = new GroupSubject[]
         {

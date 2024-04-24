@@ -878,10 +878,10 @@ namespace ServiceLayer.DbSeeding
                           new GroupMember
                         {
                             //Id = 20,
-                            Id = 23,
+                            Id = 31,
                             GroupId = 1,
                             AccountId = 18,
-                            MemberRole = GroupMemberRole.Leader,
+                            MemberRole = GroupMemberRole.Member,
                             IsActive = true,
                         },
         };

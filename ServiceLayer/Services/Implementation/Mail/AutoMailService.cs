@@ -67,6 +67,10 @@ namespace ServiceLayer.Services.Implementation.Mail
         public async Task<bool> SendConfirmResetPasswordMailAsync(string email, string serverLink)
         {
             Account account = await repos.Accounts.GetByEmailAsync(email);
+            if(serverLink.EndsWith("/"))
+            {
+                serverLink = serverLink.Substring(0, serverLink.Length-1);
+            }
             MimeMessage message = await CreateMimeMessageForResetPasswordAsync(account, serverLink);
             await SendAsync(message);
             return true;

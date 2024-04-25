@@ -34,7 +34,6 @@ namespace DataLayer.DbObject
 
         [StringLength(20)]
         public string Phone { get; set; }
-        public string? Career { get; set; }
 
         public string? ImagePath { get; set; }
 

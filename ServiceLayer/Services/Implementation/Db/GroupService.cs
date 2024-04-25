@@ -30,7 +30,7 @@ namespace ServiceLayer.Services.Implementation.Db
         }
         public IQueryable<T> GetList<T>()
         {
-            var list = repos.Groups.GetList();
+            var list = repos.Groups.GetList().Where(x => x.IsBanned != true);
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;
         }
@@ -49,7 +49,8 @@ namespace ServiceLayer.Services.Implementation.Db
                         && (EF.Functions.Like(e.Id.ToString(), search + "%")
                         || e.Name.ConvertToUnsign().ToLower().Contains(search)
                         //|| search.Contains(e.ClassId.ToString())
-                        || e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))));
+                        || e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search)))
+                        && e.IsBanned != true);
                 var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
             }
@@ -62,7 +63,8 @@ namespace ServiceLayer.Services.Implementation.Db
                      EF.Functions.Like(e.Id.ToString(), search + "%")
                      || e.Name.ConvertToUnsign().ToLower().Contains(search)
                      //|| search.Contains(e.ClassId.ToString())
-                     || e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search)));
+                     || e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))
+                     && e.IsBanned != true);
                 var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
             }
@@ -108,7 +110,8 @@ namespace ServiceLayer.Services.Implementation.Db
                     .Include(e => e.GroupMembers)
                     .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
                     .Where(e => !e.GroupMembers.Any(e => e.AccountId == studentId)
-                        && e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search)));
+                        && e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))
+                        && e.IsBanned != true);
                 var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
             }
@@ -117,7 +120,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 var list = repos.Groups.GetList()
                 .Include(e => e.GroupMembers)
                 .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
-                .Where(e => e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search)));
+                .Where(e => e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))
+                && e.IsBanned != true);
                 var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
             }
@@ -128,7 +132,7 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             var list = repos.GroupMembers.GetList()
                 .Include(e => e.Group).ThenInclude(e => e.GroupMembers)
-                .Where(e => e.AccountId == studentId && e.IsActive == true)
+                .Where(e => e.AccountId == studentId && e.IsActive == true && e.Group.IsBanned != true)
                 .Select(e => e.Group);
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;
@@ -139,7 +143,7 @@ namespace ServiceLayer.Services.Implementation.Db
             var list = repos.GroupMembers.GetList()
                 .Include(e => e.Group).ThenInclude(e => e.GroupMembers)
                 .Include(e => e.Group).ThenInclude(e => e.Discussions).ThenInclude(d=>d.AnswerDiscussion)
-                .Where(e => e.AccountId == studentId && e.MemberRole == GroupMemberRole.Member && e.IsActive == true)
+                .Where(e => e.AccountId == studentId && e.MemberRole == GroupMemberRole.Member && e.IsActive == true && e.Group.IsBanned != true)
                 .Select(e => e.Group);
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;
@@ -150,7 +154,7 @@ namespace ServiceLayer.Services.Implementation.Db
             var list = repos.GroupMembers.GetList()
                 .Include(e => e.Group).ThenInclude(e => e.GroupMembers)
                 .Include(e => e.Group).ThenInclude(e => e.Discussions).ThenInclude(d=>d.AnswerDiscussion)
-                .Where(e => e.AccountId == studentId && e.MemberRole == GroupMemberRole.Leader && e.IsActive == true)
+                .Where(e => e.AccountId == studentId && e.MemberRole == GroupMemberRole.Leader && e.IsActive == true && e.Group.IsBanned != true)
                 .Select(e => e.Group);
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;
@@ -354,7 +358,7 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             var groups = repos.Groups.GetList()
                     .Include(e => e.GroupMembers)
-                    .Where(e => !e.GroupMembers.Any(e => e.AccountId == accountId));
+                    .Where(e => !e.GroupMembers.Any(e => e.AccountId == accountId) && e.IsBanned != true);
 
             var mapped = groups.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;

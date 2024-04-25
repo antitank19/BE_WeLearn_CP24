@@ -8,5 +8,5 @@ public interface IDocumentFileService
 {
     public Task<List<DocumentFileDto>> GetDocumentFilesByGroupId(int groupId);
     public Task<DocumentFileDto> ApproveRejectFile(int documentId, Boolean check);
-    public Task<DocumentFileDto> UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId);
+    public Task<DocumentFileDto> UploadDocumentFIle(IFormFile fileUpload, int groupId, int accountId, bool isLeader);
 }

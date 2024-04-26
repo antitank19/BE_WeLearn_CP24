@@ -291,13 +291,13 @@ namespace APIExtension.Validator
                 //Validate Date
                 if ((dto.Date.Date == DateTime.Today|| dto.Date.Date.AddDays(1) == DateTime.Today) && dto.ScheduleStartTime < DateTime.Now.TimeOfDay)
                 {
-                    //validatorResult.Failures.Add("Thời gian bắt đầu buổi học không hợp lí");
-                    validatorResult.Add("Thời gian bắt đầu buổi học không hợp lí"+ dto.Date+" "+ dto.Date.Date +" "+ DateTime.Today + " "+ dto.ScheduleStartTime.ToString()+ " "+DateTime.Now.TimeOfDay.ToString()+ " "+ (dto.Date.Date == DateTime.Today && dto.ScheduleStartTime < DateTime.Now.TimeOfDay), nameof(dto.Date));
+                    validatorResult.Add("Thời gian bắt đầu buổi học không hợp lí", nameof(dto.ScheduleStartTime));
+                    //validatorResult.Add("Thời gian bắt đầu buổi học không hợp lí"+ dto.Date+" "+ dto.Date.Date +" "+ DateTime.Today + " "+ dto.ScheduleStartTime.ToString()+ " "+DateTime.Now.TimeOfDay.ToString()+ " "+ (dto.Date.Date == DateTime.Today && dto.ScheduleStartTime < DateTime.Now.TimeOfDay), nameof(dto.Date));
                 }
                 else if ((dto.Date.Date.AddDays(1) < DateTime.Now.Date))
                 {
-                    //validatorResult.Failures.Add("Ngày không hợp lí");
-                    validatorResult.Add("Ngày không hợp lí" + dto.Date.Date.AddDays(1) + dto.Date.Date+ " "+ DateTime.Now.Date+ " "+ (dto.Date.Date < DateTime.Now.Date || dto.Date.Date.AddDays(1) < DateTime.Now.Date), nameof(dto.Date));
+                    validatorResult.Add("Ngày không hợp lí", nameof(dto.Date));
+                    //validatorResult.Add("Ngày không hợp lí" + dto.Date.Date.AddDays(1) + dto.Date.Date+ " "+ DateTime.Now.Date+ " "+ (dto.Date.Date < DateTime.Now.Date || dto.Date.Date.AddDays(1) < DateTime.Now.Date), nameof(dto.Date));
                 }
                 //validate time
                 if (dto.ScheduleEndTime <= dto.ScheduleStartTime)

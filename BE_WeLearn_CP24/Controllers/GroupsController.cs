@@ -189,7 +189,7 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 //if (!isLeader)
                 //{
-                //     return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                //     return Unauthorized("You are not this group's leader");
                 //}
                 bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
                 if (!isJoining)
@@ -264,7 +264,7 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, id);
                 //if (!isLeader)
                 //{
-                //     return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                //     return Unauthorized("You are not this group's leader");
                 //}
                 bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, id);
                 if (!isJoining)

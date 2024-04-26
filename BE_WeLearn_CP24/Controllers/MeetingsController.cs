@@ -49,7 +49,7 @@ namespace API.Controllers
             bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
             if (!isLeader)
             {
-                return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                return Unauthorized("You are not this group's leader");
             }
             var mapped = services.Meetings.GetPastMeetingsForGroup(groupId);
             return Ok(mapped);
@@ -235,7 +235,7 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
                 if (!isLeader)
                 {
-                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                    return Unauthorized("You are not this group's leader");
                 }
                 await valResult.ValidateParams(services, dto, studentId);
                 if (!valResult.IsValid)
@@ -272,7 +272,7 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
                 if (!isLeader)
                 {
-                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                    return Unauthorized("You are not this group's leader");
                 }
                 await valResult.ValidateParams(services, dto, studentId);
                 if (!valResult.IsValid)
@@ -302,7 +302,7 @@ namespace API.Controllers
             bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, meeting.Schedule.GroupId);
             if (!isJoining)
             {
-                return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                return Unauthorized("You are not this group's leader");
             }
             if (meeting.End != null)
             {
@@ -391,7 +391,7 @@ namespace API.Controllers
             bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, meeting.Schedule.GroupId);
             if (!isLeader)
             {
-                return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                return Unauthorized("You are not this group's leader");
             }
             if (meeting.End != null)
             {

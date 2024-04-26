@@ -60,8 +60,8 @@ namespace APIExtension.Validator
     //        {
     //            if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId))
     //            {
-    //                //validatorResult.Failures.Add("Bạn không phải nhóm trưởng của nhóm này");
-    //                validatorResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+    //                //validatorResult.Failures.Add("You are not this group's leader");
+    //                validatorResult.Add("You are not this group's leader", ValidateErrType.Role);
     //            }
     //            if (dto.Name.Trim().Length == 0)
     //            {
@@ -124,8 +124,8 @@ namespace APIExtension.Validator
     //            }
     //            else if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, meeting.Schedule.GroupId))
     //            {
-    //                //validatorResult.Failures.Add("Bạn không phải nhóm trưởng của nhóm này");
-    //                validatorResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+    //                //validatorResult.Failures.Add("You are not this group's leader");
+    //                validatorResult.Add("You are not this group's leader", ValidateErrType.Role);
     //            }
     //            if (dto.Name.Trim().Length == 0)
     //            {
@@ -177,8 +177,8 @@ namespace APIExtension.Validator
     //        {
     //            if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId))
     //            {
-    //                //validatorResult.Failures.Add("Bạn không phải nhóm trưởng của nhóm này");
-    //                validatorResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+    //                //validatorResult.Failures.Add("You are not this group's leader");
+    //                validatorResult.Add("You are not this group's leader", ValidateErrType.Role);
     //            }
     //            if (dto.Name.Trim().Length == 0)
     //            {
@@ -275,8 +275,8 @@ namespace APIExtension.Validator
             {
                 if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId))
                 {
-                    //validatorResult.Failures.Add("Bạn không phải nhóm trưởng của nhóm này");
-                    validatorResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    //validatorResult.Failures.Add("You are not this group's leader");
+                    validatorResult.Add("You are not this group's leader", ValidateErrType.Role);
                 }
                 if (dto.Name.Trim().Length == 0)
                 {
@@ -339,8 +339,8 @@ namespace APIExtension.Validator
                 }
                 else if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, meeting.Schedule.GroupId))
                 {
-                    //validatorResult.Failures.Add("Bạn không phải nhóm trưởng của nhóm này");
-                    validatorResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    //validatorResult.Failures.Add("You are not this group's leader");
+                    validatorResult.Add("You are not this group's leader", ValidateErrType.Role);
                 }
                 if (dto.Name.Trim().Length == 0)
                 {
@@ -392,8 +392,8 @@ namespace APIExtension.Validator
             {
                 if (!await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId))
                 {
-                    //validatorResult.Failures.Add("Bạn không phải nhóm trưởng của nhóm này");
-                    validatorResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    //validatorResult.Failures.Add("You are not this group's leader");
+                    validatorResult.Add("You are not this group's leader", ValidateErrType.Role);
                 }
                 if (dto.Name.Trim().Length == 0)
                 {

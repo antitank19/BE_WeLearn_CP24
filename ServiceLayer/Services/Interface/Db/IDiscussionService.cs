@@ -14,6 +14,12 @@ namespace ServiceLayer.Services.Interface.Db
         public Task<DiscussionDto> GetDiscussionById(int discussionid);
         public Task<List<DiscussionDto>> GetDiscussionsByGroupId(int groupId);
         public Task<DiscussionDto> UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto);
+        /// <summary>
+        /// Upload file to firebase when writing discusision
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns>file path</returns>
+        public Task<string> UploadDiscussionFile(IFormFile file);
         public Task<DiscussionDto> UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto);
     }
 }

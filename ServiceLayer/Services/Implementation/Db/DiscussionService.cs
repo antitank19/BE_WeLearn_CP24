@@ -80,6 +80,36 @@ namespace ServiceLayer.Services.Implementation.Db
             return mapped;
         }
 
+        public async Task<string> UploadDiscussionFile(IFormFile file)
+        {
+            string filePath;
+
+            if (file != null && file.Length > 0)
+            {
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+
+                // Generate a unique file name
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("DiscussionFiles").Child(uniqueFileName);
+
+                // Upload the file to Firebase Storage
+                using (var stream = file.OpenReadStream())
+                {
+                    await fileReference.PutAsync(stream);
+                }
+
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+
+                // Update the discussion entity with the download URL
+                return downloadUrl;
+            }
+            throw new Exception("No file found");
+
+        }
         public async Task<DiscussionDto> UploadDiscussion(int accountId, int groupId, UploadDiscussionDto discussionDto)
         {
             string filePath;

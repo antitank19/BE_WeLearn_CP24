@@ -75,6 +75,27 @@ namespace API.Controllers
             }
         }
 
+        //[Authorize(Roles = Actor.Student)]
+        public class FileInput
+        {
+            public IFormFile file { get; set; }
+        }
+        [HttpPost("api/Discussion/Upload/File")]
+        public async Task<IActionResult> UploadDiscussionFile([FromForm] FileInput file)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var url = await services.Discussions.UploadDiscussionFile(file.file);
+                return Ok(url);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
         [Authorize(Roles = Actor.Student)]
         [HttpPut("api/Discussion/Update")]
         public async Task<IActionResult> UpdateDiscussion(int discussionId, UploadDiscussionDto dto)

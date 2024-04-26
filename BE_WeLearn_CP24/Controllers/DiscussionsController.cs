@@ -1,8 +1,11 @@
-﻿using API.SwaggerOption.Const;
+﻿using API.Extension.ClaimsPrinciple;
+using API.SignalRHub;
+using API.SwaggerOption.Const;
 using APIExtension.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
 
@@ -11,15 +14,16 @@ namespace API.Controllers
     public class DiscussionsController : Controller
     {
         private readonly IServiceWrapper services;
+        private readonly IHubContext<GroupHub> groupHub;
         //private readonly IMapper mapper;
         //private readonly IValidatorWrapper validators;
 
         public DiscussionsController(
-            //IValidatorWrapper validators,
-            IServiceWrapper services
-        )
-        {
+            IServiceWrapper services,
+            IHubContext<GroupHub> groupHub
+        ){
             this.services = services;
+            this.groupHub = groupHub;
             //this.validators = validators;
         }
 
@@ -66,6 +70,7 @@ namespace API.Controllers
             try
             {
                 var discussion = await services.Discussions.UploadDiscussion(accountId, groupId, dto);
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} post new disscusion {dto.Question}");
                 return Ok(discussion);
             }
             catch (Exception ex)

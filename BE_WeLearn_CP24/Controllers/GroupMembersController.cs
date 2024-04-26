@@ -87,7 +87,7 @@ namespace API.Controllers
                 bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 if (!isLead)
                 {
-                    valResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    valResult.Add("You are not this group's leader", ValidateErrType.Role);
                     return Unauthorized(valResult);
                 }
                 IQueryable<JoinInviteForGroupGetDto> mapped = services.GroupMembers.GetJoinInviteForGroup(groupId);
@@ -121,7 +121,7 @@ namespace API.Controllers
                 bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 if (!isLead)
                 {
-                    valResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    valResult.Add("You are not this group's leader", ValidateErrType.Role);
                     return Unauthorized(valResult);
                 }
                 IQueryable<JoinRequestForGroupGetDto> mapped = services.GroupMembers.GetJoinRequestForGroup(groupId);
@@ -156,7 +156,7 @@ namespace API.Controllers
                 bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, dto.GroupId);
                 if (!isLead)
                 {
-                    valResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    valResult.Add("You are not this group's leader", ValidateErrType.Role);
                     return Unauthorized(valResult);
                 }
                 #region unused code
@@ -682,7 +682,7 @@ namespace API.Controllers
                 bool isLead = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 if (!isLead)
                 {
-                    valResult.Add("Bạn không phải nhóm trưởng của nhóm này", ValidateErrType.Role);
+                    valResult.Add("You are not this group's leader", ValidateErrType.Role);
                     return Unauthorized(valResult);
                 }
                 if (studentId == banAccId)

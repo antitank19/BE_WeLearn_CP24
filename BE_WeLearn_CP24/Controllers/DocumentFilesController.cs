@@ -1,9 +1,11 @@
 ﻿using API.Extension.ClaimsPrinciple;
+using API.SignalRHub;
 using API.SwaggerOption.Const;
 using APIExtension.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
 using System.Diagnostics.Metrics;
@@ -15,16 +17,14 @@ namespace API.Controllers
     public class DocumentFilesController : ControllerBase
     {
         private readonly IServiceWrapper services;
-        //private readonly IMapper mapper;
-        //private readonly IValidatorWrapper validators;
+        private readonly IHubContext<GroupHub> groupHub;
 
         public DocumentFilesController(
-            //IValidatorWrapper validators,
-            IServiceWrapper services
-        )
-        {
+            IServiceWrapper services,
+            IHubContext<GroupHub> groupHub
+        ){
             this.services = services;
-            //this.validators = validators;
+            this.groupHub = groupHub;
         }
 
         [Authorize(Roles = Actor.Student)]
@@ -55,6 +55,7 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
 
                 var doc = await services.Documents.UploadDocumentFIle(file, groupId, accountId, isLeader);
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} upload a new file");
                 return Ok(doc);
             }
             catch (Exception ex)
@@ -75,9 +76,10 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 if (!isLeader)
                 {
-                    return Unauthorized("Bạn không phải nhóm trưởng của nhóm này");
+                    return Unauthorized("You are not this group's leader");
                 }
-                var doc = await services.Documents.ApproveRejectFile(documentId, check);
+                DocumentFileDto doc = await services.Documents.ApproveRejectFile(documentId, check);
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"Group leader {HttpContext.User.GetUsername()} {(check?"approved":"rejected")} a file");
                 return Ok(doc);
             }
             catch (Exception ex)

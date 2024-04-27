@@ -280,8 +280,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 Id = meetingId,
                 Name = dto.Name,
                 Content = dto.Content,
-                ScheduleStart = dto.Date.Date.Add(dto.ScheduleStartTime),
-                ScheduleEnd = dto.Date.Date.Add(dto.ScheduleEndTime),
+                ScheduleStart = dto.Date.Add(dto.ScheduleStartTime),
+                ScheduleEnd = dto.Date.Add(dto.ScheduleEndTime),
             };
             existed.PatchUpdate(updated);
             await repos.Meetings.UpdateAsync(existed);

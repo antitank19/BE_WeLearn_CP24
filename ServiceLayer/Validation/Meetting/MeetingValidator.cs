@@ -411,7 +411,7 @@ namespace APIExtension.Validator
                     //validatorResult.Failures.Add("Chưa chọn ngày trong tuần");
                     validatorResult.Add("Chưa chọn ngày trong tuần", nameof(dto.DayOfWeeks));
                 }
-                if (dto.DayOfWeeks.Any(day => (int)day < 1 || (int)day > 7))
+                if (dto.DayOfWeeks.Any(day => (int)day < 1 || (int)day > 8))
                 {
                     //validatorResult.Failures.Add("Ngày trong tuần không hợp lí");
                     validatorResult.Add("Ngày trong tuần không hợp lí", nameof(dto.DayOfWeeks));

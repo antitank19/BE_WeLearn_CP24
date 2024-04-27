@@ -28,10 +28,10 @@ namespace ServiceLayer.DTOs
 
         public DateTime Date
         {
-            get { return date.Date; }
-            set { date = value.Date; }
-            //get { return date; }
-            //set { date = value; }
+            //get { return date.Date; }
+            //set { date = value.Date; }
+            get { return date; }
+            set { date = value; }
         }
 
         public TimeSpan ScheduleStartTime { get; set; }

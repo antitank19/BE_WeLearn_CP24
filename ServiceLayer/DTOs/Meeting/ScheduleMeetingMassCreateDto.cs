@@ -43,15 +43,19 @@ namespace ServiceLayer.DTOs
         private DateTime scheduleSRangeStart;
 		public DateTime ScheduleRangeStart
 		{
-			get { return scheduleSRangeStart.Date; }
-			set { scheduleSRangeStart = value.Date; }
-		}
+            //get { return scheduleSRangeStart.Date; }
+            //set { scheduleSRangeStart = value.Date; }
+            get { return scheduleSRangeStart; }
+            set { scheduleSRangeStart = value; }
+        }
         
         private DateTime scheduleRangeEnd;
         public DateTime ScheduleRangeEnd
         {
-            get { return scheduleRangeEnd.Date; }
-            set { scheduleRangeEnd = value.Date; }
+            //get { return scheduleRangeEnd.Date; }
+            //set { scheduleRangeEnd = value.Date; }
+            get { return scheduleRangeEnd; }
+            set { scheduleRangeEnd = value; }
         }
         public virtual ICollection<SubjectEnum> SubjectIds { get; set; }
     }

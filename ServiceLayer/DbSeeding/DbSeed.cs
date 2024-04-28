@@ -1163,6 +1163,31 @@ namespace ServiceLayer.DbSeeding
                 ScheduleStart = DateTime.Now.AddDays(1).AddMinutes(15),
                 ScheduleEnd = DateTime.Now.AddDays(1).AddHours(1),
             },
+             new Meeting
+            {
+                Id = 9,
+                ScheduleId = 9,
+                Name=$"Ôn tập C#",
+                Content=$"Ôn tập C#{DateTime.Now.AddMonths(-2).AddDays(-2).ToShortDateString()}",
+                ScheduleStart = DateTime.Now.AddMonths(-3).AddDays(-2).AddMinutes(15),
+                ScheduleEnd = DateTime.Now.AddMonths(-3).AddDays(-2).AddHours(1),
+                Start = DateTime.Now.AddMonths(-2).AddDays(-2).AddMinutes(30),
+                End = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(2),
+                CountMember = 1,
+            },
+             new Meeting
+            {
+                Id = 10,
+                ScheduleId = 10,
+                Name=$"C# Tutorial",
+                Content=$"Tutorial {DateTime.Now.AddMonths(-4).AddDays(-2).ToShortDateString()}",
+                ScheduleStart = DateTime.Now.AddMonths(-4).AddDays(-2).AddMinutes(15),
+                ScheduleEnd = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(1),
+                Start = DateTime.Now.AddMonths(-4).AddDays(-2).AddMinutes(30),
+                End = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(2),
+                CountMember = 1,
+            },
+
        #endregion
    };
         public static Schedule[] Schedules = new Schedule[]
@@ -1260,6 +1285,27 @@ namespace ServiceLayer.DbSeeding
                 DaysOfWeek = "Chủ Nhật, Thứ Hai, Thứ Ba, Thứ Tư, , Thứ Năm, , Thứ Sáu, Thứ Bảy",
                 GroupId = 1,
             },
+            new Schedule
+            {
+                Id = 9,
+                Name=$"Ôn tập thi C#",
+                 StartDate = DateTime.Now.AddMonths(-3).AddDays(-2).Date,
+                EndDate = DateTime.Now.AddMonths(-3).AddDays(-2).Date,
+                DaysOfWeek = "Chủ Nhật, Thứ Hai, Thứ Ba, Thứ Tư, , Thứ Năm, , Thứ Sáu, Thứ Bảy",
+                GroupId = 1,
+            },
+            new Schedule
+            {
+                Id = 10,
+                Name=$"C# Tutorial",
+                StartDate = DateTime.Now.AddMonths(-4).AddDays(-2).Date,
+                EndDate = DateTime.Now.AddMonths(-4).AddDays(-2).Date,
+                StartTime = DateTime.Now.AddMonths(-4).AddDays(-2).AddMinutes(30).TimeOfDay,
+                EndTime = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(2).TimeOfDay,
+                DaysOfWeek = "Chủ Nhật, Thứ Hai, Thứ Ba, Thứ Tư, , Thứ Năm, , Thứ Sáu, Thứ Bảy",
+                GroupId = 1,
+            },
+
            #endregion
        };
         public static ScheduleSubject[] ScheduleSubjects = new ScheduleSubject[]
@@ -1618,7 +1664,7 @@ namespace ServiceLayer.DbSeeding
                 GroupId=1,
                 Question="Tutorial: Explore ideas using top-level statements to build code as you learn"  ,
                 Content="Top-level statements are executed in the order they appear in the file. Top-level statements can only be used in one source file in your application. The compiler generates an error if you use them in more than one file.",
-                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                CreateAt = DateTime.Now.AddMonths(-1).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
             new Discussion
@@ -1628,7 +1674,7 @@ namespace ServiceLayer.DbSeeding
                 GroupId=1,
                 Question="Work with Language-Integrated Query (LINQ)"  ,
                 Content="You'll learn these techniques by building an application that demonstrates one of the basic skills of any magician: the faro shuffle. Briefly, a faro shuffle is a technique where you split a card deck exactly in half, then the shuffle interleaves each one card from each half to rebuild the original deck. Magicians use this technique because every card is in a known location after each shuffle, and the order is a repeating pattern.",
-                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                CreateAt = DateTime.Now.AddMonths(-1).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
             new Discussion
@@ -1638,7 +1684,7 @@ namespace ServiceLayer.DbSeeding
                 GroupId=1,
                 Question="Asynchronous programming with async and await"  ,
                 Content="The Task asynchronous programming model (TAP) provides an abstraction over asynchronous code. You write code as a sequence of statements, just like always. You can read that code as though each statement completes before the next begins. The compiler performs many transformations because some of those statements may start work and return a Task that represents the ongoing work.",
-                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                CreateAt = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
             new Discussion
@@ -1648,7 +1694,7 @@ namespace ServiceLayer.DbSeeding
                 GroupId=1,
                 Question="Task return type"  ,
                 Content="Async methods that don't contain a return statement or that contain a return statement that doesn't return an operand usually have a return type of Task. Such methods return void if they run synchronously. If you use a Task return type for an async method, a calling method can use an await operator to suspend the caller's completion until the called async method has finished.",
-                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                CreateAt = DateTime.Now.AddMonths(-3).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
             new Discussion
@@ -1658,10 +1704,99 @@ namespace ServiceLayer.DbSeeding
                 GroupId=1,
                 Question="Asynchronous file access (C#)"  ,
                 Content="You can use the async feature to access files. By using the async feature, you can call into asynchronous methods without using callbacks or splitting your code across multiple methods or lambda expressions. To make synchronous code asynchronous, you just call an asynchronous method instead of a synchronous method and add a few keywords to the code.",
-                CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
+                CreateAt = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
-
+            new Discussion
+            {
+                Id=8,
+                AccountId=1,
+                GroupId=1,
+                Question="Roadmap for Python developers learning C#"  ,
+                Content="C# and Python share similar concepts. These familiar constructs help you learn C# when you already know Python.\r\n\r\nObject oriented: Both Python and C# are object-oriented languages. All the concepts around classes in Python apply in C#, even if the syntax is different.\r\nCross-platform: Both Python and C# are cross-platform languages. Apps written in either language can run on many platforms.\r\nGarbage collection: Both languages employ automatic memory management through garbage collection. The runtime reclaims the memory from objects that aren't referenced.\r\nStrongly typed: Both Python and C# are strongly typed languages. Type coercion doesn't occur implicitly. There are differences described later, as C# is statically typed whereas Python is dynamically typed.\r\nAsync / Await: Python's async and await feature was directly inspired by C#'s async and await support.\r\nPattern matching: Python's match expression and pattern matching is similar to C#'s pattern matching switch expression. You use them to inspect a complex data expression to determine if it matches a pattern.\r\nStatement keywords: Python and C# share many keywords, such as if, else, while, for, and many others. While not all syntax is the same, there's enough similarity that you can read C# if you know Python.",
+                CreateAt = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=9,
+                AccountId=1,
+                GroupId=1,
+                Question="General Structure of a C# Program"  ,
+                Content="C# programs consist of one or more files. Each file contains zero or more namespaces. A namespace contains types such as classes, structs, interfaces, enumerations, and delegates, or other namespaces. The following example is the skeleton of a C# program that contains all of these elements.",
+                CreateAt = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=10,
+                AccountId=1,
+                GroupId=1,
+                Question="Main() and command-line arguments"  ,
+                Content="The Main method is the entry point of a C# application. (Libraries and services do not require a Main method as an entry point.) When the application is started, the Main method is the first method that is invoked.\r\n\r\nThere can only be one entry point in a C# program. If you have more than one class that has a Main method, you must compile your program with the StartupObject compiler option to specify which Main method to use as the entry point. For more information, see StartupObject (C# Compiler Options).",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=11,
+                AccountId=1,
+                GroupId=1,
+                Question="Top-level statements - programs without Main methods"  ,
+                Content="You don't have to explicitly include a Main method in a console application project. Instead, you can use the top-level statements feature to minimize the code you have to write.\r\n\r\nTop-level statements allows you to write executable code directly at the root of a file, eliminating the need for wrapping your code in a class or method. This means you can create programs without the ceremony of a Program class and a Main method. In this case, the compiler generates a Program class with an entry point method for the application. The name of the generated method isn't Main, it's an implementation detail that your code can't reference directly.\r\n\r\nHere's a Program.cs file that is a complete C# program in C# 10:",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=12,
+                AccountId=1,
+                GroupId=1,
+                Question="The C# type system"  ,
+                Content="C# is a strongly typed language. Every variable and constant has a type, as does every expression that evaluates to a value. Every method declaration specifies a name, the type and kind (value, reference, or output) for each input parameter and for the return value. The .NET class library defines built-in numeric types and complex types that represent a wide variety of constructs. These include the file system, network connections, collections and arrays of objects, and dates. A typical C# program uses types from the class library and user-defined types that model the concepts that are specific to the program's problem domain.\r\n\r\nThe information stored in a type can include the following items:\r\n\r\nThe storage space that a variable of the type requires.\r\nThe maximum and minimum values that it can represent.\r\nThe members (methods, fields, events, and so on) that it contains.\r\nThe base type it inherits from.\r\nThe interface(s) it implements.\r\nThe kinds of operations that are permitted.\r\nThe compiler uses type information to make sure all operations that are performed in your code are type safe. For example, if you declare a variable of type int, the compiler allows you to use the variable in addition and subtraction operations. If you try to perform those same operations on a variable of type bool, the compiler generates an error, as shown in the following example:",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=13,
+                AccountId=1,
+                GroupId=1,
+                Question="Introduction to record types in C#"  ,
+                Content="A record in C# is a class or struct that provides special syntax and behavior for working with data models. The record modifier instructs the compiler to synthesize members that are useful for types whose primary role is storing data. These members include an overload of ToString() and members that support value equality.",
+                CreateAt = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=14,
+                AccountId=1,
+                GroupId=1,
+                Question="When to use records"  ,
+                Content="Consider using a record in place of a class or struct in the following scenarios:\r\n\r\nYou want to define a data model that depends on value equality.\r\nYou want to define a type for which objects are immutable.\r\nValue equality\r\nFor records, value equality means that two variables of a record type are equal if the types match and all property and field values match. For other reference types such as classes, equality means reference equality. That is, two variables of a class type are equal if they refer to the same object. Methods and operators that determine equality of two record instances use value equality.\r\n\r\nNot all data models work well with value equality. For example, Entity Framework Core depends on reference equality to ensure that it uses only one instance of an entity type for what is conceptually one entity. For this reason, record types aren't appropriate for use as entity types in Entity Framework Core.\r\n\r\nImmutability\r\nAn immutable type is one that prevents you from changing any property or field values of an object after it's instantiated. Immutability can be useful when you need a type to be thread-safe or you're depending on a hash code remaining the same in a hash table. Records provide concise syntax for creating and working with immutable types.\r\n\r\nImmutability isn't appropriate for all data scenarios. Entity Framework Core, for example, doesn't support updating with immutable entity types.",
+                CreateAt = DateTime.Now.AddMonths(-3).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=15,
+                AccountId=1,
+                GroupId=1,
+                Question="Interfaces - define behavior for multiple types"  ,
+                Content="An interface contains definitions for a group of related functionalities that a non-abstract class or a struct must implement. An interface may define static methods, which must have an implementation. An interface may define a default implementation for members. An interface may not declare instance data such as fields, auto-implemented properties, or property-like events.\r\n\r\nBy using interfaces, you can, for example, include behavior from multiple sources in a class. That capability is important in C# because the language doesn't support multiple inheritance of classes. In addition, you must use an interface if you want to simulate inheritance for structs, because they can't actually inherit from another struct or class.",
+                CreateAt = DateTime.Now.AddMonths(-1).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
+            new Discussion
+            {
+                Id=16,
+                AccountId=1,
+                GroupId=1,
+                Question="Top-level statements - programs without Main methods"  ,
+                Content="You don't have to explicitly include a Main method in a console application project. Instead, you can use the top-level statements feature to minimize the code you have to write.\r\n\r\nTop-level statements allows you to write executable code directly at the root of a file, eliminating the need for wrapping your code in a class or method. This means you can create programs without the ceremony of a Program class and a Main method. In this case, the compiler generates a Program class with an entry point method for the application. The name of the generated method isn't Main, it's an implementation detail that your code can't reference directly.\r\n\r\nHere's a Program.cs file that is a complete C# program in C# 10:",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
         };
         public static AnswerDiscussion[] AnswerDiscussions = new AnswerDiscussion[]
         {
@@ -1682,6 +1817,78 @@ namespace ServiceLayer.DbSeeding
                 Content="Bravooo",
                 CreateAt = DateTime.Now.AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive =true,
+            },
+            new AnswerDiscussion
+            {
+                Id=3,
+                AccountId=2,
+                DiscussionId=5,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1).AddMinutes(10),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=4,
+                AccountId=2,
+                DiscussionId=5,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1).AddMinutes(15),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=5,
+                AccountId=2,
+                DiscussionId=6,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-3).AddDays(-2).AddHours(1).AddMinutes(10),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=6,
+                AccountId=2,
+                DiscussionId=7,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(1).AddMinutes(10),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=7,
+                AccountId=2,
+                DiscussionId=10,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(12),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=8,
+                AccountId=2,
+                DiscussionId=13,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-2).AddDays(-2).AddHours(1).AddMinutes(21),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=9,
+                AccountId=2,
+                DiscussionId=7,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-4).AddDays(-2).AddHours(1).AddMinutes(23),
+                IsActive = true,
+            },
+            new AnswerDiscussion
+            {
+                Id=10,
+                AccountId=2,
+                DiscussionId=10,
+                Content="Nice job",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(2),
+                IsActive = true,
             },
         };
         public static DocumentFile[] DocumentFiles = new DocumentFile[]

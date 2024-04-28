@@ -113,7 +113,7 @@ namespace API.Controllers
             Summary = StatsEndpoints.GetStatForGroup
             , Description = StatsDescriptions.GetStatForGroup
         )]
-        [HttpGet("ForGroupInMonths/{studentId}")]
+        [HttpGet("ForGroupInMonths")]
         [Authorize(Roles = Actor.Student_Parent)]
         public async Task<IActionResult> GetStatForGroupinMonths(int groupId)
         {

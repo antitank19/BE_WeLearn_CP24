@@ -298,7 +298,7 @@ namespace ServiceLayer.Services.Implementation.Db
             {
                 if (!existed.Schedule.ScheduleSubjects.Any(e => e.SubjectId == subjectId))
                 {
-                    existed.Schedule.ScheduleSubjects.Add(new GroupSubject { GroupId = group.Id, SubjectId = subjectId });
+                    existed.Schedule.ScheduleSubjects.Add(new ScheduleSubject { ScheduleId = existed.ScId, SubjectId = subjectId });
                 }
             }
 

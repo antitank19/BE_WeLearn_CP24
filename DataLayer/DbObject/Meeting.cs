@@ -34,6 +34,5 @@ namespace DataLayer.DbObject
         #region Chat
         public virtual ICollection<Chat> Chats { get; set; } = new Collection<Chat>();
         #endregion
-
     }
 }

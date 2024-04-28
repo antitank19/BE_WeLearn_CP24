@@ -31,7 +31,7 @@ namespace RepoLayer.Implemention
         public override async Task<Meeting> GetByIdAsync(int id)
         {
             return await dbContext.Meetings
-                .Include(m=>m.Schedule)
+                .Include(m=>m.Schedule).ThenInclude(s=>s.ScheduleSubjects)
                 .SingleOrDefaultAsync(m=>m.Id==id);
         }
 

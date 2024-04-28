@@ -3,11 +3,13 @@ using DataLayer.DbObject;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Org.BouncyCastle.Asn1.Ocsp;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace ServiceLayer.Services.Implementation.Db;
 
@@ -16,13 +18,15 @@ public class DocumentFileService : IDocumentFileService
     private IRepoWrapper repos;
     private IMapper mapper;
     private IWebHostEnvironment _webHostEnvironment;
+    private IConfiguration _config;
 
 
-    public DocumentFileService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+    public DocumentFileService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
     {
         this.repos = repos;
         this.mapper = mapper;
         _webHostEnvironment = webHostEnvironment;
+        _config = configuration;
     }
     public async Task<List<DocumentFileDto>> GetDocumentFilesByGroupId(int groupId)
     {
@@ -46,8 +50,10 @@ public class DocumentFileService : IDocumentFileService
 
         if (fileUpload != null && fileUpload.Length > 0)
         {
+            string firebaseBucket = _config["Firebase:StorageBucket"];
+
             // Initialize FirebaseStorage instance
-            var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+            var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
             // Generate a unique file name
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileUpload.FileName;

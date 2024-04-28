@@ -20,19 +20,19 @@ namespace ServiceLayer.Services.Implementation
         private readonly IWebHostEnvironment env;
 
 
-        public ServiceWrapper(IRepoWrapper repos, IConfiguration configuration, IMapper mapper, IWebHostEnvironment env)
+        public ServiceWrapper(IRepoWrapper repos, IConfiguration configuration, IMapper mapper, IWebHostEnvironment env, IConfiguration config)
         {
             this.repos = repos;
             this.configuration = configuration;
             this.mapper = mapper;
             this.env = env;
-            accounts = new AccountService(repos, mapper, env);
+            accounts = new AccountService(repos, mapper, env, config);
             auth = new AuthService(repos, configuration, mapper);
-            groups = new GroupService(repos, mapper, env);
+            groups = new GroupService(repos, mapper, env, config);
             subjects = new SubjectService(repos, mapper);
             meetings = new MeetingService(repos, mapper);
             groupMembers = new GroupMemberSerivce(repos, mapper);
-            documentFiles = new DocumentFileService(repos, mapper, env);
+            documentFiles = new DocumentFileService(repos, mapper, env, config);
             stats = new StatService(repos, mapper);
             mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
         }
@@ -44,7 +44,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (accounts is null)
                 {
-                    accounts = new AccountService(repos, mapper, env);
+                    accounts = new AccountService(repos, mapper, env, configuration);
                 }
                 return accounts;
             }
@@ -70,7 +70,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (groups is null)
                 {
-                    groups = new GroupService(repos, mapper, env);
+                    groups = new GroupService(repos, mapper, env, configuration);
                 }
                 return groups;
             }
@@ -146,7 +146,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (documentFiles is null)
                 {
-                    documentFiles = new DocumentFileService(repos, mapper, env);
+                    documentFiles = new DocumentFileService(repos, mapper, env, configuration);
                 }
                 return documentFiles;
             }
@@ -171,7 +171,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (discussions is null)
                 {
-                    discussions = new DiscussionService(repos, mapper, env);
+                    discussions = new DiscussionService(repos, mapper, env, configuration);
                 }
                 return discussions;
             }
@@ -183,7 +183,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (answersDiscussions is null)
                 {
-                    answersDiscussions = new AnswerDiscussionService(repos, mapper, env);
+                    answersDiscussions = new AnswerDiscussionService(repos, mapper, env, configuration);
                 }
                 return answersDiscussions;
             }

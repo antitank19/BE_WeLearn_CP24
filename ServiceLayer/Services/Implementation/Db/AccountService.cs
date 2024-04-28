@@ -16,6 +16,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Firebase.Storage;
 using ServiceLayer.Validation.FileUpload;
 using APIExtension.Validator;
+using Microsoft.Extensions.Configuration;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -24,12 +25,14 @@ namespace ServiceLayer.Services.Implementation.Db
         private IRepoWrapper repos;
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _config;
 
-        public AccountService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public AccountService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             this.repos = repos;
             this.mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
+            _config = configuration;
         }
         public IQueryable<T> GetList<T>()
         {
@@ -122,8 +125,10 @@ namespace ServiceLayer.Services.Implementation.Db
             string filePath;
             if (image != null && image.Length > 0)
             {
+                string firebaseBucket = _config["Firebase:StorageBucket"];
+
                 // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                 // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
@@ -159,8 +164,10 @@ namespace ServiceLayer.Services.Implementation.Db
             {
                 if (dto.Image.FileName.HasImageExtension())
                 {
+                    string firebaseBucket = _config["Firebase:StorageBucket"];
+
                     // Initialize FirebaseStorage instance
-                    var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                    var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                     // Generate a unique file name
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;

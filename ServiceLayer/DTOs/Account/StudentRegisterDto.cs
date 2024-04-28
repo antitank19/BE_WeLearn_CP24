@@ -50,12 +50,12 @@ namespace ServiceLayer.DTOs
             set { phone = value.Trim(); }
         }
 
-        private string career;
-        public string Career
-        {
-            get { return career; }
-            set { career = value.Trim(); }
-        }
+        //private string career;
+        //public string Career
+        //{
+        //    get { return career; }
+        //    set { career = value.Trim(); }
+        //}
 
         //private string? schhool { get; set; }
         //public string? Schhool

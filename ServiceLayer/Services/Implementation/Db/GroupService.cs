@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Firebase.Storage;
 using System.Security.Principal;
 using ServiceLayer.Validation.FileUpload;
+using Microsoft.Extensions.Configuration;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -21,12 +22,13 @@ namespace ServiceLayer.Services.Implementation.Db
         private IRepoWrapper repos;
         private readonly IMapper mapper;
         private IWebHostEnvironment _webHostEnvironment;
-
-        public GroupService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        private readonly IConfiguration _config;
+        public GroupService(IRepoWrapper repos, IMapper mapper, IWebHostEnvironment webHostEnvironment, IConfiguration config)
         {
             this.repos = repos;
             this.mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
+            _config = config;
         }
         public IQueryable<T> GetList<T>()
         {
@@ -170,13 +172,15 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task CreateAsync(GroupCreateDto dto, int creatorId)
         {
+            string firebaseBucket = _config["Firebase:StorageBucket"];
             string filePath = null;
             if (dto.Image != null && dto.Image.Length > 0)
             {
                 if (dto.Image.FileName.HasImageExtension())
                 {
+
                     // Initialize FirebaseStorage instance
-                    var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                    var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                     // Generate a unique file name
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;
@@ -201,11 +205,10 @@ namespace ServiceLayer.Services.Implementation.Db
             }
             else
             {
-                var bucket = "welearn-2024.appspot.com";
                 var path = "Images/groupdefault.jpg"; // Path to image
 
                 // Initialize Firebase storage
-                var storage = new FirebaseStorage(bucket);
+                var storage = new FirebaseStorage(firebaseBucket);
 
                 // Get the download URL for the image
                 string downloadUrl = await storage.Child(path).GetDownloadUrlAsync();
@@ -238,6 +241,8 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<GroupDetailForLeaderGetDto> UpdateAsync(int groupId, GroupUpdateDto dto)
         {
+            string firebaseBucket = _config["Firebase:StorageBucket"];
+
             var group = await repos.Groups.GetByIdAsync(groupId);
 
             //Image
@@ -246,7 +251,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 if (dto.Image.FileName.HasImageExtension())
                 {
                     // Initialize FirebaseStorage instance
-                    var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                    var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                     // Generate a unique file name
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + dto.Image.FileName;

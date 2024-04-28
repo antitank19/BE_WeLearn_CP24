@@ -3,6 +3,7 @@ using DataLayer.DbObject;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
@@ -23,12 +24,13 @@ namespace ServiceLayer.Services.Implementation.Db
         private IRepoWrapper _repos;
         private IMapper _mapper;
         private IWebHostEnvironment _webHostEnvironment;
-
-        public DiscussionService(IRepoWrapper repoWrapper, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        private readonly IConfiguration _config;
+        public DiscussionService(IRepoWrapper repoWrapper, IMapper mapper, IWebHostEnvironment webHostEnvironment, IConfiguration config)
         {
             _mapper = mapper;
             _repos = repoWrapper;
             _webHostEnvironment = webHostEnvironment;
+            _config = config;
         }
 
         public async Task<DiscussionDto> GetDiscussionById(int discussionId)
@@ -51,8 +53,10 @@ namespace ServiceLayer.Services.Implementation.Db
                       
             if (discussionDto.File != null && discussionDto.File.Length > 0)
             {
+                string firebaseBucket = _config["Firebase:StorageBucket"];
+
                 // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                 // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + discussionDto.File.FileName;
@@ -86,8 +90,10 @@ namespace ServiceLayer.Services.Implementation.Db
 
             if (file != null && file.Length > 0)
             {
+                string firebaseBucket = _config["Firebase:StorageBucket"];
+
                 // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                 // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
@@ -120,8 +126,10 @@ namespace ServiceLayer.Services.Implementation.Db
 
             if (discussionDto.File != null && discussionDto.File.Length > 0)
             {
+                string firebaseBucket = _config["Firebase:StorageBucket"];
+
                 // Initialize FirebaseStorage instance
-                var firebaseStorage = new FirebaseStorage("welearn-2024.appspot.com");
+                var firebaseStorage = new FirebaseStorage(firebaseBucket);
 
                 // Generate a unique file name
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + discussionDto.File.FileName;

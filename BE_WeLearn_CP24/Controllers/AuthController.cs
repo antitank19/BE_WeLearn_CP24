@@ -27,13 +27,16 @@ namespace API.Controllers
         private readonly IServiceWrapper services;
         //private readonly IMapper mapper;
         //private readonly IValidatorWrapper validators;
+        private readonly IConfiguration _config;
         public AuthController(
-            IServiceWrapper services
+            IServiceWrapper services,
+            IConfiguration config
         //IMapper mapper, 
         //IValidatorWrapper validators
         )
         {
             this.services = services;
+            this._config = config;
             //this.mapper = mapper;
             //this.validators = validators;
         }
@@ -188,12 +191,15 @@ namespace API.Controllers
                 {
                     return BadRequest(valResult);
                 }
+                string firebaseBucket = _config["Firebase:StorageBucket"];
 
-                var bucket = "welearn-2024.appspot.com";
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage(firebaseBucket);
+
                 var path = "Images/default.jpg"; // Path to image
 
                 // Initialize Firebase storage
-                var storage = new FirebaseStorage(bucket);
+                var storage = new FirebaseStorage(firebaseBucket);
 
                 // Get the download URL for the image
                 string downloadUrl = await storage.Child(path).GetDownloadUrlAsync();

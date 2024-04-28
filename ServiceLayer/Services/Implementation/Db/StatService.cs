@@ -250,6 +250,10 @@ namespace ServiceLayer.Services.Implementation.Db
             List<DateTime> startDates = new List<DateTime>();
             DateTime start1 = new DateTime(month.Year, month.Month, 1, 0, 0, 0).Date;
             startDates.Add(start1);
+            for (int i = 1; i <= 4; i++)
+            {
+                startDates.Add(start1.AddMonths(-i));
+            }
 
             foreach (DateTime start in startDates)
             {

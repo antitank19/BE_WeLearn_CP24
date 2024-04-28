@@ -217,6 +217,10 @@ namespace ShareResource.Mapper
                     src => src.Account.Email))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(
                     src => src.Account.FullName))
+                .ForMember(dest => dest.GroupImagePath, opt => opt.MapFrom(
+                    src => src.Group.ImagePath))
+                .ForMember(dest => dest.AccountImagePath, opt => opt.MapFrom(
+                    src => src.Account.ImagePath))
                 //.ForMember(dest => dest.Class, opt => opt.MapFrom(
                 //    src => src.Account.ClassId))
                 .PreserveReferences();
@@ -234,6 +238,10 @@ namespace ShareResource.Mapper
                         .Count()))
                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
                     src => src.Group.GroupSubjects.Select(gs => gs.Subject.Name)))
+                .ForMember(dest => dest.GroupImagePath, opt => opt.MapFrom(
+                    src => src.Group.ImagePath))
+                .ForMember(dest => dest.AccountImagePath, opt => opt.MapFrom(
+                    src => src.Account.ImagePath))
                 .PreserveReferences();
             //CreateMap<GroupMemberRequestCreateDto, GroupMember>()   
             //    .ForMember(dest => dest.State, opt => opt.MapFrom(src => GroupMemberState.Requesting));

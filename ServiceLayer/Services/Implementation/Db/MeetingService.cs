@@ -284,6 +284,24 @@ namespace ServiceLayer.Services.Implementation.Db
                 ScheduleEnd = dto.Date.Add(dto.ScheduleEndTime),
             };
             existed.PatchUpdate(updated);
+
+            List<ScheduleSubject> groupSubjects = existed.Schedule.ScheduleSubjects.ToList();
+            foreach (ScheduleSubject groupSubject in groupSubjects)
+            {
+                if (!dto.SubjectIds.Cast<int>().Contains(groupSubject.SubjectId))
+                {
+                    existed.Schedule.ScheduleSubjects.Remove(groupSubject);
+                }
+            }
+            //Add new subject, nếu group ko có thì add
+            foreach (int subjectId in dto.SubjectIds)
+            {
+                if (!existed.Schedule.ScheduleSubjects.Any(e => e.SubjectId == subjectId))
+                {
+                    existed.Schedule.ScheduleSubjects.Add(new GroupSubject { GroupId = group.Id, SubjectId = subjectId });
+                }
+            }
+
             await repos.Meetings.UpdateAsync(existed);
         }
 

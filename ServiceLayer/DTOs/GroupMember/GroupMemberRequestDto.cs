@@ -13,12 +13,14 @@ namespace ServiceLayer.DTOs
         //public string RequestMessage { get; set; }   
         public int GroupId { get; set; }
         public string GroupName { get; set; }
+        public string GroupImagePath { get; set; }
         public int AccountId { get; set; }
+        public string AccountImagePath { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }
-        public string? Schhool { get; set; }
-        public int Class { get; set; }
+        //public string? Schhool { get; set; }
+        //public int Class { get; set; }
     }
 
     public class JoinRequestForStudentGetDto
@@ -27,10 +29,12 @@ namespace ServiceLayer.DTOs
         //public string RequestMessage { get; set; }   
         public int GroupId { get; set; }
         public string GroupName { get; set; }
+        public string GroupImagePath { get; set; }
         public int AccountId { get; set; }
+        public string AccountImagePath { get; set; }
         public string UserName { get; set; }
         public int MemberCount { get; set; }
-        public int Class { get; set; }
+        //public int Class { get; set; }
         public ICollection<string> Subjects { get; set; } = new Collection<string>();
     }
 

@@ -93,6 +93,10 @@ namespace ShareResource.Mapper
                     src => src.GroupMembers
                         .Where(e => e.MemberRole == GroupMemberRole.Leader || e.MemberRole == GroupMemberRole.Member)
                         .Count()))
+                .ForMember(dest => dest.Members, opt => opt.MapFrom(
+                    src => src.GroupMembers
+                        .Where(e => e.MemberRole == GroupMemberRole.Leader || e.MemberRole == GroupMemberRole.Member)
+                        .OrderBy(e=>e.MemberRole)))
                 .ForMember(dest => dest.Subjects, opt => opt.MapFrom(
                     src => src.GroupSubjects.Select(gs => gs.Subject.Name)))
                 .PreserveReferences();
@@ -167,6 +171,8 @@ namespace ShareResource.Mapper
                     src => src.Group.Name))
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(
                     src => src.Account.Username))
+                 .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(
+                    src => src.Account.ImagePath))
                 .PreserveReferences();
             //Invite
             CreateMap<Invite, JoinInviteForGroupGetDto>()

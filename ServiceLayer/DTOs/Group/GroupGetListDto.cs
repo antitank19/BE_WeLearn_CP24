@@ -15,6 +15,8 @@ namespace ServiceLayer.DTOs
 
         // public int ClassId { get; set; }
         // public ICollection<DiscussionInGroupDto> Discussions { get; set; }=new Collection<DiscussionInGroupDto>();
+        //public ICollection<GroupMemberGetDto> Members { get; set; }=new Collection<GroupMemberGetDto>();
+        public ICollection<GroupMemberGetDto> Members { get; set; }
         public ICollection<string> Subjects { get; set; }=new Collection<string>();
     }
 }

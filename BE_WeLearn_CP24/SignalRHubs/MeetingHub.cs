@@ -395,12 +395,12 @@ namespace API.SignalRHub
 
             //Help stablize fe
             System.Threading.Thread.Sleep(1000);
+            await Clients.Group(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
             await Clients.GroupExcept(roomId, Context.ConnectionId).SendAsync(UserJoinMsg, peer);
             //await Clients.Group(roomId).SendAsync(UserJoinMsg, peer);
             await Clients.Group(roomId).SendAsync(GetMessagesMsg, Chats[roomId]);
             await SendFocusList(roomId);
             //await Clients.Group(roomId).SendAsync(GetFocusMsg, FocusMap[roomId]);
-            await Clients.Group(roomId).SendAsync(GetAvaMsg, AvaMap[roomId]);
         }
 
         public class FocusInput

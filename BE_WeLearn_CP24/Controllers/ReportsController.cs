@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         //[Authorize]
-        [HttpGet("All Report")]
+        [HttpGet()]
         public async Task<IActionResult> GetReports()
         {
             ValidatorResult valResult = new ValidatorResult();
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         //[Authorize]
-        [HttpGet("PendingReport")]
+        [HttpGet("Unresolve")]
         public async Task<IActionResult> GetUresolvedReports()
         {
             ValidatorResult valResult = new ValidatorResult();

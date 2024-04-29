@@ -723,6 +723,7 @@ namespace API.Controllers
             try
             {
                 var accountId = HttpContext.User.GetUserId();
+                var username = HttpContext.User.GetEmail();
                 bool isLead = await services.Groups.IsStudentLeadingGroupAsync(accountId, groupId);
                 if (isLead)
                 {
@@ -730,6 +731,7 @@ namespace API.Controllers
                     return Unauthorized(valResult);
                 }
                 var check = await services.GroupMembers.LeaveGroup(accountId, groupId);
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"Student {username} leaves group");
                 return Ok(check);
             }
             catch (Exception ex)

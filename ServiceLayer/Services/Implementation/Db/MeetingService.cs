@@ -195,7 +195,9 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy past meeting
-                    && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today));
+                    && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+                .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
+                .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart);
             return allMeetingsOfJoinedGroups.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
         }
 
@@ -213,12 +215,16 @@ namespace ServiceLayer.Services.Implementation.Db
                     && e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy past meeting
                     && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+                .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
+                .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart)
                 : repos.Meetings.GetList()
                 .Include(c => c.Connections)
                 .Include(m => m.Schedule).ThenInclude(a => a.Group).ThenInclude(g => g.GroupMembers)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
                 .Where(c => c.Start >= start && c.Start.Value.Date < end
-                    && c.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId));
+                    && c.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId))
+                .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
+                .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart); ;
             return allMeetingsOfJoinedGroups.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
         }
 
@@ -230,7 +236,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy past meeting
-                    && (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null));
+                    && (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null))
+                .OrderBy(e => e.ScheduleStart.Value);
 
             var mapped = scheduleMeetingsOfJoinedGroups.ProjectTo<ScheduleMeetingForMemberGetDto>(mapper.ConfigurationProvider).ToList();
             var leadGroupIds = repos.GroupMembers.GetList()
@@ -256,7 +263,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy schedule meeting
                     && (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null)
-                    && e.ScheduleStart.Value.Date == date);
+                    && e.ScheduleStart.Value.Date == date)
+                .OrderBy(e => e.ScheduleStart.Value);
             return scheduleMeetingsOfJoinedGroups.ProjectTo<ScheduleMeetingForMemberGetDto>(mapper.ConfigurationProvider);
         }
 
@@ -267,8 +275,9 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
-                //lấy live meeting
-                && e.Start != null && e.End == null);
+                    //lấy live meeting
+                    && e.Start != null && e.End == null)
+                .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start);
             return scheduleMeetingsOfJoinedGroups.ProjectTo<LiveMeetingGetDto>(mapper.ConfigurationProvider);
         }
 

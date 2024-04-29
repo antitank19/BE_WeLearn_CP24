@@ -211,8 +211,9 @@ namespace ServiceLayer.Services.Implementation.Db
             var groupMember = await repos.GroupMembers.GetList()
                .SingleOrDefaultAsync(e => e.AccountId == accountId && e.GroupId == groupId);
 
-            groupMember.IsActive = false;
-            await repos.GroupMembers.UpdateAsync(groupMember);
+            //groupMember.IsActive = false;
+            //await repos.GroupMembers.UpdateAsync(groupMember);
+            await repos.GroupMembers.RemoveAsync(groupMember.Id);
 
             return true;
         }

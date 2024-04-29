@@ -1,16 +1,26 @@
 ﻿using API.Extension.ClaimsPrinciple;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using RepoLayer.Interface;
 using ServiceLayer.DTOs;
+using ServiceLayer.Services.Interface;
 
 namespace API.SignalRHub
 {
     /// <summary>
     /// Use to count number of ppl in rooms
     /// </summary>
-    //[Authorize]
+    [Authorize]
     public class GroupHub : Hub
     {
+        private readonly IRepoWrapper repos;
+        private readonly IServiceWrapper services;
+
+        public GroupHub(IServiceWrapper services, IRepoWrapper repos)
+        {
+            this.services = services;
+            this.repos = repos;
+        }
         //BE: SendAsync(GroupHub.CountMemberInGroupMsg, new { meetingId: int, countMember: int })
         public static string CountMemberInGroupMsg => "CountMemberInGroup";
         public static string OnLockedUserMsg => "OnLockedUser";
@@ -20,6 +30,16 @@ namespace API.SignalRHub
         {
             HttpContext httpContext = Context.GetHttpContext();
             string groupIdString = httpContext.Request.Query["groupId"].ToString();
+            if (groupIdString.ToLower() == "all")
+            {
+                //string username = Context.User.GetUsername();
+                int accId = Context.User.GetUserId();
+                IQueryable<string> ids = (await services.Groups.GetJoinGroupsOfStudentAsync<GroupGetListDto>(accId)).Select(g=>g.Id.ToString());
+                foreach (var id in ids)
+                {
+                    Groups.AddToGroupAsync(Context.ConnectionId, id);
+                }
+            }     
             await Groups.AddToGroupAsync(Context.ConnectionId, groupIdString);
 
             //var isOnline = await presenceTracker.UserConnected(new UserConnectionSignalrDto(Context.User.GetUsername(), 0), Context.ConnectionId);

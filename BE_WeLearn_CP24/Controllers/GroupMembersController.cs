@@ -261,6 +261,7 @@ namespace API.Controllers
                 }
                 await services.GroupMembers.CreateJoinInvite(dto);
 
+                await groupHub.Clients.Group("accId" + dto.AccountId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
                 return Ok();
             }
             catch (Exception ex)

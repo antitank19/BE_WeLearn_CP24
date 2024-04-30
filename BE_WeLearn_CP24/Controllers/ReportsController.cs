@@ -29,10 +29,10 @@ namespace API.Controllers
             try
             {
                 var mapped = services.Reports.GetReportList<ReportGetListDto>();
-                if(mapped == null || !mapped.Any()) { 
-                valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
-                    return NotFound(valResult);
-                }
+                //if(mapped == null || !mapped.Any()) { 
+                //valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                //    return NotFound(valResult);
+                //}
                 return Ok(mapped);
             }
             catch (Exception ex)
@@ -50,11 +50,11 @@ namespace API.Controllers
             try
             {
                 var mapped = services.Reports.GetUnresolvedReportList<ReportGetListDto>();
-                if (mapped == null || !mapped.Any())
-                {
-                    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
-                    return NotFound(valResult);
-                }
+                //if (mapped == null || !mapped.Any())
+                //{
+                //    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                //    return NotFound(valResult);
+                //}
                 return Ok(mapped);
             }
             catch (Exception ex)
@@ -172,7 +172,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("AdminSolveReport")]
+        [HttpPut()]
         public async Task<IActionResult> SolveReport(int reportId, bool isApproved)
         {
             ValidatorResult valResult = new ValidatorResult();

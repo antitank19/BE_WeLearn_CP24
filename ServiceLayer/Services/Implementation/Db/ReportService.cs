@@ -34,10 +34,10 @@ namespace ServiceLayer.Services.Implementation.Db
                  .Include(r => r.Group)
                  .Include(r => r.File)
                  .Include(r => r.Discussion);
-            if (list == null || !list.Any())
-            {
-                return null;
-            }
+            //if (list == null || !list.Any())
+            //{
+            //    return null;
+            //}
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;
         }
@@ -50,10 +50,10 @@ namespace ServiceLayer.Services.Implementation.Db
                  .Include(r => r.File)
                  .Include(r => r.Discussion)
                  .Where(r=>r.State==RequestStateEnum.Waiting);
-            if (list == null || !list.Any())
-            {
-                return null;
-            }
+            //if (list == null || !list.Any())
+            //{
+            //    return null;
+            //}
             var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
             return mapped;
         }

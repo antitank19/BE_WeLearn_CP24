@@ -10,7 +10,7 @@ namespace API.SignalRHub
     /// <summary>
     /// Use to count number of ppl in rooms
     /// </summary>
-    [Authorize]
+    //[Authorize]
     public class GroupHub : Hub
     {
         private readonly IRepoWrapper repos;
@@ -33,13 +33,23 @@ namespace API.SignalRHub
             if (groupIdString.ToLower() == "all")
             {
                 //string username = Context.User.GetUsername();
-                int accId = Context.User.GetUserId();
-                IQueryable<string> ids = (await services.Groups.GetJoinGroupsOfStudentAsync<GroupGetListDto>(accId)).Select(g=>g.Id.ToString());
-                foreach (var id in ids)
+                string accIdString = httpContext.Request.Query["accId"].ToString();
+                try
                 {
-                    Groups.AddToGroupAsync(Context.ConnectionId, id);
+                    int accId = int.Parse(accIdString);
+                    await Groups.AddToGroupAsync(Context.ConnectionId, "accId" + accIdString);
+                    //await Groups.AddToGroupAsync(Context.ConnectionId, "a");
+                    IQueryable<string> ids = (await services.Groups.GetJoinGroupsOfStudentAsync<GroupGetListDto>(accId)).Select(g => g.Id.ToString());
+                    foreach (var id in ids)
+                    {
+                        //Groups.AddToGroupAsync(Context.ConnectionId, id);
+                        await Groups.AddToGroupAsync(Context.ConnectionId, id);
+                    }
                 }
-            }     
+                catch (Exception ex) { 
+                    Console.WriteLine(ex.Message);    
+                }
+            }
             await Groups.AddToGroupAsync(Context.ConnectionId, groupIdString);
 
             //var isOnline = await presenceTracker.UserConnected(new UserConnectionSignalrDto(Context.User.GetUsername(), 0), Context.ConnectionId);

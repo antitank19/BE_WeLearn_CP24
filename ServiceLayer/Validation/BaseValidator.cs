@@ -9,13 +9,13 @@ namespace APIExtension.Validator
     /// <summary>
     /// has validatorResult
     /// </summary>
-    public class BaseValidator
-    {
-        public BaseValidator()
-        {
-            validatorResult = new ValidatorResult();
-        }
+    //public class BaseValidator
+    //{
+    //    public BaseValidator()
+    //    {
+    //        validatorResult = new ValidatorResult();
+    //    }
 
-        protected ValidatorResult validatorResult { get; set; }
-    }
+    //    protected ValidatorResult validatorResult { get; set; }
+    //}
 }

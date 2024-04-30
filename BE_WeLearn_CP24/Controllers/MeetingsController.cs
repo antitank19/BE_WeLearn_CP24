@@ -210,7 +210,8 @@ namespace API.Controllers
                 //Meeting created= await services.Meetings.CreateInstantMeetingAsync(dto);
                 //LiveMeetingGetDto mappedCreated = mapper.Map<LiveMeetingGetDto>(created);
                 LiveMeetingGetDto mappedCreated = await services.Meetings.CreateInstantMeetingAsync<LiveMeetingGetDto>(dto);
-                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} bắt đầu cuộc họp {dto.Name}");
+                //await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} bắt đầu cuộc họp {dto.Name}");
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} start meeting {dto.Name}");
                 return Ok(mappedCreated);
             }
             catch (Exception ex)
@@ -249,7 +250,8 @@ namespace API.Controllers
                 ScheduleGetDto mapped = await services.Meetings.MassCreateScheduleMeetingAsync<ScheduleGetDto>(dto);
                 //schedule.ScheduleSubjects = dto.SubjectIds.Select(sId => new ScheduleSubject() { SubjectId = (int)sId }).ToList();
                 //await services.Meetings.CreateScheduleMeetingAsync(dto);
-                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp {mapped.Name} mới");
+                //await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp {mapped.Name} mới");
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} create new meeting {mapped.Name}");
                 return Ok(mapped);
             }
             catch (Exception ex) {
@@ -280,7 +282,8 @@ namespace API.Controllers
                     return BadRequest(valResult);
                 }
                 await services.Meetings.CreateScheduleMeetingAsync(dto);
-                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp mới {dto.Name}");
+                //await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} tạo cuộc họp mới {dto.Name}");
+                await groupHub.Clients.Group(dto.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} create new meeting {dto.Name}");
                 return Ok(dto);
             }
             catch(Exception ex)
@@ -338,7 +341,8 @@ namespace API.Controllers
                 Content = meeting.Content,
                 Name = meeting.Name,
             };
-            await groupHub.Clients.Group(mapped.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} bắt đầu cuộc họp {meeting.Name}");
+            //await groupHub.Clients.Group(mapped.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} bắt đầu cuộc họp {meeting.Name}");
+            await groupHub.Clients.Group(mapped.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} starts new meetings {meeting.Name}");
             return Ok(mapped);
         }
 
@@ -369,7 +373,8 @@ namespace API.Controllers
                 //Meeting updated = await services.Meetings.GetByIdAsync(id);
                 //var updatedDto = mapper.Map<ScheduleMeetingGetDto>(updated);
                 ScheduleMeetingGetDto mappedUpdated = await services.Meetings.GetByIdAsync<ScheduleMeetingGetDto>(id);
-                await groupHub.Clients.Group(mappedUpdated.ScheduleGroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} cập nhật cuộc họp {mappedUpdated.Name}");
+                //await groupHub.Clients.Group(mappedUpdated.ScheduleGroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} cập nhật cuộc họp {mappedUpdated.Name}");
+                await groupHub.Clients.Group(mappedUpdated.ScheduleGroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"{HttpContext.User.GetUsername()} update meeting {mappedUpdated.Name}");
                 return Ok(mappedUpdated);
             }
             catch (Exception ex) {

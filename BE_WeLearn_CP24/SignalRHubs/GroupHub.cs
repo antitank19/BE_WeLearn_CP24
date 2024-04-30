@@ -37,10 +37,13 @@ namespace API.SignalRHub
                 try
                 {
                     int accId = int.Parse(accIdString);
+                    await Groups.AddToGroupAsync(Context.ConnectionId, "accId" + accIdString);
+                    //await Groups.AddToGroupAsync(Context.ConnectionId, "a");
                     IQueryable<string> ids = (await services.Groups.GetJoinGroupsOfStudentAsync<GroupGetListDto>(accId)).Select(g => g.Id.ToString());
                     foreach (var id in ids)
                     {
-                        Groups.AddToGroupAsync(Context.ConnectionId, id);
+                        //Groups.AddToGroupAsync(Context.ConnectionId, id);
+                        await Groups.AddToGroupAsync(Context.ConnectionId, id);
                     }
                 }
                 catch (Exception ex) { 

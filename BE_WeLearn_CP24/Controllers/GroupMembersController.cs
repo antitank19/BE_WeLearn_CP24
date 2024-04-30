@@ -323,6 +323,8 @@ namespace API.Controllers
                 await services.GroupMembers.AcceptOrDeclineRequestAsync(existedRequest, true);
                 
                 await groupHub.Clients.Group(existedRequest.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
+                await groupHub.Clients.Group("accId" + existedRequest.AccountId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
+                //await groupHub.Clients.Group("a").SendAsync(GroupHub.OnReloadMeetingMsg);
                 return Ok();
             }
             catch (Exception ex)

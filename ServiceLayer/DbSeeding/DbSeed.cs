@@ -496,7 +496,15 @@ namespace ServiceLayer.DbSeeding
                 IsBanned = false,
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Freact.jpg?alt=media&token=27b9137f-87a0-4ddb-9d7d-a32ffa533ba1"
             },
-
+            new Group
+            {
+                Id = 20,
+                Name = "Banned Group",
+                Description = "React apps are made out of components. A component is a piece of the UI (user interface) that has its own logic and appearance. A component can be as small as a button, or as large as an entire page.",
+                BanCounter = 4,
+                IsBanned = true,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Freact.jpg?alt=media&token=27b9137f-87a0-4ddb-9d7d-a32ffa533ba1"
+            },
         };
         public static GroupMember[] GroupMembers = new GroupMember[]
         {
@@ -883,6 +891,24 @@ namespace ServiceLayer.DbSeeding
                             AccountId = 18,
                             MemberRole = GroupMemberRole.Member,
                             IsActive = true,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 32,
+                            GroupId = 20,
+                            AccountId = 1,
+                            MemberRole = GroupMemberRole.Leader,
+                            IsActive = false,
+                        },
+                          new GroupMember
+                        {
+                            //Id = 20,
+                            Id = 33,
+                            GroupId = 20,
+                            AccountId = 2,
+                            MemberRole = GroupMemberRole.Member,
+                            IsActive = false,
                         },
         };
         public static GroupSubject[] GroupSubjects = new GroupSubject[]

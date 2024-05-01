@@ -143,7 +143,7 @@ namespace API.SignalRHub
                 await repos.Connections.UpdateAsync(con);
             }
             await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
-            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
+            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadSelfMeetingMsg);
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
@@ -200,7 +200,7 @@ namespace API.SignalRHub
                 Console.WriteLine("\n\n+++++++++++++\nEnd connection fail");
             }
             await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
-            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
+            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadSelfMeetingMsg);
 
             //step 9: Disconnect khỏi meetHub
             await base.OnDisconnectedAsync(exception);
@@ -594,7 +594,7 @@ namespace API.SignalRHub
                 await repos.Connections.UpdateAsync(connection);
             }
             await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
-            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
+            await groupHub.Clients.Group(meeting.Schedule.GroupId.ToString()).SendAsync(GroupHub.OnReloadSelfMeetingMsg);
 
         }
 

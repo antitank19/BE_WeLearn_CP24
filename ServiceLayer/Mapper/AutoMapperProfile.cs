@@ -53,9 +53,9 @@ namespace ShareResource.Mapper
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(
                     src => src.Role.Name))
                 .ForMember(dest => dest.LeadGroups, opt => opt.MapFrom(
-                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Leader).Select(e => e.Group)))
+                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Leader && (e.Group == null || !e.Group.IsBanned)).Select(e => e.Group).Where(g => !g.IsBanned)))
                 .ForMember(dest => dest.JoinGroups, opt => opt.MapFrom(
-                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Member).Select(e => e.Group)))
+                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Member && (e.Group == null || !e.Group.IsBanned)).Select(e => e.Group).Where(g => !g.IsBanned)))
                 //.ForMember(dest => dest.Parents, opt => opt.MapFrom(
                 //    src => src.SupervisionsForStudent
                 //    .Where(e => e.State == RequestStateEnum.Approved)
@@ -69,9 +69,9 @@ namespace ShareResource.Mapper
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(
                     src => src.Role.Name))
                 .ForMember(dest => dest.LeadGroups, opt => opt.MapFrom(
-                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Leader).Select(e => e.Group)))
+                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Leader && (e.Group==null|| !e.Group.IsBanned)).Select(e => e.Group).Where(g=>!g.IsBanned)))
                 .ForMember(dest => dest.JoinGroups, opt => opt.MapFrom(
-                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Member).Select(e => e.Group)))
+                    src => src.GroupMembers.Where(e => e.MemberRole == GroupMemberRole.Member && (e.Group == null || !e.Group.IsBanned)).Select(e => e.Group).Where(g => !g.IsBanned)))
                 //.ForMember(dest => dest.Parents, opt => opt.MapFrom(
                 //    src => src.SupervisionsForStudent
                 //    .Where(e => e.State == RequestStateEnum.Approved)

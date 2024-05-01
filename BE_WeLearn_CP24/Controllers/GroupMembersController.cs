@@ -261,7 +261,7 @@ namespace API.Controllers
                 }
                 await services.GroupMembers.CreateJoinInvite(dto);
 
-                await groupHub.Clients.Group("accId" + dto.AccountId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
+                await groupHub.Clients.Group("accId" + dto.AccountId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
                 return Ok();
             }
             catch (Exception ex)
@@ -324,8 +324,7 @@ namespace API.Controllers
                 await services.GroupMembers.AcceptOrDeclineRequestAsync(existedRequest, true);
                 
                 await groupHub.Clients.Group(existedRequest.GroupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
-                await groupHub.Clients.Group("accId" + existedRequest.AccountId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
-                //await groupHub.Clients.Group("a").SendAsync(GroupHub.OnReloadMeetingMsg);
+                await groupHub.Clients.Group("accId" + existedRequest.AccountId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
                 return Ok();
             }
             catch (Exception ex)
@@ -705,6 +704,7 @@ namespace API.Controllers
                     return BadRequest(valResult);
                 }
                 await services.GroupMembers.BanUserFromGroupAsync(exited);
+                await groupHub.Clients.Group("accId"+ banAccId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
                 await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg);
                 return Ok();
             }
@@ -734,6 +734,7 @@ namespace API.Controllers
                     return Unauthorized(valResult);
                 }
                 var check = await services.GroupMembers.LeaveGroup(accountId, groupId);
+                await groupHub.Clients.Group("accId" + accountId.ToString()).SendAsync(GroupHub.OnReloadSelfInfoMsg);
                 await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadMeetingMsg, $"Student {username} leaves group");
                 return Ok(check);
             }

@@ -14,8 +14,8 @@ namespace DataLayer.DbObject
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? ImagePath { get; set; }
-        public int BanCounter { get; set; } = 0;
-        public bool IsBanned { get; set; } = false;
+        public int BanCounter { get; set; }
+        public bool IsBanned { get; set; }
 
         #region Group Member
         public virtual ICollection<GroupMember> GroupMembers { get; set; } = new Collection<GroupMember>();

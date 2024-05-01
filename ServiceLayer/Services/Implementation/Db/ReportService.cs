@@ -119,7 +119,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 //Account
                 if (report.AccountId is not null)
                 {
-                    var account = await repos.Accounts.GetByIdAsync(report.AccountId.Value);
+                    var account = await repos.Accounts.GetProfileByIdAsync(report.AccountId.Value);
       
                     account.ReportCounter = ++account.ReportCounter;
 
@@ -168,23 +168,22 @@ namespace ServiceLayer.Services.Implementation.Db
                 else if(report.DiscussionId is not null)
                 {
                     var discussion = await repos.Discussions.GetByIdAsync(report.DiscussionId.Value);
-                    var account = await repos.Accounts.GetByIdAsync(report.Discussion.AccountId);
 
                     discussion.IsActive = false;
-                    account.ReportCounter = ++account.ReportCounter;
+                    discussion.Account.ReportCounter = ++discussion.Account.ReportCounter;
 
-                    if (account.ReportCounter > 5)
+                    if (discussion.Account.ReportCounter > 5)
                     {
-                        account.IsBanned = true;
-                        if (account.GroupMembers.Any())
+                        discussion.Account.IsBanned = true;
+                        if (discussion.Account.GroupMembers.Any())
                         {
-                            foreach (var groupMember in account.GroupMembers)
+                            foreach (var groupMember in discussion.Account.GroupMembers)
                             {
                                 groupMember.IsActive = false;
 
                                 var group = groupMember.Group;
 
-                                var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
+                                var document = group.DocumentFiles.Where(x => x.AccountId == discussion.Account.Id);
                                 if (document.Any())
                                 {
                                     foreach (var file in document)
@@ -192,7 +191,7 @@ namespace ServiceLayer.Services.Implementation.Db
                                         file.IsActive = false;
                                     }
                                 }
-                                var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                var discussions = group.Discussions.Where(x => x.AccountId == discussion.Account.Id);
                                 if (discussions.Any())
                                 {
                                     foreach (var discuss in discussions)
@@ -211,30 +210,29 @@ namespace ServiceLayer.Services.Implementation.Db
                     }
 
                     await repos.Discussions.UpdateAsync(discussion);
-                    await repos.Accounts.UpdateAsync(account);
+                    //await repos.Accounts.UpdateAsync(account);
                 }
                 //DocumentFile
                 else if (report.FileId is not null)
                 {
                     var docfile = await repos.DocumentFiles.GetByIdAsync(report.FileId.Value);
-                    var account = await repos.Accounts.GetByIdAsync(report.File.AccountId);
-
+                   
                     docfile.IsActive = false;
-                    account.ReportCounter = ++account.ReportCounter;
+                    docfile.Account.ReportCounter = ++docfile.Account.ReportCounter;
 
-                    if (account.ReportCounter > 5)
+                    if (docfile.Account.ReportCounter > 5)
                     {
-                        account.IsBanned = true;
+                        docfile.Account.IsBanned = true;
 
-                        if (account.GroupMembers.Any())
+                        if (docfile.Account.GroupMembers.Any())
                         {
-                            foreach (var groupMember in account.GroupMembers)
+                            foreach (var groupMember in docfile.Account.GroupMembers)
                             {
                                 groupMember.IsActive = false;
 
                                 var group = groupMember.Group;
 
-                                var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
+                                var document = group.DocumentFiles.Where(x => x.AccountId == docfile.Account.Id);
                                 if (document.Any())
                                 {
                                     foreach(var file in document)
@@ -242,7 +240,7 @@ namespace ServiceLayer.Services.Implementation.Db
                                         file.IsActive = false;
                                     }
                                 }
-                                var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                var discussions = group.Discussions.Where(x => x.AccountId == docfile.Account.Id);
                                 if (discussions.Any())
                                 {
                                     foreach (var discussion in discussions)
@@ -261,7 +259,6 @@ namespace ServiceLayer.Services.Implementation.Db
                     }
 
                     await repos.DocumentFiles.UpdateAsync(docfile);
-                    await repos.Accounts.UpdateAsync(account);
                 }
                 //Group
                 else if(report.GroupId is not null)

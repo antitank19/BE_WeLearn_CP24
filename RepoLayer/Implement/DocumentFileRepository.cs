@@ -20,12 +20,20 @@ namespace RepoLayer.Implement
             this.dbContext = dbContext;
         }
 
+        public override async Task<DocumentFile> GetByIdAsync(int id)
+        {
+            return await dbContext.DocumentFiles
+                 .Include(x => x.Account).ThenInclude(x => x.GroupMembers)
+                 .FirstOrDefaultAsync(x => x.Id == id);
+
+        }
+
         public async Task<List<DocumentFile>> GetDocumentFilesByGroupId(int groupId)
         {
             return await dbContext.DocumentFiles
                 .Include(e => e.Account)
                 .Include(e => e.Group)
-                .Where(x => x.GroupId == groupId).ToListAsync();
+                .Where(x => x.GroupId == groupId && x.IsActive == true).ToListAsync();
         }
 
         public Task ApproveRejectAsync(DocumentFile entity)

@@ -32,6 +32,8 @@ namespace RepoLayer.Implemention
                  .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+
+
         public async Task<Account> GetProfileByIdAsync(int id)
         {
             return await dbContext.Accounts

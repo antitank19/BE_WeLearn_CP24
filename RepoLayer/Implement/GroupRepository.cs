@@ -36,6 +36,7 @@ namespace RepoLayer.Implemention
                 .Include(e=>e.JoinRequests).ThenInclude(e=>e.Account)
                 .Include(e => e.Discussions).ThenInclude(e => e.AnswerDiscussion)
                 .Include(e => e.DocumentFiles)
+                .Where(x => x.IsBanned != true)
                 .FirstOrDefaultAsync(e=>e.Id == id);
         }
 

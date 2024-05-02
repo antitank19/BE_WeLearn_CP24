@@ -18,7 +18,8 @@ namespace ServiceLayer.DbSeeding
                 Id = 2,
                 Name = "Student"
             }};
-        public static Account[] Accounts = new Account[] {
+        //public static Account[] Accounts = new Account[] {
+        public static List<Account> Accounts = new List<Account> {
             new Account
             {
                 Id = 1,
@@ -199,7 +200,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 13,
                 Username = "student13",
                 FullName = "Trần Văn Mạnh",
-                Email = "student12@gmail.com",
+                Email = "student13@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
@@ -213,7 +214,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 14,
                 Username = "student14",
                 FullName = "Trần Thi Nhu",
-                Email = "student12@gmail.com",
+                Email = "student14@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
@@ -227,7 +228,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 15,
                 Username = "student15",
                 FullName = "Trần Khang Huy",
-                Email = "student12@gmail.com",
+                Email = "student15@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
@@ -241,7 +242,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 16,
                 Username = "student16",
                 FullName = "Giông Ông Tố",
-                Email = "student12@gmail.com",
+                Email = "student16@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
@@ -255,7 +256,7 @@ namespace ServiceLayer.DbSeeding
                 Id = 17,
                 Username = "student17",
                 FullName = "Quang Minh Long",
-                Email = "student12@gmail.com",
+                Email = "student17@gmail.com",
                 Password = StringUtils.CustomHash("123456789"),
                 Phone = "0123456789",
                 DateOfBirth = new DateTime(1975,5, 5),
@@ -1543,6 +1544,7 @@ namespace ServiceLayer.DbSeeding
             #region Meeting 2
             new Connection
             {
+                Id = 1,
                 SinganlrId= "Id1",
                 AccountId = 1,
                 MeetingId = 2,
@@ -1552,6 +1554,7 @@ namespace ServiceLayer.DbSeeding
             },
             new Connection
             {
+                Id = 2,
                 SinganlrId= "Id2",
                 AccountId = 1,
                 MeetingId = 2,
@@ -1561,6 +1564,7 @@ namespace ServiceLayer.DbSeeding
             },
              new Connection
             {
+                 Id = 3,
                 SinganlrId= "Id3",
                 AccountId = 1,
                 MeetingId = 3,

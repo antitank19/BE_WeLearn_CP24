@@ -82,8 +82,9 @@ var app = builder.Build();
 if (IsInMemory)
 {
     Console.WriteLine("++++++++++================+++++++++++++++InMemory++++++++++++=============++++++++++");
-    app.SeedInMemoryDb();
+    //app.SeedInMemoryDb();
 }
+app.SeedInMemoryDb(IsInMemory);
 // Configure the HTTP request pipeline.
 app.UseStaticFiles();
 app.UseCors("allcors");

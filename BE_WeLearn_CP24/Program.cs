@@ -42,16 +42,19 @@ builder.Services.AddDbContext<WeLearnContext>(options =>
 {
     options.EnableSensitiveDataLogging();
     //options.EnableRetryOnFailure();
-//options.EnableRetryOnFailure
-if (IsInMemory)
-{
-    options.UseInMemoryDatabase("WeLearn");
-}
-else
-{
+    //options.EnableRetryOnFailure
+    if (IsInMemory)
+    {
+        options.UseInMemoryDatabase("WeLearn");
+    }
+    else
+    {
         Console.WriteLine(configuration.GetConnectionString("Default"));
-    options.UseSqlServer(configuration.GetConnectionString("Default"));
-}
+        options.UseSqlServer(configuration.GetConnectionString("Default"), o =>
+        {
+           o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        });
+    }
 });
 #endregion
 #region service and repo

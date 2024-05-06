@@ -14,12 +14,12 @@ namespace API.SignalRHub
     public class MeetingHub : Hub
     {
         #region Message
-        public static string UserOnlineInMeetingMsg => "UserOnlineInMeeting";
+        //public static string UserOnlineInMeetingMsg => "UserOnlineInMeeting";
 
         //Thông báo tình trạng muteMic của username. Chỉ dùng để thay đổi icon mic trên 
         //màn hình của người khác. Việc truyền mic hay không là do peer trên FE quyết định
         //SendAsync(OnMuteMicroMsg, new { username: String, mute: bool })
-        public static string OnMuteMicroMsg => "OnMuteMicro";
+        //public static string OnMuteMicroMsg => "OnMuteMicro";
 
         //Thông báo có Chat Message mới
         //BE SendAsync("NewMessage", MessageSignalrGetDto)
@@ -41,7 +41,7 @@ namespace API.SignalRHub
         //BE SendAsync(OnReloadVoteMsg, List<ReviewSignalrDTO>);
         public static string OnReloadVoteMsg => "OnReloadVote";
 
-        public static string OnNewVoteResultMsg => "OnNewVoteResult";
+        //public static string OnNewVoteResultMsg => "OnNewVoteResult";
 
         public static string UserJoinMsg => "user-joined";
 
@@ -137,6 +137,7 @@ namespace API.SignalRHub
             //Code xử lí db xóa duplicate connection
             IQueryable<Connection> dupCons = repos.Connections.GetList()
                 .Where(c => c.SinganlrId != Context.ConnectionId && c.AccountId == Context.User.GetUserId() && c.End == null);
+            int dupCount = dupCons.Count();
             foreach (var con in dupCons)
             {
                 con.End = DateTime.Now;
@@ -238,18 +239,18 @@ namespace API.SignalRHub
         }
 
         //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('MuteMicro', mute)
-        public async Task MuteMicro(bool muteMicro)
-        {
-            Meeting meeting = await repos.Meetings.GetMeetingForConnectionSignalr(Context.ConnectionId);
-            if (meeting != null)
-            {
-                await Clients.Group(meeting.Id.ToString()).SendAsync(OnMuteMicroMsg, new { username = Context.User.GetUsername(), mute = muteMicro });
-            }
-            else
-            {
-                throw new HubException("group == null");
-            }
-        }
+        //public async Task MuteMicro(bool muteMicro)
+        //{
+        //    Meeting meeting = await repos.Meetings.GetMeetingForConnectionSignalr(Context.ConnectionId);
+        //    if (meeting != null)
+        //    {
+        //        await Clients.Group(meeting.Id.ToString()).SendAsync(OnMuteMicroMsg, new { username = Context.User.GetUsername(), mute = muteMicro });
+        //    }
+        //    else
+        //    {
+        //        throw new HubException("group == null");
+        //    }
+        //}
         //sẽ dc gọi khi có người xin dc vote (review)
         //sẽ dc gọi khi FE gọi meetingHubConnection.invoke('StartVote', meetingId: int)
         public async Task StartVote(int meetingId)
@@ -279,7 +280,7 @@ namespace API.SignalRHub
                             .Include(e => e.Details).ThenInclude(e => e.Reviewer);
             List<ReviewSignalrDTO> mappedNewReviews = newMeetReviews
                 .ProjectTo<ReviewSignalrDTO>(mapper.ConfigurationProvider).ToList();
-            await Clients.Group(meetingId.ToString()).SendAsync(OnReloadVoteMsg, mappedNewReviews);
+            //await Clients.Group(meetingId.ToString()).SendAsync(OnReloadVoteMsg, mappedNewReviews);
 
         }
 
@@ -563,7 +564,7 @@ namespace API.SignalRHub
             camList.Remove(cam);
             await Clients.Groups(input.roomId).SendAsync(GetAvaMsg, AvaMap[input.roomId]);
 
-            await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
+            //await Clients.Group(meeting.Id.ToString()).SendAsync(UserOnlineInMeetingMsg, usersInMeeting);
             if (usersInMeeting.Count == 0)
             {
                 var usersJoined = repos.Connections.GetList()

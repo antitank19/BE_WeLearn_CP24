@@ -278,7 +278,22 @@ namespace ServiceLayer.DbSeeding
                 ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava18.jpg?alt=media&token=91e89058-a5c1-45f4-9430-ef63f0ec0905",
                 ReportCounter = 0,
                 IsBanned = false
+            },
+             new Account
+            {
+                Id = 19,
+                Username = "reporteduser",
+                FullName = "Liêng Khánh Duy",
+                Email = "reporteduser@gmail.com",
+                Password = StringUtils.CustomHash("123456789"),
+                Phone = "0909192129",
+                DateOfBirth = new DateTime(1995,5, 5),
+                RoleId = 2,
+                ImagePath = "https://firebasestorage.googleapis.com/v0/b/welearn-2024.appspot.com/o/Images%2Fava18.jpg?alt=media&token=91e89058-a5c1-45f4-9430-ef63f0ec0905",
+                ReportCounter = 6,
+                IsBanned = true
             }
+
         };
         public static Subject[] Subjects = new Subject[]
         {
@@ -1663,6 +1678,86 @@ namespace ServiceLayer.DbSeeding
                 FileId = 2,
                 State= RequestStateEnum.Waiting,
             },
+            new Report
+            {
+                Id = 5,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 19,
+                State= RequestStateEnum.Approved,
+            },
+            new Report
+            {
+                Id = 6,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 19,
+                State= RequestStateEnum.Approved,
+            },
+            new Report
+            {
+                Id = 7,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 19,
+                State= RequestStateEnum.Approved,
+            },
+            new Report
+            {
+                Id = 8,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 19,
+                State= RequestStateEnum.Approved,
+            },
+            new Report
+            {
+                Id = 9,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 19,
+                State= RequestStateEnum.Approved,
+            },
+            new Report
+            {
+                Id = 10,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 19,
+                State= RequestStateEnum.Approved,
+            },
+             new Report
+            {
+                Id = 11,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                GroupId = 20,
+                State= RequestStateEnum.Approved,
+            },
+             new Report
+            {
+                Id = 12,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                GroupId = 20,
+                State= RequestStateEnum.Approved,
+            },
+             new Report
+            {
+                Id = 13,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                GroupId = 20,
+                State= RequestStateEnum.Approved,
+            },
+             new Report
+            {
+                Id = 14,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                GroupId = 20,
+                State= RequestStateEnum.Approved,
+            },
         };
         public static Discussion[] Discussions = new Discussion[]
         {
@@ -1827,6 +1922,7 @@ namespace ServiceLayer.DbSeeding
                 CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
+
         };
         public static AnswerDiscussion[] AnswerDiscussions = new AnswerDiscussion[]
         {

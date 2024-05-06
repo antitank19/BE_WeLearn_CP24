@@ -21,6 +21,7 @@ namespace ServiceLayer.DTOs
         public string Role => RoleName;
         //public string? Schhool { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public bool IsBanned { get; set; }
         public string Token { get; set; }
         public virtual ICollection<GroupGetListDto> LeadGroups { get; set; }// = new Collection<GroupGetListDto>();
         public virtual ICollection<GroupGetListDto> JoinGroups { get; set; }// = new Collection<GroupGetListDto>();

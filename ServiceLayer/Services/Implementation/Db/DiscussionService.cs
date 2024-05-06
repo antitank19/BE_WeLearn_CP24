@@ -47,7 +47,7 @@ namespace ServiceLayer.Services.Implementation.Db
             return mapper;
         }
 
-        public async Task<DiscussionDto> UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto)
+        public async Task<DiscussionDto> UpdateDiscussion(int discussionId, UploadDiscussionDto discussionDto)
         {
             var discussion = await _repos.Discussions.GetByIdAsync(discussionId);
                       

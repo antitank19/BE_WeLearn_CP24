@@ -1,4 +1,5 @@
-﻿using API.SwaggerOption.Const;
+﻿using API.Extension.ClaimsPrinciple;
+using API.SwaggerOption.Const;
 using APIExtension.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -59,13 +60,24 @@ namespace API.Controllers
 
         [Authorize(Roles = Actor.Student)]
         [HttpPut("api/AnswerDiscussion/Update")]
-        public async Task<IActionResult> UpdateAnswerDiscussion(int discussionId, UploadAnswerDiscussionDto dto)
+        public async Task<IActionResult> UpdateAnswerDiscussion(int answerDiscussionId, UploadAnswerDiscussionDto dto)
         {
             ValidatorResult valResult = new ValidatorResult();
             try
-            { 
-                var ansDis = await services.AnswersDiscussions.UpdateAnswerDiscussion(discussionId, dto);
-                return Ok(ansDis);
+            {
+                var accountId = HttpContext.User.GetUserId();
+                var getdiscussion = await services.AnswersDiscussions.GetAnswerDiscussionById(answerDiscussionId);
+
+                if(accountId != getdiscussion.AccountId)
+                {
+                    valResult.Add("Không thể thay đổi answerDiscussion của người khác", ValidateErrType.Unauthorized);
+                    return Unauthorized(valResult);
+                }
+                else
+                {
+                    var ansDis = await services.AnswersDiscussions.UpdateAnswerDiscussion(answerDiscussionId, dto);
+                    return Ok(ansDis);
+                }
             }
             catch (Exception ex)
             {

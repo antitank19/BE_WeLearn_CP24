@@ -34,6 +34,7 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
+
                 var discussions = await services.Discussions.GetDiscussionsByGroupId(groupId);
                 return Ok(discussions);
             }
@@ -108,8 +109,19 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var discussion = await services.Discussions.UdateDiscussion(discussionId, dto);
-                return Ok(discussion);
+                var accountId = HttpContext.User.GetUserId();
+                var getdiscussion = await services.Discussions.GetDiscussionById(discussionId);
+
+                if(accountId != getdiscussion.AccountId)
+                {
+                    valResult.Add("Không thể thay đổi discussion của người khác", ValidateErrType.Unauthorized);
+                    return Unauthorized(valResult);
+                }
+                else
+                {
+                    var discussion = await services.Discussions.UpdateDiscussion(discussionId, dto);
+                    return Ok(discussion);
+                }
             }
             catch (Exception ex)
             {

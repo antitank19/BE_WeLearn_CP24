@@ -15,6 +15,6 @@ namespace ServiceLayer.Services.Interface.Db
         public Task<List<AnswerDiscussion>> GetAnswerDiscussionByDiscussionId(int discussionId);
         public Task<AnswerDiscussionDto> UploadAnswerDiscussion(int accountId, int discussionId, UploadAnswerDiscussionDto answerDiscussionDto);
         public Task<AnswerDiscussionDto> UpdateAnswerDiscussion(int discussionId, UploadAnswerDiscussionDto answerDiscussionDto);
-
+        public Task<AnswerDiscussionDto> GetAnswerDiscussionById(int discussionid);
     }
 }

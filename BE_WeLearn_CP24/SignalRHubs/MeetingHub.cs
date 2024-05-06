@@ -110,7 +110,7 @@ namespace API.SignalRHub
             };
             if (meeting != null)
             {
-                repos.Connections.CreateConnectionSignalrAsync(connection);
+                await repos.Connections.CreateConnectionSignalrAsync(connection);
                 if (meeting.Start == null)
                 {
                     meeting.Start = DateTime.Now;

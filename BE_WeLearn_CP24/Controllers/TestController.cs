@@ -1,6 +1,8 @@
 ﻿using API.SwaggerOption.Const;
+using DataLayer.DbContext;
 using Microsoft.AspNetCore.Mvc;
 using RepoLayer.Interface;
+using ServiceLayer.DbSeeding;
 using ServiceLayer.Services.Interface;
 
 namespace API.Controllers
@@ -12,11 +14,13 @@ namespace API.Controllers
     {
         private readonly IRepoWrapper repos;
         private readonly IServiceWrapper services;
+        private readonly WeLearnContext context;
 
-        public TestController(IRepoWrapper repos, IServiceWrapper services)
+        public TestController(IRepoWrapper repos, IServiceWrapper services, WeLearnContext context)
         {
             this.repos = repos;
             this.services = services;
+            this.context = context;
         }
 
         [HttpGet("MonthlyMail")]
@@ -124,6 +128,22 @@ namespace API.Controllers
             var list = repos.Subjects.GetList();
             return Ok(list);
         }
+
+        [HttpGet("NukeDB")]
+        public async Task<IActionResult> Nuke()
+        {
+            var list = repos.Db.Nuke();
+            return Ok();
+        }
+
+        //[HttpGet("ResetDB")]
+        //public async Task<IActionResult> Reset()
+        //{
+        //    var list = repos.Db.Nuke2();
+        //    //return Ok();
+        //    var success = DbInitializerExtension.SeedInMemoryDb(context);
+        //    return Ok(success);
+        //}
 
         //[HttpGet("Supervisions")]
         //public async Task<IActionResult> Supervisions()

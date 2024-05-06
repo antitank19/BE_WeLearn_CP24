@@ -19,11 +19,21 @@ namespace RepoLayer.Implemention
             this.dbContext = dbContext;
             users = new AccountRepo(dbContext);
             meeting = new MeetingRepository(dbContext);
+            groups = new GroupRepository(dbContext);
+            subjects = new SubjectRepository(dbContext);
             groupMembers = new GroupMemberReposity(dbContext);
+            schedules = new ScheduleRepository(dbContext);
+            invites = new InviteReposity(dbContext);
+            requests = new RequestReposity(dbContext);
             connections = new ConnectionRepository(dbContext);
+            chats = new ChatRepository(dbContext);
+            reviews = new ReviewRepository(dbContext);
+            reviewDetails = new ReviewDetailRepository(dbContext);
             documentFiles = new DocumentFileRepository(dbContext);
             reports = new ReportRepository(dbContext);
             discussions = new DiscussionRepository(dbContext);
+            answerDiscussions = new AnswerDiscussionRepository(dbContext);
+            db = new DbRepository(dbContext);
         }
 
         private IAccountRepo users;
@@ -187,6 +197,7 @@ namespace RepoLayer.Implemention
             }
 
         }
+        
         private IDocumentFileReposity documentFiles;
         public IDocumentFileReposity DocumentFiles
         {
@@ -240,5 +251,18 @@ namespace RepoLayer.Implemention
             }
         }
 
+        private IDbRepository db;
+        public IDbRepository Db
+        {
+            get
+            {
+                if (db is null)
+                {
+                    db = new DbRepository(dbContext);
+                }
+                return db;
+
+            }
+        }
     }
 }

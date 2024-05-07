@@ -31,7 +31,12 @@ namespace RepoLayer.Implement
             return base.CreateAsync(entity);
         }
 
-        public async Task<List<Discussion>> GetDocumentFilesByGroupId(int groupId)
+        public override Task UpdateAsync(Discussion entity)
+        {
+            return base.UpdateAsync(entity);
+        }
+
+        public async Task<List<Discussion>> GetDiscussionsByGroupId(int groupId)
         {
             return await dbContext.Discussions
                 .Include(e => e.Account)
@@ -40,6 +45,22 @@ namespace RepoLayer.Implement
                 .Where(x => x.GroupId == groupId && x.IsActive != false)
                 .OrderByDescending(x => x.CreateAt)
                 .ToListAsync();
+        }
+
+        public async Task<List<Discussion>> GetDiscussionsByGroupIdAndAccountId(int groupId, int accountId)
+        {
+            return await dbContext.Discussions
+                .Include(e => e.Account)
+                .Include(e => e.Group)
+                .Include(e => e.AnswerDiscussion)
+                .Where(x => x.GroupId == groupId && x.AccountId == accountId)
+                .OrderByDescending(x => x.CreateAt)
+                .ToListAsync();
+        }
+        public async Task UpdateRangeAsync(List<Discussion>? entities)
+        {
+            dbContext.UpdateRange(entities);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

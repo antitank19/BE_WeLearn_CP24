@@ -42,7 +42,7 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<List<DiscussionDto>> GetDiscussionsByGroupId(int groupId)
         {
-            var discussion = await _repos.Discussions.GetDocumentFilesByGroupId(groupId);
+            var discussion = await _repos.Discussions.GetDiscussionsByGroupId(groupId);
             var mapper = _mapper.Map<List<DiscussionDto>>(discussion);
             return mapper;
         }

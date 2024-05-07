@@ -36,15 +36,28 @@ namespace RepoLayer.Implement
                 .Where(x => x.GroupId == groupId && x.IsActive == true).ToListAsync();
         }
 
+        public async Task<List<DocumentFile>> GetDocumentFilesByGroupIdAndAccountId(int groupId, int accountId)
+        {
+            return await dbContext.DocumentFiles
+                .Include(e => e.Account)
+                .Include(e => e.Group)
+                .Where(x => x.GroupId == groupId && x.AccountId == accountId).ToListAsync();
+        }
+
+        public async Task UpdateRangeAsync(List<DocumentFile>? entities)
+        {
+            dbContext.UpdateRange(entities);
+            await dbContext.SaveChangesAsync();
+        }
+
         public Task ApproveRejectAsync(DocumentFile entity)
         {
             return base.UpdateAsync(entity);
         }
 
-        public async Task UpdateRangeAsync(List<DocumentFile> entities)
+        public override Task UpdateAsync(DocumentFile entity)
         {
-            dbContext.UpdateRange(entities);
-            await dbContext.SaveChangesAsync();
+            return base.UpdateAsync(entity);
         }
     }
 }

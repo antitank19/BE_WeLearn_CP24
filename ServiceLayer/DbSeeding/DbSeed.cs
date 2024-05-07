@@ -913,7 +913,7 @@ namespace ServiceLayer.DbSeeding
                             //Id = 20,
                             Id = 32,
                             GroupId = 20,
-                            AccountId = 1,
+                            AccountId = 2,
                             MemberRole = GroupMemberRole.Leader,
                             IsActive = false,
                         },
@@ -922,7 +922,7 @@ namespace ServiceLayer.DbSeeding
                             //Id = 20,
                             Id = 33,
                             GroupId = 20,
-                            AccountId = 2,
+                            AccountId = 1,
                             MemberRole = GroupMemberRole.Member,
                             IsActive = false,
                         },
@@ -1758,6 +1758,54 @@ namespace ServiceLayer.DbSeeding
                 GroupId = 20,
                 State= RequestStateEnum.Approved,
             },
+            new Report
+            {
+                Id = 15,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+            new Report
+            {
+                Id = 16,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+            new Report
+            {
+                Id = 17,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+            new Report
+            {
+                Id = 18,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+            new Report
+            {
+                Id = 19,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
+            new Report
+            {
+                Id = 20,
+                Detail = "Tên không phù hợp",
+                SenderId = 1,
+                AccountId = 2,
+                State= RequestStateEnum.Waiting,
+            },
         };
         public static Discussion[] Discussions = new Discussion[]
         {
@@ -1922,7 +1970,16 @@ namespace ServiceLayer.DbSeeding
                 CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
                 IsActive=true,
             } ,
-
+            new Discussion
+            {
+                Id=17,
+                AccountId=2,
+                GroupId=1,
+                Question="Top-level SSSSSSSSSSstatements - programs without Main methods"  ,
+                Content="You don't have to explicitly include a Main method in a console application project. Instead, you can use the top-level statements feature to minimize the code you have to write.\r\n\r\nTop-level statements allows you to write executable code directly at the root of a file, eliminating the need for wrapping your code in a class or method. This means you can create programs without the ceremony of a Program class and a Main method. In this case, the compiler generates a Program class with an entry point method for the application. The name of the generated method isn't Main, it's an implementation detail that your code can't reference directly.\r\n\r\nHere's a Program.cs file that is a complete C# program in C# 10:",
+                CreateAt = DateTime.Now.AddMonths(-5).AddDays(-2).AddHours(1).AddMinutes(1),
+                IsActive=true,
+            } ,
         };
         public static AnswerDiscussion[] AnswerDiscussions = new AnswerDiscussion[]
         {

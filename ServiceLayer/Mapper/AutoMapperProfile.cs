@@ -3,6 +3,8 @@ using DataLayer.DbObject;
 using DataLayer.Enums;
 using ServiceLayer.DTOs;
 using ServiceLayer.DTOs;
+using ServiceLayer.DTOs.Account;
+using ServiceLayer.DTOs.Group;
 using ServiceLayer.Utils;
 
 namespace ShareResource.Mapper
@@ -81,6 +83,9 @@ namespace ShareResource.Mapper
                 //    .Where(e => e.State == RequestStateEnum.Approved)
                 //    .Select(e => e.Student.FullName)))
                 .PreserveReferences();
+            CreateMap<Account, BannedAccountDto>()
+                .ForMember(dest => dest.Reports, opt => opt.MapFrom(
+                    src => src.ReportedReports)).PreserveReferences();
         }
         private void MapGroup()
         {
@@ -172,6 +177,10 @@ namespace ShareResource.Mapper
                         .OrderBy(e => e.ScheduleStart.Value)
                         ))
                 .PreserveReferences();
+
+            CreateMap<Group, BannedGroupDto>()
+                .ForMember(dest => dest.Reports, opt => opt.MapFrom(
+                        src => src.ReportedReports)).PreserveReferences();
         }
         private void MapRole()
         {

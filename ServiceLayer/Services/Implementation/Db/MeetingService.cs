@@ -2,7 +2,10 @@
 using AutoMapper.QueryableExtensions;
 using DataLayer.DbObject;
 using DataLayer.Enums;
+using Firebase.Storage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
@@ -14,11 +17,13 @@ namespace ServiceLayer.Services.Implementation.Db
     {
         private IRepoWrapper repos;
         private IMapper mapper;
+        private readonly IConfiguration _config;
 
-        public MeetingService(IRepoWrapper repos, IMapper mapper)
+        public MeetingService(IRepoWrapper repos, IMapper mapper, IConfiguration config)
         {
             this.repos = repos;
             this.mapper = mapper;
+            _config = config;
         }
 
         public async Task<bool> AnyAsync(int id)
@@ -313,6 +318,42 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(e => e.Meetings);
 
             return schedules.ProjectTo<ScheduleGetDto>(mapper.ConfigurationProvider);
+        }
+
+        public async Task<string> UploadCanvas(int meetingId, IFormFile file)
+        {
+            string filePath;
+
+            if (file != null && file.Length > 0)
+            {
+                string firebaseBucket = _config["Firebase:StorageBucket"];
+
+                // Initialize FirebaseStorage instance
+                var firebaseStorage = new FirebaseStorage(firebaseBucket);
+
+                // Generate a unique file name
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                // Get reference to the file in Firebase Storage
+                var fileReference = firebaseStorage.Child("MeetingCanvas").Child(uniqueFileName);
+
+                // Upload the file to Firebase Storage
+                using (var stream = file.OpenReadStream())
+                {
+                    await fileReference.PutAsync(stream);
+                }
+
+                // Get the download URL of the uploaded file
+                string downloadUrl = await fileReference.GetDownloadUrlAsync();
+
+                Meeting meeting = await repos.Meetings.GetList().SingleOrDefaultAsync(m=>m.Id==meetingId);
+                meeting.CanvasPath = downloadUrl;
+                await repos.Meetings.UpdateAsync(meeting);
+
+                // Update the discussion entity with the download URL
+                return downloadUrl;
+            }
+            throw new Exception("No file found");
         }
 
         //public IQueryable<ChildrenLiveMeetingGetDto> GetChildrenLiveMeetings(int parentId)

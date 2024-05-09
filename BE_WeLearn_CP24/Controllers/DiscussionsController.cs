@@ -82,10 +82,7 @@ namespace API.Controllers
         }
 
         //[Authorize(Roles = Actor.Student)]
-        public class FileInput
-        {
-            public IFormFile file { get; set; }
-        }
+       
         [HttpPost("api/Discussion/Upload/File")]
         public async Task<IActionResult> UploadDiscussionFile([FromForm] FileInput file)
         {

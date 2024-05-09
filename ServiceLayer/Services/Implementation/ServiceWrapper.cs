@@ -30,7 +30,7 @@ namespace ServiceLayer.Services.Implementation
             auth = new AuthService(repos, configuration, mapper);
             groups = new GroupService(repos, mapper, env, config);
             subjects = new SubjectService(repos, mapper);
-            meetings = new MeetingService(repos, mapper);
+            meetings = new MeetingService(repos, mapper, config);
             groupMembers = new GroupMemberSerivce(repos, mapper);
             documentFiles = new DocumentFileService(repos, mapper, env, config);
             stats = new StatService(repos, mapper);
@@ -96,7 +96,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (meetings is null)
                 {
-                    meetings = new MeetingService(repos, mapper);
+                    meetings = new MeetingService(repos, mapper, configuration);
                 }
                 return meetings;
             }

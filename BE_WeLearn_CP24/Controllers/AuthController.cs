@@ -59,7 +59,11 @@ namespace API.Controllers
                     valResult.Add("Sai username hoặc password");
                     return Unauthorized(valResult);
                 }
-
+                if (logined.IsBanned == true)
+                {
+                    valResult.Add("Tài khoản đã bị vô hiệu");
+                    return Unauthorized(valResult);
+                }
                 //string token = await services.Auth.GenerateJwtAsync(logined, loginModel.RememberMe);
                 //return base.Ok(new { token = token, Id = logined.Id, Username = logined.Username, Email = logined.Email, Role = logined.Role.Name });
                 return Ok(logined);

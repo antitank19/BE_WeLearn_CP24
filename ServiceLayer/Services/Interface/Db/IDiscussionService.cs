@@ -20,6 +20,6 @@ namespace ServiceLayer.Services.Interface.Db
         /// <param name="file"></param>
         /// <returns>file path</returns>
         public Task<string> UploadDiscussionFile(IFormFile file);
-        public Task<DiscussionDto> UdateDiscussion(int discussionId, UploadDiscussionDto discussionDto);
+        public Task<DiscussionDto> UpdateDiscussion(int discussionId, UploadDiscussionDto discussionDto);
     }
 }

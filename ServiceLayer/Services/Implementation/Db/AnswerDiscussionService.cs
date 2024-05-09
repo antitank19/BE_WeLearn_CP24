@@ -117,5 +117,13 @@ namespace ServiceLayer.Services.Implementation.Db
             var mapped = _mapper.Map<AnswerDiscussionDto>(answerDiscussion);
             return mapped;
         }
+
+        public async Task<AnswerDiscussionDto> GetAnswerDiscussionById(int answerDiscussionId)
+        {
+            var discussion = await _repos.AnswerDiscussions.GetByIdAsync(answerDiscussionId);
+            var mapper = _mapper.Map<AnswerDiscussionDto>(discussion);
+            return mapper;
+        }
+
     }
 }

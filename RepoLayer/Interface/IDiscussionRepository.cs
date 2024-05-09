@@ -9,7 +9,9 @@ namespace RepoLayer.Interface
 {
     public interface IDiscussionRepository : IBaseRepo<Discussion>
     {
-        Task<List<Discussion>> GetDocumentFilesByGroupId(int groupId);
+        Task<List<Discussion>> GetDiscussionsByGroupId(int groupId);
+        Task<List<Discussion>> GetDiscussionsByGroupIdAndAccountId(int groupId, int accountId);
+        public Task UpdateRangeAsync(List<Discussion>? entities);
 
     }
 }

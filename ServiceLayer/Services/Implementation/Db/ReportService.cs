@@ -7,11 +7,6 @@ using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
 using ServiceLayer.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -50,6 +45,23 @@ namespace ServiceLayer.Services.Implementation.Db
                  .Include(r => r.File)
                  .Include(r => r.Discussion)
                  .Where(r=>r.State==RequestStateEnum.Waiting);
+            //if (list == null || !list.Any())
+            //{
+            //    return null;
+            //}
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+
+        public IQueryable<T> GetApprovedReportList<T>()
+        {
+            var list = repos.Reports.GetList()
+                 .Include(r => r.Sender)
+                 .Include(r => r.Account)
+                 .Include(r => r.Group)
+                 .Include(r => r.File)
+                 .Include(r => r.Discussion)
+                 .Where(r => r.State == RequestStateEnum.Approved);
             //if (list == null || !list.Any())
             //{
             //    return null;
@@ -134,16 +146,27 @@ namespace ServiceLayer.Services.Implementation.Db
                                 groupMember.IsActive = false;
 
                                 var group = groupMember.Group;
-
-                                var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
-                                if (document.Any())
+                                if(groupMember.MemberRole == GroupMemberRole.Leader)
                                 {
-                                    foreach (var file in document)
+                                    group.IsBanned = true;
+                                    
+                                    foreach(var mem in group.GroupMembers)
+                                    {
+                                        mem.IsActive = false;
+                                    }
+                                }
+
+                                //var document = group.DocumentFiles.Where(x => x.AccountId == account.Id);
+                                var documents = await repos.DocumentFiles.GetDocumentFilesByGroupIdAndAccountId(group.Id, account.Id);
+                                if (documents.Any())
+                                {
+                                    foreach (var file in documents)
                                     {
                                         file.IsActive = false;
                                     }
                                 }
-                                var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                //var discussions = group.Discussions.Where(x => x.AccountId == account.Id);
+                                var discussions = await repos.Discussions.GetDiscussionsByGroupIdAndAccountId(group.Id, account.Id);
                                 if (discussions.Any())
                                 {
                                     foreach (var discussion in discussions)
@@ -157,6 +180,8 @@ namespace ServiceLayer.Services.Implementation.Db
                                         }
                                     }
                                 }
+                                await repos.Discussions.UpdateRangeAsync(discussions);
+                                await repos.DocumentFiles.UpdateRangeAsync(documents);
                             }
                         }
                     }
@@ -182,16 +207,27 @@ namespace ServiceLayer.Services.Implementation.Db
                                 groupMember.IsActive = false;
 
                                 var group = groupMember.Group;
-
-                                var document = group.DocumentFiles.Where(x => x.AccountId == discussion.Account.Id);
-                                if (document.Any())
+                                if (groupMember.MemberRole == GroupMemberRole.Leader)
                                 {
-                                    foreach (var file in document)
+                                    if (groupMember.MemberRole == GroupMemberRole.Leader)
+                                    {
+                                        group.IsBanned = true;
+
+                                        foreach (var mem in group.GroupMembers)
+                                        {
+                                            mem.IsActive = false;
+                                        }
+                                    }
+                                }
+                                var documents = await repos.DocumentFiles.GetDocumentFilesByGroupIdAndAccountId(discussion.GroupId, discussion.AccountId);
+                                if (documents.Any())
+                                {
+                                    foreach (var file in documents)
                                     {
                                         file.IsActive = false;
                                     }
                                 }
-                                var discussions = group.Discussions.Where(x => x.AccountId == discussion.Account.Id);
+                                var discussions = await repos.Discussions.GetDiscussionsByGroupIdAndAccountId(discussion.GroupId, discussion.AccountId);
                                 if (discussions.Any())
                                 {
                                     foreach (var discuss in discussions)
@@ -205,10 +241,11 @@ namespace ServiceLayer.Services.Implementation.Db
                                         }
                                     }
                                 }
+                                await repos.Discussions.UpdateRangeAsync(discussions);
+                                await repos.DocumentFiles.UpdateRangeAsync(documents);
                             }
                         }
                     }
-
                     await repos.Discussions.UpdateAsync(discussion);
                     //await repos.Accounts.UpdateAsync(account);
                 }
@@ -231,16 +268,24 @@ namespace ServiceLayer.Services.Implementation.Db
                                 groupMember.IsActive = false;
 
                                 var group = groupMember.Group;
-
-                                var document = group.DocumentFiles.Where(x => x.AccountId == docfile.Account.Id);
-                                if (document.Any())
+                                if (groupMember.MemberRole == GroupMemberRole.Leader)
                                 {
-                                    foreach(var file in document)
+                                    group.IsBanned = true;
+
+                                    foreach (var mem in group.GroupMembers)
+                                    {
+                                        mem.IsActive = false;
+                                    }
+                                }
+                                var documents = await repos.DocumentFiles.GetDocumentFilesByGroupIdAndAccountId(docfile.GroupId, docfile.AccountId);
+                                if (documents.Any())
+                                {
+                                    foreach(var file in documents)
                                     {
                                         file.IsActive = false;
                                     }
                                 }
-                                var discussions = group.Discussions.Where(x => x.AccountId == docfile.Account.Id);
+                                var discussions = await repos.Discussions.GetDiscussionsByGroupIdAndAccountId(docfile.GroupId, docfile.AccountId);
                                 if (discussions.Any())
                                 {
                                     foreach (var discussion in discussions)
@@ -254,6 +299,8 @@ namespace ServiceLayer.Services.Implementation.Db
                                         }
                                     }
                                 }
+                                await repos.Discussions.UpdateRangeAsync(discussions);
+                                await repos.DocumentFiles.UpdateRangeAsync(documents);
                             }
                         }
                     }
@@ -332,6 +379,147 @@ namespace ServiceLayer.Services.Implementation.Db
                 report.State = RequestStateEnum.Decline;
             }
             await repos.Reports.UpdateAsync(report);
+        }
+
+        public IQueryable<T> GetBannedAccounts<T>()
+        {
+            var list = repos.Accounts.GetList()
+                    .Include(a => a.ReportedReports)
+                    .Where(a => a.IsBanned == true);
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+
+        }
+        public IQueryable<T> SearchBannedAccounts<T>(string? search)
+        {
+            if (search != null)
+            {
+                var list = repos.Accounts.GetList()
+                        .Include(a => a.ReportedReports)
+                        .Where(a => a.IsBanned == true && (a.FullName.Contains(search) || a.Username.Contains(search) || a.Email.Contains(search)));
+                var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+                return mapped;
+
+            }
+            else
+            {
+                var list = repos.Accounts.GetList()
+                        .Include(a => a.ReportedReports)
+                        .Where(a => a.IsBanned == true);
+                var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+                return mapped;
+            }
+
+        }
+        public IQueryable<T> GetBannedGroups<T>()
+        {
+            var list = repos.Groups.GetList()
+                    .Include(x => x.ReportedReports)
+                    .Where(x => x.IsBanned == true);
+            var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+            return mapped;
+        }
+
+        public async Task UnbanAccount(int accountId)
+        {
+            var account = await repos.Accounts.GetProfileByIdAsync(accountId);
+
+            account.IsBanned = false;
+            account.ReportCounter = 0;
+
+            if (account.GroupMembers.Any())
+            {
+                foreach (var groupMember in account.GroupMembers)
+                {
+                    groupMember.IsActive = true;
+                    var group = groupMember.Group;
+                    var bannedGroups = ReportedGroups(group.Id);
+
+                    if (bannedGroups == false)
+                    {
+                        if (groupMember.MemberRole == GroupMemberRole.Leader)
+                        {
+
+                            group.IsBanned = false;
+
+                            foreach (var mem in group.GroupMembers)
+                            {
+                                mem.IsActive = true;
+                            }
+                        }
+
+                        var documents = await repos.DocumentFiles.GetDocumentFilesByGroupIdAndAccountId(group.Id, accountId);
+
+                        var bannedDocuments = ReportedDocuments(accountId);
+
+                        var notBannedDocuments = documents.Except(bannedDocuments).ToList();
+
+                        if (notBannedDocuments.Any())
+                        {
+                            foreach (var file in notBannedDocuments)
+                            {
+                                file.IsActive = true;
+                            }
+                        }
+
+                        var discussions = await repos.Discussions.GetDiscussionsByGroupIdAndAccountId(group.Id, accountId);
+
+                        var bannedDiscussions = ReportedDiscussions(accountId);
+
+                        var notBannedDiscussions = discussions.Except(bannedDiscussions).ToList();
+
+                        if (notBannedDiscussions.Any())
+                        {
+                            foreach (var discussion in notBannedDiscussions)
+                            {
+                                discussion.IsActive = true;
+
+                                var answerDiscussions = discussion.AnswerDiscussion;
+                                foreach (var answer in answerDiscussions)
+                                {
+                                    answer.IsActive = true;
+                                }
+                            }
+                        }
+                        await repos.Discussions.UpdateRangeAsync(notBannedDiscussions);
+                        await repos.DocumentFiles.UpdateRangeAsync(notBannedDocuments);
+                    }
+                }
+            }
+             account.PatchUpdate(account);
+             await repos.Accounts.UpdateAsync(account);
+        }
+
+        internal IEnumerable<Discussion> ReportedDiscussions(int accountId)
+        {
+            var list = repos.Discussions.GetList()
+               .Include(a => a.ReportedReports)
+               .Where(a => a.ReportedReports.Where(r => r.State == RequestStateEnum.Approved).Count() >= 1 && a.AccountId == accountId);
+
+            return list;
+        }
+
+        internal IEnumerable<DocumentFile> ReportedDocuments(int accountId)
+        {
+            var list = repos.DocumentFiles.GetList()
+               .Include(a => a.ReportedReports)
+               .Where(a => a.ReportedReports.Where(x => x.State == RequestStateEnum.Approved).Count() >= 1 && a.AccountId == accountId);
+
+            return list;
+        }
+        internal bool ReportedGroups(int groupId)
+        {
+            var group = repos.Groups.GetList()
+               .Include(a => a.ReportedReports)
+               .Where(a => a.ReportedReports.Where(r => r.State == RequestStateEnum.Approved).Count() > 3 && a.Id == groupId).FirstOrDefault();
+            if (group != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

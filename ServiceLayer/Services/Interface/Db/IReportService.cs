@@ -20,6 +20,10 @@ namespace ServiceLayer.Services.Interface.Db
         public Task ResolveReport(int reportId, bool isApproved);
         public Task<Report> CreateReport(ReportCreateDto dto, int reporterId);
         public Task<bool> IsReportExist(int reportId);
-
+        public IQueryable<T> GetApprovedReportList<T>();
+        public IQueryable<T> GetBannedAccounts<T>();
+        public IQueryable<T> SearchBannedAccounts<T>(string? search);
+        public IQueryable<T> GetBannedGroups<T>();
+        public Task UnbanAccount(int accountId);
     }
 }

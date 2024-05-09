@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
+using ServiceLayer.DTOs.Account;
+using ServiceLayer.DTOs.Group;
 using ServiceLayer.Services.Interface;
 
 namespace API.Controllers
@@ -41,7 +43,26 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
-
+        [HttpGet("SearchBannedAccount")]
+        public async Task<IActionResult> SearchBannedAccounts(string? search)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.SearchBannedAccounts<BannedAccountDto>(search);
+                //if (mapped == null || !mapped.Any())
+                //{
+                //    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                //    return NotFound(valResult);
+                //}
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
         //[Authorize]
         [HttpGet("Unresolve")]
         public async Task<IActionResult> GetUresolvedReports()
@@ -64,6 +85,68 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("ApprovedReport")]
+        public async Task<IActionResult> GetApprovedReports()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetApprovedReportList<ReportGetListDto>();
+                //if (mapped == null || !mapped.Any())
+                //{
+                //    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                //    return NotFound(valResult);
+                //}
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        [HttpGet("BannedAccounts")]
+        public async Task<IActionResult> GetBannedAccounts()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetBannedAccounts<BannedAccountDto>();
+                //if (mapped == null || !mapped.Any())
+                //{
+                //    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                //    return NotFound(valResult);
+                //}
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
+        [HttpGet("BannedGroups")]
+        public async Task<IActionResult> GetBannedGroups()
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                var mapped = services.Reports.GetBannedGroups<BannedGroupDto>();
+                //if (mapped == null || !mapped.Any())
+                //{
+                //    valResult.Add("Không có báo cáo nào hết", ValidateErrType.NotFound);
+                //    return NotFound(valResult);
+                //}
+                return Ok(mapped);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
 
         //[Authorize]
         [HttpGet("Account")]
@@ -187,5 +270,22 @@ namespace API.Controllers
                 return BadRequest(valResult);
             }
         }
+
+        [HttpPut("UnbanAccount")]
+        public async Task<IActionResult> UnbanAccount(int bannedAccountId)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                await services.Reports.UnbanAccount(bannedAccountId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
     }
 }

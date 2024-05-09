@@ -19,7 +19,7 @@ namespace ServiceLayer.DbSeeding
                 Name = "Student"
             }};
         //public static Account[] Accounts = new Account[] {
-        public static List<Account> Accounts = new List<Account> {
+        public static Account[] Accounts = new Account[] {
             new Account
             {
                 Id = 1,

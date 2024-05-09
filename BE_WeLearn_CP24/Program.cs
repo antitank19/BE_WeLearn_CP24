@@ -41,6 +41,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<WeLearnContext>(options =>
 {
     options.EnableSensitiveDataLogging();
+    //options.EnableRetryOnFailure();
     //options.EnableRetryOnFailure
     if (IsInMemory)
     {
@@ -48,7 +49,11 @@ builder.Services.AddDbContext<WeLearnContext>(options =>
     }
     else
     {
-        options.UseSqlServer(configuration.GetConnectionString("Default"));
+        Console.WriteLine(configuration.GetConnectionString("Default"));
+        options.UseSqlServer(configuration.GetConnectionString("Default"), o =>
+        {
+           o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        });
     }
 });
 #endregion
@@ -104,5 +109,13 @@ app.MapHub<DrawHub>("hubs/drawhub");
 app.MapHub<MeetingHub>("hubs/meetinghub");
 
 app.MapControllers();
+
+//using (StringWriter stringWriter = new StringWriter())
+//{
+//    Console.SetOut(stringWriter);
+
+
+//    string allConsoleOutput = stringWriter.ToString();
+//}
 
 app.Run();

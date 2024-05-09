@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.Extension.ClaimsPrinciple;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace API.SignalRHub
@@ -6,7 +7,7 @@ namespace API.SignalRHub
     /// <summary>
     /// Use to count number of ppl in rooms
     /// </summary>
-    //[Authorize]
+    [Authorize]
     public class DrawHub : Hub
     {
         public override async Task OnConnectedAsync()
@@ -36,6 +37,7 @@ namespace API.SignalRHub
         {
             HttpContext httpContext = Context.GetHttpContext();
             int meetingId = int.Parse(httpContext.Request.Query["meetingId"].ToString());
+            string username = Context.User.GetUsername();
             Drawings[meetingId.ToString()]
                 .Add(new Drawing
                 {
@@ -44,11 +46,12 @@ namespace API.SignalRHub
                     CurrentX = currentX,
                     CurrentY = currentY,
                     Color = color,
-                    Size = size
+                    Size = size,
+                    Username = username
                 }
             );
 
-            await Clients.GroupExcept(meetingId.ToString(), Context.ConnectionId).SendAsync("draw", prevX, prevY, currentX, currentY, color, size);
+            await Clients.GroupExcept(meetingId.ToString(), Context.ConnectionId).SendAsync("draw", prevX, prevY, currentX, currentY, color, size, username);
         }
 
         public static readonly Dictionary<string, List<Drawing>> Drawings = new Dictionary<string, List<Drawing>>();
@@ -60,6 +63,7 @@ namespace API.SignalRHub
             public int CurrentY { get; set; }
             public string Color { get; set; }
             public int Size { get; set; }
+            public string Username { get; set; } 
         }
     }
 }

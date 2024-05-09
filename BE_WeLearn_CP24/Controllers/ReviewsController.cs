@@ -119,13 +119,6 @@ namespace API.Controllers
             await meetingHub.Clients.Group(meetingId.ToString()).SendAsync(MeetingHub.OnEndVoteMsg, mapped);
 
             await ReloadReviewForMeetingAsync(meetingId);
-            //var newMeetReviews = repos.Reviews.GetList()
-            //               .Where(e => e.MeetingId == meetingId)
-            //               .Include(e => e.Reviewee)
-            //               .Include(e => e.Details).ThenInclude(e => e.Reviewer);
-            //List<ReviewSignalrDTO> mappedNewReviews = newMeetReviews
-            //    .ProjectTo<ReviewSignalrDTO>(mapper.ConfigurationProvider).ToList();
-            //await meetingHub.Clients.Group(meetingId.ToString()).SendAsync(MeetingHub.OnReloadVoteMsg, mappedNewReviews);
             return Ok(mapped);
         }
 
@@ -149,23 +142,24 @@ namespace API.Controllers
             ReviewDetailSignalrGetDto mappedDetail = mapper.Map<ReviewDetailSignalrGetDto>(newReviewDetail);
 
             Review changeReview = await repos.Reviews.GetList()
-               .Include(e => e.Reviewee)
-               .Include(r => r.Details).ThenInclude(d => d.Reviewer)
+               //.Include(e => e.Reviewee)
+               //.Include(r => r.Details).ThenInclude(d => d.Reviewer)
                .SingleOrDefaultAsync(e => e.Id == dto.ReviewId);
-            ReviewSignalrDTO mapped = mapper.Map<ReviewSignalrDTO>(changeReview);
-            await meetingHub.Clients.Group(changeReview.MeetingId.ToString()).SendAsync(MeetingHub.OnNewVoteResultMsg, mapped);
+            //ReviewSignalrDTO mapped = mapper.Map<ReviewSignalrDTO>(changeReview);
+            //await meetingHub.Clients.Group(changeReview.MeetingId.ToString()).SendAsync(MeetingHub.OnNewVoteResultMsg, mapped);
 
             await ReloadReviewForMeetingAsync(changeReview.MeetingId);
 
-            return Ok(new { newDetail = mappedDetail, changeReview = mapped });
+            //return Ok(new { newDetail = mappedDetail, changeReview = mapped });
+            return Ok();
         }
 
         private async Task<bool> ReloadReviewForMeetingAsync(int meetingId)
         {
-            var newMeetReviews = repos.Reviews.GetList()
-                            .Where(e => e.MeetingId == meetingId)
-                            .Include(e => e.Reviewee)
-                            .Include(e => e.Details).ThenInclude(e => e.Reviewer);
+            var newMeetReviews = repos.Reviews.GetList();
+                            //.Where(e => e.MeetingId == meetingId)
+                            //.Include(e => e.Reviewee)
+                            //.Include(e => e.Details).ThenInclude(e => e.Reviewer);
             List<ReviewSignalrDTO> mappedNewReviews = newMeetReviews
                 .ProjectTo<ReviewSignalrDTO>(mapper.ConfigurationProvider).ToList();
             await meetingHub.Clients.Group(meetingId.ToString()).SendAsync(MeetingHub.OnReloadVoteMsg, mappedNewReviews);

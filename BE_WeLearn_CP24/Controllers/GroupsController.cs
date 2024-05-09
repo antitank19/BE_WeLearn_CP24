@@ -157,6 +157,7 @@ namespace API.Controllers
         [HttpGet("Member/{groupId}")]
         public async Task<IActionResult> GetGroupDetailForMember(int groupId)
         {
+            #region old code
             //ValidatorResult valResult=new ValidatorResult();
             //try
             //{
@@ -181,12 +182,12 @@ namespace API.Controllers
             //    valResult.Add(ex.ToString());
             //    return BadRequest(valResult);
             //}
+            #endregion
 
             ValidatorResult valResult = new ValidatorResult();
             try
             {
                 int studentId = HttpContext.User.GetUserId();
-                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 //if (!isLeader)
                 //{
                 //     return Unauthorized("You are not this group's leader");
@@ -196,6 +197,7 @@ namespace API.Controllers
                 {
                     return Unauthorized("Bạn không phải thành viên của nhóm này");
                 }
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 //Group group = await services.Groups.GetFullByIdAsync(id);
 
                 if (isLeader)
@@ -261,7 +263,6 @@ namespace API.Controllers
             try
             {
                 int studentId = HttpContext.User.GetUserId();
-                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, id);
                 //if (!isLeader)
                 //{
                 //     return Unauthorized("You are not this group's leader");
@@ -271,6 +272,7 @@ namespace API.Controllers
                 {
                     return Unauthorized("Bạn không phải thành viên của nhóm này");
                 }
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, id);
                 //Group group = await services.Groups.GetFullByIdAsync(id);
 
                 if (isLeader)
@@ -464,7 +466,7 @@ namespace API.Controllers
 
         private async Task<bool> GroupExists(int id)
         {
-            return (await services.Groups.GetFullByIdAsync<Group>(id)) is not null;
+            return (await services.Groups.ExistsAsync(id));
         }
     }
 }

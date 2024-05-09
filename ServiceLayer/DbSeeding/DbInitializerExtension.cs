@@ -31,6 +31,19 @@ namespace ServiceLayer.DbSeeding
 
             return app;
         }
+        public static bool SeedInMemoryDb(WeLearnContext context, bool isInMemory=false)
+        {
+            //try
+            //{
+                DbInitializer.Initialize(context, isInMemory);
+                return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    return false;
+            //}
+        }
         public class DbInitializer
         {
             internal static void Initialize(WeLearnContext context, bool isInMemory)
@@ -91,6 +104,7 @@ namespace ServiceLayer.DbSeeding
                         context.ScheduleSubjects.AddRange(DbSeed.ScheduleSubjects);
                     }
                     #endregion
+
                     #region seed invite
                     if (!context.Invites.Any())
                     {
@@ -164,6 +178,7 @@ namespace ServiceLayer.DbSeeding
                         context.AnswerDiscussions.AddRange(DbSeed.AnswerDiscussions);
                     }
                     #endregion
+
                     #region seed DocumentFile
                     if (!context.DocumentFiles.Any())
                     {
@@ -175,6 +190,7 @@ namespace ServiceLayer.DbSeeding
                 }
                 else
                 {
+                    //context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
 
                     #region seed Role
@@ -186,7 +202,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Roles ON");
                             context.Roles.AddRange(DbSeed.Roles);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Roles OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Roles OFF");
                             Console.WriteLine("\n\nRoles");
                             transaction.Commit();
                         }
@@ -202,7 +218,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Accounts ON");
                             context.Accounts.AddRange(DbSeed.Accounts);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Accounts OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Accounts OFF");
                             Console.WriteLine("\n\nAccounts");
                             transaction.Commit();
                         }
@@ -218,7 +234,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Subjects ON");
                             context.Subjects.AddRange(DbSeed.Subjects);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Subjects OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Subjects OFF");
                             Console.WriteLine("\n\nSubjects");
                             transaction.Commit();
                         }
@@ -234,7 +250,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Groups ON");
                             context.Groups.AddRange(DbSeed.Groups);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Groups OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Groups OFF");
                             Console.WriteLine("\n\nGroups");
                             transaction.Commit();
                         }
@@ -251,7 +267,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroupMembers ON");
                             context.GroupMembers.AddRange(DbSeed.GroupMembers);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroupMembers OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroupMembers OFF");
                             Console.WriteLine("\n\nGroupMembers");
                             transaction.Commit();
                         }
@@ -267,7 +283,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroupSubjects ON");
                             context.GroupSubjects.AddRange(DbSeed.GroupSubjects);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroupSubjects OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroupSubjects OFF");
                             Console.WriteLine("\n\nGroupSubjects");
                             transaction.Commit();
                         }
@@ -283,7 +299,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Schedules ON");
                             context.Schedules.AddRange(DbSeed.Schedules);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Schedules OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Schedules OFF");
                             Console.WriteLine("\n\nSchedules");
                             transaction.Commit();
                         }
@@ -296,7 +312,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Meetings ON");
                             context.Meetings.AddRange(DbSeed.Meetings);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Meetings OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Meetings OFF");
                             Console.WriteLine("\n\nMeetings");
                             transaction.Commit();
                         }
@@ -312,12 +328,13 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ScheduleSubjects ON");
                             context.ScheduleSubjects.AddRange(DbSeed.ScheduleSubjects);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ScheduleSubjects OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ScheduleSubjects OFF");
                             Console.WriteLine("\n\nScheduleSubjects");
                             transaction.Commit();
                         }
                     }
                     #endregion
+
                     #region seed invite
                     if (!context.Invites.Any())
                     {
@@ -327,7 +344,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT JoinInvites ON");
                             context.Invites.AddRange(DbSeed.Invites);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT JoinInvites OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT JoinInvites OFF");
                             Console.WriteLine("\n\nJoinInvites");
                             transaction.Commit();
                         }
@@ -343,7 +360,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT JoinRequests ON");
                             context.Requests.AddRange(DbSeed.Requests);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT JoinRequests OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT JoinRequests OFF");
                             Console.WriteLine("\n\nJoinRequests");
                             transaction.Commit();
                         }
@@ -359,7 +376,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT MeetingParticipations ON");
                             context.Connections.AddRange(DbSeed.Connections);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT MeetingParticipations OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT MeetingParticipations OFF");
                             Console.WriteLine("\n\nMeetingParticipations");
                             transaction.Commit();
                         }
@@ -375,7 +392,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reviews ON");
                             context.Reviews.AddRange(DbSeed.Reviews);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reviews OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reviews OFF");
                             Console.WriteLine("\n\nReviews");
                             transaction.Commit();
                         }
@@ -391,7 +408,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ReviewDetails ON");
                             context.ReviewDetails.AddRange(DbSeed.ReviewDetails);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ReviewDetails OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ReviewDetails OFF");
                             Console.WriteLine("\n\nReviewDetails");
                             transaction.Commit();
                         }
@@ -407,7 +424,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chats ON");
                             context.Chats.AddRange(DbSeed.Chats);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chats OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chats OFF");
                             Console.WriteLine("\n\nChats");
                             transaction.Commit();
                         }
@@ -423,7 +440,7 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Discussions ON");
                             context.Discussions.AddRange(DbSeed.Discussions);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Discussions OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Discussions OFF");
                             Console.WriteLine("\n\nDiscussions");
                             transaction.Commit();
                         }
@@ -439,51 +456,45 @@ namespace ServiceLayer.DbSeeding
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AnswerDiscussions ON");
                             context.AnswerDiscussions.AddRange(DbSeed.AnswerDiscussions);
                             context.SaveChanges();
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AnswerDiscussions OFF");
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AnswerDiscussions OFF");
                             Console.WriteLine("\n\nAnswerDiscussions");
                             transaction.Commit();
                         }
-                        #endregion
-                        #region seed DocumentFile
-                        if (!context.DocumentFiles.Any())
-                        {
-                            using (var transaction = context.Database.BeginTransaction())
-                            {
-                                Console.WriteLine("\n\nDocumentFiles");
-                                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DocumentFiles ON");
-                                context.DocumentFiles.AddRange(DbSeed.DocumentFiles);
-                                context.SaveChanges();
-                                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DocumentFiles OFF");
-                                Console.WriteLine("\n\nDocumentFiles"); 
-                                transaction.Commit();
-                            }
-                        }
-                        #endregion
-
-                        #region seed Report
-                        if (!context.Reports.Any())
-                        {
-                            using (var transaction = context.Database.BeginTransaction())
-                            {
-                                Console.WriteLine("\n\nReports");
-                                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reports ON");
-                                context.Reports.AddRange(DbSeed.Reports);
-                                context.SaveChanges();
-                                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reports OFF");
-                                Console.WriteLine("\n\nReports");
-                                transaction.Commit();
-                            }
-                        }
-                        #endregion
                     }
+                    #endregion
+
+                    #region seed DocumentFile
+                    if (!context.DocumentFiles.Any())
+                    {
+                        using (var transaction = context.Database.BeginTransaction())
+                        {
+                            Console.WriteLine("\n\nDocumentFiles");
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DocumentFiles ON");
+                            context.DocumentFiles.AddRange(DbSeed.DocumentFiles);
+                            context.SaveChanges();
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DocumentFiles OFF");
+                            Console.WriteLine("\n\nDocumentFiles");
+                            transaction.Commit();
+                        }
+                    }
+                    #endregion
+
+                    #region seed Report
+                    if (!context.Reports.Any())
+                    {
+                        using (var transaction = context.Database.BeginTransaction())
+                        {
+                            Console.WriteLine("\n\nReports");
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reports ON");
+                            context.Reports.AddRange(DbSeed.Reports);
+                            context.SaveChanges();
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Reports OFF");
+                            Console.WriteLine("\n\nReports");
+                            transaction.Commit();
+                        }
+                    }
+                    #endregion
                 }
-
-
-                //foreach (var tableName in tableNames)                      ON       OFF
-                //{
-                //    //context.Database.ExecuteSqlRaw($"SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE `{tableName}`;");
-                //    context.Database.ExecuteSqlRaw($"SET IDENTITY_INSERT dbo.{tableName} OFF");
-                //}
             }
         }
     }

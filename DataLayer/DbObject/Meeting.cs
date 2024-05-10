@@ -17,6 +17,7 @@ namespace DataLayer.DbObject
         public DateTime? End { get; set; } = null;
         public DateTime? ScheduleStart { get; set; } = null;
         public DateTime? ScheduleEnd { get; set; } = null;
+        public string? CanvasPath { get; set; }
 
         #region Schedule
         public int? ScheduleId { get; set; }

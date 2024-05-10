@@ -1,4 +1,5 @@
 ﻿using DataLayer.DbObject;
+using Microsoft.AspNetCore.Http;
 using ServiceLayer.DTOs;
 
 namespace ServiceLayer.Services.Interface.Db
@@ -22,6 +23,7 @@ namespace ServiceLayer.Services.Interface.Db
         public Task StartScheduleMeetingAsync(Meeting meeting);
         public Task DeleteScheduleMeetingAsync(Meeting meeting);
         public IQueryable<ScheduleGetDto> GetSchedulesForGroup(int groupId);
+        public Task<string> UploadCanvas(int meetingId, IFormFile file);
         //public IQueryable<ChildrenLiveMeetingGetDto> GetChildrenLiveMeetings(int parentId);
     }
 }

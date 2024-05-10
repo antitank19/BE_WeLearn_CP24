@@ -296,6 +296,35 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = Actor.Student)]
+        [HttpPost("{id}/Canvas")]
+        public async Task<IActionResult> UploadCanvas(int id, [FromForm] FileInput file)
+        {
+            ValidatorResult valResult = new ValidatorResult();
+            try
+            {
+                Meeting meeting = await services.Meetings.GetByIdAsync<Meeting>(id);
+                if(meeting is null)
+                {
+                    valResult.Add("Meeting doesn't exist", ValidateErrType.NotFound);
+                    return NotFound(valResult);
+                }
+                int studentId = HttpContext.User.GetUserId();
+                bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, meeting.Schedule.GroupId);
+                if (!isLeader)
+                {
+                    return Unauthorized("You are not this group's leader");
+                }
+                var url = await services.Meetings.UploadCanvas(id, file.file);
+                return Ok(url);
+            }
+            catch (Exception ex)
+            {
+                valResult.Add(ex.ToString());
+                return BadRequest(valResult);
+            }
+        }
+
         [SwaggerOperation(
            Summary = MeetingsEndpoints.StartSchdeuleMeeting
        )]

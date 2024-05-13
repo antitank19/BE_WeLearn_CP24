@@ -129,7 +129,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                valResult.Add(ex.Message));
+                valResult.Add(ex.Message);
                 return BadRequest(valResult);
             }
         }

@@ -7,9 +7,10 @@ namespace API.SignalRHub
     /// <summary>
     /// Use to count number of ppl in rooms
     /// </summary>
-    [Authorize]
+    //[Authorize]
     public class DrawHub : Hub
     {
+        public static string MeetingEndMsg => "MeetingEnd";
         public override async Task OnConnectedAsync()
         {
             HttpContext httpContext = Context.GetHttpContext();
@@ -37,7 +38,7 @@ namespace API.SignalRHub
         {
             HttpContext httpContext = Context.GetHttpContext();
             int meetingId = int.Parse(httpContext.Request.Query["meetingId"].ToString());
-            string username = Context.User.GetUsername();
+            string username = httpContext.Request.Query["username"].ToString();
             Drawings[meetingId.ToString()]
                 .Add(new Drawing
                 {

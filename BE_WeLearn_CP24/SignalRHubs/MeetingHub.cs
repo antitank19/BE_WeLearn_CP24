@@ -55,13 +55,15 @@ namespace API.SignalRHub
 
         IMapper mapper;
         IHubContext<GroupHub> groupHub;
+        IHubContext<DrawHub> drawHubContext;
         IRepoWrapper repos;
 
-        public MeetingHub(IRepoWrapper repos, IHubContext<GroupHub> groupHubContext, IMapper mapper)
+        public MeetingHub(IRepoWrapper repos, IHubContext<GroupHub> groupHubContext, IMapper mapper, IHubContext<DrawHub> drawHubContext)
         {
             this.repos = repos;
             groupHub = groupHubContext;
             this.mapper = mapper;
+            this.drawHubContext = drawHubContext;
         }
         public override async Task OnConnectedAsync()
         {
@@ -578,6 +580,7 @@ namespace API.SignalRHub
                 FocusMap.Remove(roomId);
                 AvaMap.Remove(roomId);
                 DrawHub.Drawings.Remove(roomId);
+                await drawHubContext.Clients.Group(roomId).SendAsync(DrawHub.MeetingEndMsg);
             }
             else
             {

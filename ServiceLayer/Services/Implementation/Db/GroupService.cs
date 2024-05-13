@@ -39,35 +39,39 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<IQueryable<T>> SearchGroups<T>(string search, int studentId, bool newGroup)
         {
-            search = search.ConvertToUnsign().ToLower();
+            //search = search.ConvertToUnsign().ToLower();
+            search = search.ToLower().ConvertToUnsign();
             if (newGroup)
             {
 
                 var list = repos.Groups.GetList()
-                    .Include(e => e.GroupMembers)
+                    .Include(e => e.GroupMembers).ThenInclude(gm=>gm.Account)
                     .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
                     .Where(e =>
                         !e.GroupMembers.Any(e => e.AccountId == studentId)
-                        && (EF.Functions.Like(e.Id.ToString(), search + "%")
-                        || e.Name.ConvertToUnsign().ToLower().Contains(search)
-                        //|| search.Contains(e.ClassId.ToString())
-                        || e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search)))
-                        && e.IsBanned != true);
-                var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+                        && e.IsBanned != true).AsSplitQuery().ToList();
+                var filtered = list.Where(e =>
+                    ((e.Id.ToString().Contains( search))
+                    || e.Name.ConvertToUnsign().ToLower().Contains(search)
+                    //|| search.Contains(e.ClassId.ToString())
+                    || e.GroupSubjects.Any(gs => gs.Subject.Name.ToLower().ConvertToUnsign().Contains(search))))
+                    .AsQueryable();
+                var mapped = filtered.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
             }
             else
             {
                 var list = repos.Groups.GetList()
-                 .Include(e => e.GroupMembers)
+                 .Include(e => e.GroupMembers).ThenInclude(gm => gm.Account)
                  .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
-                 .Where(e =>
-                     EF.Functions.Like(e.Id.ToString(), search + "%")
-                     || e.Name.ConvertToUnsign().ToLower().Contains(search)
-                     //|| search.Contains(e.ClassId.ToString())
-                     || e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))
-                     && e.IsBanned != true);
-                var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
+                 .Where(e => e.IsBanned != true).AsSplitQuery().ToList();
+                var filtered = list.Where(e =>
+                    ((e.Id.ToString().Contains( search))
+                    || e.Name.ToLower().ConvertToUnsign().Contains(search)
+                    //|| search.Contains(e.ClassId.ToString())
+                    || e.GroupSubjects.Any(gs => gs.Subject.Name.ToLower().ConvertToUnsign().Contains(search))))
+                    .AsQueryable();
+                var mapped = filtered.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
             }
         }
@@ -112,7 +116,7 @@ namespace ServiceLayer.Services.Implementation.Db
                     .Include(e => e.GroupMembers)
                     .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
                     .Where(e => !e.GroupMembers.Any(e => e.AccountId == studentId)
-                        && e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))
+                        && e.GroupSubjects.Any(gs => gs.Subject.Name.ToLower().ConvertToUnsign().Contains(search))
                         && e.IsBanned != true);
                 var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;
@@ -122,7 +126,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 var list = repos.Groups.GetList()
                 .Include(e => e.GroupMembers)
                 .Include(e => e.GroupSubjects).ThenInclude(e => e.Subject)
-                .Where(e => e.GroupSubjects.Any(gs => gs.Subject.Name.ConvertToUnsign().ToLower().Contains(search))
+                .Where(e => e.GroupSubjects.Any(gs => gs.Subject.Name.ToLower().ConvertToUnsign().Contains(search))
                 && e.IsBanned != true);
                 var mapped = list.ProjectTo<T>(mapper.ConfigurationProvider);
                 return mapped;

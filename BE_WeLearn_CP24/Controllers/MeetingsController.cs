@@ -46,10 +46,10 @@ namespace API.Controllers
         public async Task<IActionResult> GetPastMeetingForGroup(int groupId)
         {
             int studentId = HttpContext.User.GetUserId();
-            bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
-            if (!isLeader)
+            bool isJoined = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
+            if (!isJoined)
             {
-                return Unauthorized("You are not this group's leader");
+                return Unauthorized("Bạn không phải là thành viên nhóm này");
             }
             var mapped = services.Meetings.GetPastMeetingsForGroup(groupId);
             return Ok(mapped);

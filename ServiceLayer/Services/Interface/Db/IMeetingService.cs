@@ -7,6 +7,7 @@ namespace ServiceLayer.Services.Interface.Db
     public interface IMeetingService
     {
         public Task<bool> AnyAsync(int id);
+        public Task<Object> GetAllMeetingsForGroup(int groupId, int studentId);
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForGroup(int groupId);
         public IQueryable<T> GetScheduleMeetingsForGroup<T>(int groupId);
         public IQueryable<LiveMeetingGetDto> GetLiveMeetingsForGroup(int groupId);

@@ -10,6 +10,8 @@ using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
 using ServiceLayer.Utils;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -155,14 +157,77 @@ namespace ServiceLayer.Services.Implementation.Db
             Meeting m = await repos.Meetings.GetByIdAsync(id);
             return mapper.Map<T>(m);
         }
-
+        public async Task<Object> GetAllMeetingsForGroup(int groupId, int studentId)
+        {
+            bool isLead = await repos.GroupMembers.GetList()
+                .AnyAsync(e => e.AccountId == studentId && e.GroupId == groupId
+                && e.IsActive == true);
+            var allMeeting = repos.Meetings.GetList()
+                .Include(m => m.Chats).ThenInclude(c => c.Account)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
+                .Where(e => e.Schedule.GroupId == groupId).ToList();//.AsQueryable();
+            //.Where(e => e.GroupId == groupId && (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today && e.Start == null)))
+                int countAll = allMeeting.Count();
+            var liveMeetings = (allMeeting.Where(e => e.Start != null && e.End == null));
+            //.AsQueryable()
+            //var liveMapped =    liveMeetings.ProjectTo<LiveMeetingGetDto>(mapper.ConfigurationProvider);
+            var liveMapped = mapper.Map<List<LiveMeetingGetDto>>(liveMeetings);
+            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)));
+                //.AsQueryable()
+            //var pastMapped=    pastMeetings.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
+            var pastMapped = mapper.Map<List<PastMeetingGetDto>>(pastMeetings);
+            int countLive = liveMeetings.Count();
+            int countPast = pastMeetings.Count();
+            if (isLead)
+            {
+                var scheduleMeetings = (allMeeting.Where(e => e.ScheduleStart != null
+                    && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null));
+                //.AsQueryable()
+                //var scheduleMapped = scheduleMeetings.ProjectTo<ScheduleMeetingForLeaderGetDto>(mapper.ConfigurationProvider);
+                var scheduleMapped = mapper.Map<List<ScheduleMeetingForLeaderGetDto>>(scheduleMeetings);
+                int countSchedule = scheduleMeetings.Count();
+                //return new
+                //{
+                //    Live = liveMeetings,
+                //    Schedule = scheduleMeetings,
+                //    Past = pastMeetings
+                //};
+                return new
+                {
+                    Live = liveMapped,
+                    Schedule = scheduleMapped,
+                    Past = pastMapped
+                };
+            }
+            else
+            {
+                var scheduleMeetings = allMeeting.Where(e => e.ScheduleStart != null
+                    && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null);
+                //.AsQueryable()
+                //var scheduleMapped = scheduleMeetings.ProjectTo<ScheduleMeetingForMemberGetDto>(mapper.ConfigurationProvider);
+                var scheduleMapped = mapper.Map<List<ScheduleMeetingForMemberGetDto>>(scheduleMeetings);
+                int countSchedule = scheduleMeetings.Count();
+                //return new
+                //{
+                //    Live = liveMeetings,
+                //    Schedule = scheduleMeetings,
+                //    Past = pastMeetings
+                //};
+                return new
+                {
+                    Live = liveMapped,
+                    Schedule = scheduleMapped,
+                    Past = pastMapped
+                };
+            }
+        }
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForGroup(int groupId)
         {
             return repos.Meetings.GetList()
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                //.Where(e => e.GroupId == groupId && (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today && e.Start == null)))
-               .Where(e => e.Schedule.GroupId == groupId 
+               .Where(e => e.Schedule.GroupId == groupId
                     && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
                .ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
         }
@@ -172,7 +237,7 @@ namespace ServiceLayer.Services.Implementation.Db
             //var liveMeetings = repos.Meetings.GetList()
             //    .Where(e => e.Start != null && e.End == null);
             return repos.Meetings.GetList()
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.GroupId == groupId && e.Start != null && e.End == null)
                 .ProjectTo<LiveMeetingGetDto>(mapper.ConfigurationProvider);
         }
@@ -182,7 +247,7 @@ namespace ServiceLayer.Services.Implementation.Db
             //if()
             var list = repos.Meetings.GetList()
                 //.Where(e => e.GroupId == groupId && (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today)))
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.GroupId == groupId
                     && e.ScheduleStart != null
                     && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null);
@@ -197,7 +262,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
                 .Include(c => c.Connections)
                 .Include(m => m.Schedule).ThenInclude(a => a.Group).ThenInclude(g => g.GroupMembers)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy past meeting
                     && (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
@@ -215,7 +280,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 ? repos.Meetings.GetList()
                 .Include(c => c.Connections)
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => ((e.ScheduleStart >= start && e.ScheduleStart.Value.Date < end) || (e.Start >= start && e.Start.Value.Date < end))
                     && e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy past meeting
@@ -225,7 +290,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 : repos.Meetings.GetList()
                 .Include(c => c.Connections)
                 .Include(m => m.Schedule).ThenInclude(a => a.Group).ThenInclude(g => g.GroupMembers)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(c => c.Start >= start && c.Start.Value.Date < end
                     && c.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId))
                 .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
@@ -238,7 +303,7 @@ namespace ServiceLayer.Services.Implementation.Db
             IQueryable<Meeting> scheduleMeetingsOfJoinedGroups = repos.Meetings.GetList()
                 .Include(c => c.Connections)
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy past meeting
                     && (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null))
@@ -250,11 +315,11 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Select(gm => gm.GroupId);
             foreach (var meeting in mapped)
             {
-                if (!meeting.CanStart&&leadGroupIds.Contains(meeting.ScheduleGroupId))
+                if (!meeting.CanStart && leadGroupIds.Contains(meeting.ScheduleGroupId))
                 {
                     meeting.CanStart = meeting.ScheduleStart.Value < DateTime.Now.AddHours(1);
                 }
-                    //meeting.CanStart = true;
+                //meeting.CanStart = true;
             }
             return mapped;
         }
@@ -264,7 +329,7 @@ namespace ServiceLayer.Services.Implementation.Db
             IQueryable<Meeting> scheduleMeetingsOfJoinedGroups = repos.Meetings.GetList()
                 .Include(c => c.Connections)
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy schedule meeting
                     && (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null)
@@ -278,7 +343,7 @@ namespace ServiceLayer.Services.Implementation.Db
             IQueryable<Meeting> scheduleMeetingsOfJoinedGroups = repos.Meetings.GetList()
                 .Include(c => c.Connections)
                 .Include(a => a.Schedule).ThenInclude(m => m.Group).ThenInclude(g => g.GroupMembers)
-                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss=>ss.Subject)
+                .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId)
                     //lấy live meeting
                     && e.Start != null && e.End == null)
@@ -346,7 +411,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 // Get the download URL of the uploaded file
                 string downloadUrl = await fileReference.GetDownloadUrlAsync();
 
-                Meeting meeting = await repos.Meetings.GetList().SingleOrDefaultAsync(m=>m.Id==meetingId);
+                Meeting meeting = await repos.Meetings.GetList().SingleOrDefaultAsync(m => m.Id == meetingId);
                 meeting.CanvasPath = downloadUrl;
                 await repos.Meetings.UpdateAsync(meeting);
 

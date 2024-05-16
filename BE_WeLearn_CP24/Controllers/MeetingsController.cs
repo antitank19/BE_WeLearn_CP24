@@ -9,6 +9,7 @@ using DataLayer.DbObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
 using Swashbuckle.AspNetCore.Annotations;
@@ -35,6 +36,29 @@ namespace API.Controllers
             //this.validators = validators;
             //this.mapper = mapper;
             this.groupHub = groupHub;
+        }
+
+        //GET: api/Meetings/All/Group/id
+        [SwaggerOperation(
+            Summary = MeetingsEndpoints.GetAllMeetingForGroup
+        )]
+        [Authorize(Roles = Actor.Student)]
+        [HttpGet("All/Group/{groupId}")]
+        public async Task<IActionResult> GetAllMeetingForGroup(int groupId)
+        {
+            int studentId = HttpContext.User.GetUserId();
+            bool isJoined = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
+            if (!isJoined)
+            {
+                return Unauthorized("Bạn không phải là thành viên nhóm này");
+            }
+            var meetingsObj = await services.Meetings.GetAllMeetingsForGroup(groupId, studentId);
+            return Ok(new
+            {
+                Live = meetingsObj.GetType().GetProperty("Live").GetValue(meetingsObj, null),
+                Schedule = meetingsObj.GetType().GetProperty("Schedule").GetValue(meetingsObj, null),
+                Past = meetingsObj.GetType().GetProperty("Past").GetValue(meetingsObj, null)
+            });
         }
 
         //GET: api/Meetings/Past/Group/id

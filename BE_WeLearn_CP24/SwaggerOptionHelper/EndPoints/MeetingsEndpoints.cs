@@ -4,6 +4,7 @@ namespace API.SwaggerOption.Endpoints
 {
     public class MeetingsEndpoints
     {
+        public const string GetAllMeetingForGroup = $"[{Actor.Leader}/{Finnished.True}/{Auth.True}] Get all meetings of group";
         public const string GetPastMeetingForGroup = $"[{Actor.Leader}/{Finnished.True}/{Auth.True}] Get all past meetings of group";
         public const string GetScheduleMeetingForGroup = $"[{Actor.Student}/{Finnished.True}/{Auth.True}] Get all Schedule meetings of group";
         public const string GetLiveMeetingForGroup = $"[{Actor.Student}/{Finnished.True}/{Auth.True}] Get all Live meetings of group";

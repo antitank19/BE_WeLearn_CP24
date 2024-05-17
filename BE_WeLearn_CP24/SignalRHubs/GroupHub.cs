@@ -24,6 +24,7 @@ namespace API.SignalRHub
         //BE: SendAsync(GroupHub.CountMemberInGroupMsg, new { meetingId: int, countMember: int })
         public static string CountMemberInGroupMsg => "CountMemberInGroup";
         public static string OnLockedUserMsg => "OnLockedUser";
+        public static string OnReloadGroupMsg => "OnReloadGroup";
         public static string OnReloadMeetingMsg => "OnReloadMeeting";
         public static string OnReloadSelfInfoMsg => "OnReloadSelfInfo";
         public static string OnReloadSelfMeetingMsg => "OnReloadSelfMeeting";

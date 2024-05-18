@@ -55,7 +55,7 @@ namespace API.Controllers
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
 
                 var doc = await services.Documents.UploadDocumentFIle(file, groupId, accountId, isLeader);
-                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadGroupMsg, $"{HttpContext.User.GetUsername()} upload a new file");
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadDocumentMsg, $"{HttpContext.User.GetUsername()} upload a new file");
                 return Ok(doc);
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace API.Controllers
                     return Unauthorized("You are not this group's leader");
                 }
                 DocumentFileDto doc = await services.Documents.ApproveRejectFile(documentId, check);
-                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadGroupMsg, $"Group leader {HttpContext.User.GetUsername()} {(check?"approved":"rejected")} a file");
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadDocumentMsg, $"Group leader {HttpContext.User.GetUsername()} {(check?"approved":"rejected")} a file");
                 return Ok(doc);
             }
             catch (Exception ex)

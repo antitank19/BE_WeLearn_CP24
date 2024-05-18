@@ -26,6 +26,8 @@ namespace API.SignalRHub
         public static string OnLockedUserMsg => "OnLockedUser";
         public static string OnReloadGroupMsg => "OnReloadGroup";
         public static string OnReloadMeetingMsg => "OnReloadMeeting";
+        public static string OnReloadDocumentMsg => "OnReloadDocument";
+
         public static string OnReloadSelfInfoMsg => "OnReloadSelfInfo";
         public static string OnReloadSelfMeetingMsg => "OnReloadSelfMeeting";
 

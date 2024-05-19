@@ -71,7 +71,7 @@ namespace API.Controllers
             try
             {
                 var discussion = await services.Discussions.UploadDiscussion(accountId, groupId, dto);
-                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadGroupMsg, $"{HttpContext.User.GetUsername()} post new disscusion {dto.Question}");
+                await groupHub.Clients.Group(groupId.ToString()).SendAsync(GroupHub.OnReloadDicussionMsg, $"{HttpContext.User.GetUsername()} post new disscusion {dto.Question}");
                 return Ok(discussion);
             }
             catch (Exception ex)

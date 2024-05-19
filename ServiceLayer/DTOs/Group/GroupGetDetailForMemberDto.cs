@@ -19,10 +19,10 @@ namespace ServiceLayer.DTOs
         public bool IsBanned { get; set; }
 
         public ICollection<StudentGetDto> Members { get; set; }
-        public virtual ICollection<PastMeetingGetDto> PastMeetings { get; set; }
-        public virtual ICollection<LiveMeetingGetDto> LiveMeetings { get; set; }
-        public virtual ICollection<ScheduleMeetingGetDto> ScheduleMeetings { get; set; }
-        public ICollection<DiscussionInGroupDto> Discussions { get; set; }
+        //public virtual ICollection<PastMeetingGetDto> PastMeetings { get; set; }
+        //public virtual ICollection<LiveMeetingGetDto> LiveMeetings { get; set; }
+        //public virtual ICollection<ScheduleMeetingGetDto> ScheduleMeetings { get; set; }
+        //public ICollection<DiscussionInGroupDto> Discussions { get; set; }
         public ICollection<SubjectGetDto> Subjects { get; set; }
         public string InviteCode { get; set; }
     }

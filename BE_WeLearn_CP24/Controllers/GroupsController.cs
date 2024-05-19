@@ -192,11 +192,7 @@ namespace API.Controllers
                 //{
                 //     return Unauthorized("You are not this group's leader");
                 //}
-                bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
-                if (!isJoining)
-                {
-                    return Unauthorized("Bạn không phải thành viên của nhóm này");
-                }
+               
                 bool isLeader = await services.Groups.IsStudentLeadingGroupAsync(studentId, groupId);
                 //Group group = await services.Groups.GetFullByIdAsync(id);
 
@@ -213,6 +209,11 @@ namespace API.Controllers
                 }
                 else
                 {
+                    bool isJoining = await services.Groups.IsStudentJoiningGroupAsync(studentId, groupId);
+                    if (!isJoining)
+                    {
+                        return Unauthorized("Bạn không phải thành viên của nhóm này");
+                    }
                     //GroupGetDetailForMemberDto dto = mapper.Map<GroupGetDetailForMemberDto>(group);
                     GroupGetDetailForMemberDto group = await services.Groups.GetFullByIdAsync<GroupGetDetailForMemberDto>(groupId);
                     if (group == null)

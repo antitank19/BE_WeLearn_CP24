@@ -136,11 +136,14 @@ namespace API.Controllers
         public async Task<IActionResult> GetAllMeetingForStudent()
         {
             int studentId = HttpContext.User.GetUserId();
-            IQueryable<PastMeetingGetDto> mappedPast = services.Meetings.GetPastMeetingsForStudent(studentId);
-            IQueryable<LiveMeetingGetDto> mappedLive = services.Meetings.GetLiveMeetingsForStudent(studentId);
-            List<ScheduleMeetingForMemberGetDto> mappedSchedule = services.Meetings.GetScheduleMeetingsForStudent(studentId);
+            //IQueryable<PastMeetingGetDto> mappedPast = services.Meetings.GetPastMeetingsForStudent(studentId);
+            //IQueryable<LiveMeetingGetDto> mappedLive = services.Meetings.GetLiveMeetingsForStudent(studentId);
+            //List<ScheduleMeetingForMemberGetDto> mappedSchedule = services.Meetings.GetScheduleMeetingsForStudent(studentId);
 
-            return Ok(new { Past = mappedPast, Live = mappedLive, Schedule = mappedSchedule });
+            //return Ok(new { Past = mappedPast, Live = mappedLive, Schedule = mappedSchedule });
+
+            var meetingsObj = await services.Meetings.GetAllMeetingsForStudent(studentId);
+            return Ok(meetingsObj);
         }
         //GET: api/Meetings/Past/Student
         [SwaggerOperation(

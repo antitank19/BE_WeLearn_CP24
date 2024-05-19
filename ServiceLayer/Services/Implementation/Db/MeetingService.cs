@@ -161,7 +161,7 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             bool isLead = await repos.GroupMembers.GetList()
                 .AnyAsync(e => e.AccountId == studentId && e.GroupId == groupId
-                && e.IsActive == true);
+                && e.IsActive == true && e.MemberRole==GroupMemberRole.Leader);
             var allMeeting = repos.Meetings.GetList()
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)

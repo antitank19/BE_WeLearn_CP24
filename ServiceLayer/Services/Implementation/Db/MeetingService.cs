@@ -164,6 +164,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 && e.IsActive == true && e.MemberRole==GroupMemberRole.Leader);
             var allMeeting = repos.Meetings.GetList()
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
+                .Include(m => m.Reviews).ThenInclude(c => c.Details)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.GroupId == groupId)
                 .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
@@ -241,6 +242,7 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             var allMeeting = repos.Meetings.GetList()
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
+                .Include(m => m.Reviews).ThenInclude(c => c.Details)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Include(m => m.Schedule).ThenInclude(a => a.Group).ThenInclude(g => g.GroupMembers)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId))

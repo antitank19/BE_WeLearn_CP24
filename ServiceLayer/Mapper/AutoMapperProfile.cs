@@ -127,25 +127,25 @@ namespace ShareResource.Mapper
                 .ForMember(dest => dest.InviteCode, opt => opt.MapFrom(
                     src => (src.Id + "!;!" + src.Name).CustomeEncode()))
 
-                //Past
-                .ForMember(dest => dest.PastMeetings, opt => opt.MapFrom(
-                    src => src.Schedules.SelectMany(s => s.Meetings)
-                        .Where(e => (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)))
-                        .OrderByDescending(e=>e.Start.HasValue).ThenBy(e => e.Start)
-                        .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart)
-                        ))
-                //Live
-                .ForMember(dest => dest.LiveMeetings, opt => opt.MapFrom(
-                    src => src.Schedules.SelectMany(s => s.Meetings)
-                        .Where(e => e.Start != null && e.End == null)
-                        .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
-                        ))
-                //Schedule
-                .ForMember(dest => dest.ScheduleMeetings, opt => opt.MapFrom(
-                    src => src.Schedules.SelectMany(s => s.Meetings)
-                        .Where(e => (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null))
-                        .OrderBy(e => e.ScheduleStart.Value)
-                        ))
+                ////Past
+                //.ForMember(dest => dest.PastMeetings, opt => opt.MapFrom(
+                //    src => src.Schedules.SelectMany(s => s.Meetings)
+                //        .Where(e => (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)))
+                //        .OrderByDescending(e=>e.Start.HasValue).ThenBy(e => e.Start)
+                //        .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart)
+                //        ))
+                ////Live
+                //.ForMember(dest => dest.LiveMeetings, opt => opt.MapFrom(
+                //    src => src.Schedules.SelectMany(s => s.Meetings)
+                //        .Where(e => e.Start != null && e.End == null)
+                //        .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
+                //        ))
+                ////Schedule
+                //.ForMember(dest => dest.ScheduleMeetings, opt => opt.MapFrom(
+                //    src => src.Schedules.SelectMany(s => s.Meetings)
+                //        .Where(e => (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null))
+                //        .OrderBy(e => e.ScheduleStart.Value)
+                //        ))
                 .PreserveReferences();
 
             CreateMap<Group, GroupGetDetailForMemberDto>()
@@ -157,25 +157,25 @@ namespace ShareResource.Mapper
                     src => src.GroupSubjects.Select(gs => gs.Subject)))
                 .ForMember(dest => dest.InviteCode, opt => opt.MapFrom(
                     src => (src.Id + "!;!" + src.Name).CustomeEncode()))
-                //Past
-                .ForMember(dest => dest.PastMeetings, opt => opt.MapFrom(
-                    src => src.Schedules.SelectMany(s => s.Meetings)
-                        .Where(e => (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)))
-                        .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
-                        .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart)
-                        ))
-                //Live
-                .ForMember(dest => dest.LiveMeetings, opt => opt.MapFrom(
-                    src => src.Schedules.SelectMany(s => s.Meetings)
-                        .Where(e => e.Start != null && e.End == null)
-                        .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
-                        ))
-                //Schedule
-                .ForMember(dest => dest.ScheduleMeetings, opt => opt.MapFrom(
-                    src => src.Schedules.SelectMany(s => s.Meetings)
-                        .Where(e => (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null))
-                        .OrderBy(e => e.ScheduleStart.Value)
-                        ))
+                ////Past
+                //.ForMember(dest => dest.PastMeetings, opt => opt.MapFrom(
+                //    src => src.Schedules.SelectMany(s => s.Meetings)
+                //        .Where(e => (e.End != null || (e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)))
+                //        .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
+                //        .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart)
+                //        ))
+                ////Live
+                //.ForMember(dest => dest.LiveMeetings, opt => opt.MapFrom(
+                //    src => src.Schedules.SelectMany(s => s.Meetings)
+                //        .Where(e => e.Start != null && e.End == null)
+                //        .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
+                //        ))
+                ////Schedule
+                //.ForMember(dest => dest.ScheduleMeetings, opt => opt.MapFrom(
+                //    src => src.Schedules.SelectMany(s => s.Meetings)
+                //        .Where(e => (e.ScheduleStart != null && e.ScheduleStart.Value.Date >= DateTime.Today && e.Start == null))
+                //        .OrderBy(e => e.ScheduleStart.Value)
+                //        ))
                 .PreserveReferences();
 
             CreateMap<Group, BannedGroupDto>()

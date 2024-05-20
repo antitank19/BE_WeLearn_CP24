@@ -11,11 +11,14 @@ namespace ServiceLayer.Services.Interface.Db
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForGroup(int groupId);
         public IQueryable<T> GetScheduleMeetingsForGroup<T>(int groupId);
         public IQueryable<LiveMeetingGetDto> GetLiveMeetingsForGroup(int groupId);
+
+        public Task<Object> GetAllMeetingsForStudent(int studentId);
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForStudent(int studentId);
         public IQueryable<PastMeetingGetDto> GetPastMeetingsForStudentByMonth(int studentId, DateTime month);
         public List<ScheduleMeetingForMemberGetDto> GetScheduleMeetingsForStudent(int studentId);
         public IQueryable<ScheduleMeetingForMemberGetDto> GetScheduleMeetingsForStudentByDate(int studentId, DateTime date);
         public IQueryable<LiveMeetingGetDto> GetLiveMeetingsForStudent(int studentId);
+
         public Task<T> GetByIdAsync<T>(int id);
         public Task CreateScheduleMeetingAsync(ScheduleMeetingCreateDto dto);
         public Task<T> MassCreateScheduleMeetingAsync<T>(ScheduleMeetingMassCreateDto dto);

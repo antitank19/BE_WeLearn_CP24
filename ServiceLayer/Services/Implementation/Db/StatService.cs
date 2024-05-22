@@ -56,7 +56,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 ? 0 : atendedMeetings.Count();
             long totalMeetingTime = atendedMeetings.Count() == 0 ? 0
                 : atendedMeetings.SelectMany(m => m.Connections)
-                    .Select(e => e.End.Value - e.Start).Select(ts => ts.Ticks).Sum();
+                    .Select(e => e.End.Value - e.Start).Select(ts => ts.Ticks).ToList().Sum();
             TimeSpan timeSpan = new TimeSpan(totalMeetingTime);
             IQueryable<ReviewDetail> reviewDetails = atendedMeetings
                 .SelectMany(m => m.Reviews)
@@ -128,7 +128,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 ? 0 : atendedMeetings.Count();
             long totalMeetingTime = atendedMeetings.Count() == 0 ? 0
                 : atendedMeetings.SelectMany(m => m.Connections)
-                    .Select(e => e.End.Value - e.Start).Select(ts => ts.Ticks).Sum();
+                    .Select(e => e.End.Value - e.Start).Select(ts => ts.Ticks).ToList().Sum();
             TimeSpan timeSpan = new TimeSpan(totalMeetingTime);
             IQueryable<ReviewDetail> reviewDetails = atendedMeetings
                 .SelectMany(m => m.Reviews)

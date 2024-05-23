@@ -164,7 +164,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 && e.IsActive == true && e.MemberRole==GroupMemberRole.Leader);
             var allMeeting = repos.Meetings.GetList()
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
-                .Include(m => m.Reviews).ThenInclude(c => c.Details)
+                .Include(m => m.Reviews).ThenInclude(c => c.Reviewee)
+                .Include(m => m.Reviews).ThenInclude(c => c.Details).ThenInclude(d=>d.Reviewer)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Where(e => e.Schedule.GroupId == groupId)
                 .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
@@ -173,10 +174,11 @@ namespace ServiceLayer.Services.Implementation.Db
             int countAll = allMeeting.Count();
             var liveMeetings = (allMeeting.Where(e => e.Start != null && e.End == null));
             var liveMapped = mapper.Map<List<LiveMeetingGetDto>>(liveMeetings);
-            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)));
-            var pastMapped = mapper.Map<List<PastMeetingGetDto>>(pastMeetings);
+            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))).ToList();
+            var pastMapped = mapper.Map<List<PastMeetingGetDto>>(pastMeetings.ToList());
+            //var pastMapped = pastMeetings.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
             int countLive = liveMeetings.Count();
-            int countPast = pastMeetings.Count();
+            //int countPast = pastMeetings.Count();
             if (isLead)
             {
                 var scheduleMeetings = (allMeeting.Where(e => e.ScheduleStart != null
@@ -242,17 +244,19 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             var allMeeting = repos.Meetings.GetList()
                 .Include(m => m.Chats).ThenInclude(c => c.Account)
-                .Include(m => m.Reviews).ThenInclude(c => c.Details)
+                .Include(m => m.Reviews).ThenInclude(c => c.Reviewee)
+                .Include(m => m.Reviews).ThenInclude(c => c.Details).ThenInclude(d => d.Reviewer)
                 .Include(m => m.Schedule).ThenInclude(c => c.ScheduleSubjects).ThenInclude(ss => ss.Subject)
                 .Include(m => m.Schedule).ThenInclude(a => a.Group).ThenInclude(g => g.GroupMembers)
                 .Where(e => e.Schedule.Group.GroupMembers.Any(gm => gm.AccountId == studentId))
                 .OrderByDescending(e => e.Start.HasValue).ThenBy(e => e.Start)
                 .ThenByDescending(e => e.ScheduleStart.HasValue).ThenBy(e => e.ScheduleStart)
+                //.AsSplitQuery()
                 .ToList();//.AsQueryable();
             int countAll = allMeeting.Count();
             var liveMeetings = (allMeeting.Where(e => e.Start != null && e.End == null));
             var liveMapped = mapper.Map<List<LiveMeetingGetDto>>(liveMeetings);
-            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today)));
+            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))).ToList();
             var pastMapped = mapper.Map<List<PastMeetingGetDto>>(pastMeetings);
             int countLive = liveMeetings.Count();
             int countPast = pastMeetings.Count();

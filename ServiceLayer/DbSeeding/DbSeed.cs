@@ -1117,6 +1117,12 @@ namespace ServiceLayer.DbSeeding
                 GroupId = 13,
                 SubjectId = (int)SubjectEnum.FE
             },
+             new GroupSubject
+            {
+                Id = 30,
+                GroupId = 1,
+                SubjectId = (int)SubjectEnum.Java
+            },
             #endregion
 
         };

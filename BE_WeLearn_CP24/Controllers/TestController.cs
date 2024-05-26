@@ -15,12 +15,15 @@ namespace API.Controllers
         private readonly IRepoWrapper repos;
         private readonly IServiceWrapper services;
         private readonly WeLearnContext context;
+        private readonly IConfiguration configuration;
 
-        public TestController(IRepoWrapper repos, IServiceWrapper services, WeLearnContext context)
+
+        public TestController(IRepoWrapper repos, IServiceWrapper services, WeLearnContext context, IConfiguration configuration)
         {
             this.repos = repos;
             this.services = services;
             this.context = context;
+            this.configuration = configuration;
         }
 
         [HttpGet("MonthlyMail")]
@@ -129,6 +132,16 @@ namespace API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("DbString")]
+        public async Task<IActionResult> DbString()
+        {
+            bool IsInMemory = configuration["ConnectionStrings:InMemory"].ToLower() == "true";
+            if (IsInMemory)
+            {
+                return Ok("In Memory");
+            }
+            return Ok(configuration.GetConnectionString("Default"));
+        }
         [HttpGet("NukeDB")]
         public async Task<IActionResult> Nuke()
         {

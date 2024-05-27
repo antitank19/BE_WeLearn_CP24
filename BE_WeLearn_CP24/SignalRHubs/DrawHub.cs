@@ -52,7 +52,8 @@ namespace API.SignalRHub
                 }
             );
 
-            await Clients.GroupExcept(meetingId.ToString(), Context.ConnectionId).SendAsync("draw", prevX, prevY, currentX, currentY, color, size, username);
+            //await Clients.GroupExcept(meetingId.ToString(), Context.ConnectionId).SendAsync("draw", prevX, prevY, currentX, currentY, color, size, username);
+            await Clients.Group(meetingId.ToString()).SendAsync("draw", prevX, prevY, currentX, currentY, color, size, username);
         }
 
         public static readonly Dictionary<string, List<Drawing>> Drawings = new Dictionary<string, List<Drawing>>();

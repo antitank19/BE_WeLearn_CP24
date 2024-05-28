@@ -174,7 +174,9 @@ namespace ServiceLayer.Services.Implementation.Db
             int countAll = allMeeting.Count();
             var liveMeetings = (allMeeting.Where(e => e.Start != null && e.End == null));
             var liveMapped = mapper.Map<List<LiveMeetingGetDto>>(liveMeetings);
-            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))).ToList();
+            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+                .OrderByDescending(e => e.Start.HasValue).ThenByDescending(e => e.Start)
+                .ThenByDescending(e => e.ScheduleStart.HasValue).ThenByDescending(e => e.ScheduleStart)).ToList();
             var pastMapped = mapper.Map<List<PastMeetingGetDto>>(pastMeetings.ToList());
             //var pastMapped = pastMeetings.ProjectTo<PastMeetingGetDto>(mapper.ConfigurationProvider);
             int countLive = liveMeetings.Count();
@@ -256,7 +258,9 @@ namespace ServiceLayer.Services.Implementation.Db
             int countAll = allMeeting.Count();
             var liveMeetings = (allMeeting.Where(e => e.Start != null && e.End == null));
             var liveMapped = mapper.Map<List<LiveMeetingGetDto>>(liveMeetings);
-            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))).ToList();
+            var pastMeetings = (allMeeting.Where(e => (e.End != null || e.ScheduleStart != null && e.ScheduleStart.Value.Date < DateTime.Today))
+                .OrderByDescending(e => e.Start.HasValue).ThenByDescending(e => e.Start)
+                .ThenByDescending(e => e.ScheduleStart.HasValue).ThenByDescending(e => e.ScheduleStart)).ToList();
             var pastMapped = mapper.Map<List<PastMeetingGetDto>>(pastMeetings);
             int countLive = liveMeetings.Count();
             int countPast = pastMeetings.Count();

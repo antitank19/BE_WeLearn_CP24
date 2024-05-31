@@ -7,10 +7,12 @@ using DataLayer.Enums;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using RepoLayer.Interface;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Auth;
+using ServiceLayer.Services.Interface.Mail;
 using ServiceLayer.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -25,13 +27,15 @@ namespace ServiceLayer.Services.Implementation.Auth
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
         private JwtSecurityTokenHandler jwtHandler;
+        private readonly IAutoMailService mailService;
 
-        public AuthService(IRepoWrapper repos, IConfiguration configuration, IMapper mapper)
+        public AuthService(IRepoWrapper repos, IConfiguration configuration, IMapper mapper, IAutoMailService mailService)
         {
             this.repos = repos;
             this.configuration = configuration;
             jwtHandler = new JwtSecurityTokenHandler();
             this.mapper = mapper;
+            this.mailService = mailService;
         }
 
         public async Task<LoginInfoDto> LoginAsync(LoginModel login)
@@ -85,7 +89,20 @@ namespace ServiceLayer.Services.Implementation.Auth
             Account account = await repos.Accounts.GetByEmailAsync(payload.Email);
             if (account == null)
             {
-                return null;
+                account = new Account()
+               {
+                    Email = payload.Email,
+                    Username = payload.Email,
+                    FullName = payload.GivenName,
+                    IsBanned = false,
+                    DateOfBirth = DateTime.UtcNow.AddYears(-18),
+                    Password = "123456789".CustomHash() ,
+                    ImagePath = payload.Picture,
+                    Phone = "0000000000",
+                    RoleId = (int)RoleNameEnum.Student
+               };
+                await repos.Accounts.CreateAsync(account);
+                await mailService.SendNewPasswordMailAsync(payload.Email);
             }
             LoginInfoDto loginInfoDto = mapper.Map<LoginInfoDto>(account);
             loginInfoDto.Token = await GenerateJwtAsync(account, rememberMe);
@@ -122,8 +139,9 @@ namespace ServiceLayer.Services.Implementation.Auth
                 new Claim(ClaimTypes.NameIdentifier, logined.Id.ToString()),
                 new Claim(ClaimTypes.Name, logined.Username),
                 new Claim(ClaimTypes.Email, logined.Email),
-                new Claim(ClaimTypes.Role, logined.Role.Name),
-                //new Claim("Email", logined.Email),
+                new Claim(ClaimTypes.Role, "Student"),
+                //new Claim(ClaimTypes.Role, logined.Role.Name),
+                //new Claim("Email", logined.Email),           Student
                 //new Claim("Role", logined.Role.Name)
             };
             var issuerSigningKey = new SymmetricSecurityKey(

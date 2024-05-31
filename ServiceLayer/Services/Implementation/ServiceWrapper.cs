@@ -27,7 +27,6 @@ namespace ServiceLayer.Services.Implementation
             this.mapper = mapper;
             this.env = env;
             accounts = new AccountService(repos, mapper, env, config);
-            auth = new AuthService(repos, configuration, mapper);
             groups = new GroupService(repos, mapper, env, config);
             subjects = new SubjectService(repos, mapper);
             meetings = new MeetingService(repos, mapper, config);
@@ -35,6 +34,7 @@ namespace ServiceLayer.Services.Implementation
             documentFiles = new DocumentFileService(repos, mapper, env, config);
             stats = new StatService(repos, mapper);
             mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
+            auth = new AuthService(repos, configuration, mapper, mails);
         }
 
         private IAccountService accounts;
@@ -47,19 +47,6 @@ namespace ServiceLayer.Services.Implementation
                     accounts = new AccountService(repos, mapper, env, configuration);
                 }
                 return accounts;
-            }
-        }
-
-        private IAuthService auth;
-        public IAuthService Auth
-        {
-            get
-            {
-                if (auth is null)
-                {
-                    auth = new AuthService(repos, configuration, mapper);
-                }
-                return auth;
             }
         }
 
@@ -137,6 +124,19 @@ namespace ServiceLayer.Services.Implementation
                     mails = new AutoMailService(env, repos, configuration, Accounts, Stats);
                 }
                 return mails;
+            }
+        }
+
+        private IAuthService auth;
+        public IAuthService Auth
+        {
+            get
+            {
+                if (auth is null)
+                {
+                    auth = new AuthService(repos, configuration, mapper, mails);
+                }
+                return auth;
             }
         }
         private IDocumentFileService documentFiles;

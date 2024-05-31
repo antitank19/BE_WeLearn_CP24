@@ -117,6 +117,7 @@ namespace API.Controllers
                 else
                 {
                     var discussion = await services.Discussions.UpdateDiscussion(discussionId, dto);
+                    await groupHub.Clients.Group(discussion.GroupId.ToString()).SendAsync(GroupHub.OnReloadDicussionMsg, $"{HttpContext.User.GetUsername()} post new disscusion {dto.Question}");
                     return Ok(discussion);
                 }
             }

@@ -1,9 +1,12 @@
 ﻿using API.Extension.ClaimsPrinciple;
+using API.SignalRHub;
 using API.SwaggerOption.Const;
 using APIExtension.Validator;
+using DataLayer.DbObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
 
@@ -12,15 +15,17 @@ namespace API.Controllers
     public class AnswerDiscussionsController : Controller
     {
         private readonly IServiceWrapper services;
+        private readonly IHubContext<GroupHub> groupHub;
         //private readonly IMapper mapper;
         //private readonly IValidatorWrapper validators;
 
         public AnswerDiscussionsController(
             //IValidatorWrapper validators,
-            IServiceWrapper services
-        )
+            IServiceWrapper services,
+            IHubContext<GroupHub> groupHub)
         {
             this.services = services;
+            this.groupHub = groupHub;
             //this.validators = validators;
         }
 
@@ -48,7 +53,9 @@ namespace API.Controllers
             ValidatorResult valResult = new ValidatorResult();
             try
             {
-                var ansDis = await services.AnswersDiscussions.UploadAnswerDiscussion(accountId, discussionId, dto);
+                AnswerDiscussionDto ansDis = await services.AnswersDiscussions.UploadAnswerDiscussion(accountId, discussionId, dto);
+                DiscussionDto discussion = await services.Discussions.GetDiscussionById(ansDis.DiscussionId);
+                await groupHub.Clients.Group(discussion.GroupId.ToString()).SendAsync(GroupHub.OnReloadDicussionMsg, $"{HttpContext.User.GetUsername()} replies in disscusion {discussion.Question}");
                 return Ok(ansDis);
             }
             catch (Exception ex)
@@ -76,6 +83,8 @@ namespace API.Controllers
                 else
                 {
                     var ansDis = await services.AnswersDiscussions.UpdateAnswerDiscussion(answerDiscussionId, dto);
+                    DiscussionDto discussion = await services.Discussions.GetDiscussionById(ansDis.DiscussionId);
+                    await groupHub.Clients.Group(discussion.GroupId.ToString()).SendAsync(GroupHub.OnReloadDicussionMsg, $"{HttpContext.User.GetUsername()} replies in disscusion {discussion.Question}");
                     return Ok(ansDis);
                 }
             }

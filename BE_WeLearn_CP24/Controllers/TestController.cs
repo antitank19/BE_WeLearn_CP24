@@ -1,9 +1,11 @@
-﻿using API.SwaggerOption.Const;
+﻿using API.Scheduler.Lib;
+using API.SwaggerOption.Const;
 using DataLayer.DbContext;
 using Microsoft.AspNetCore.Mvc;
 using RepoLayer.Interface;
 using ServiceLayer.DbSeeding;
 using ServiceLayer.Services.Interface;
+using Utilities.ServiceExtensions.Scheduler.Lib;
 
 namespace API.Controllers
 {
@@ -16,20 +18,31 @@ namespace API.Controllers
         private readonly IServiceWrapper services;
         private readonly WeLearnContext context;
         private readonly IConfiguration configuration;
+        private readonly ICustomQuarztHostedService quarztService;
 
-
-        public TestController(IRepoWrapper repos, IServiceWrapper services, WeLearnContext context, IConfiguration configuration)
+        public TestController(IRepoWrapper repos, IServiceWrapper services, WeLearnContext context, IConfiguration configuration, ICustomQuarztHostedService quarztService)
         {
             this.repos = repos;
             this.services = services;
             this.context = context;
             this.configuration = configuration;
+            this.quarztService = quarztService;
         }
 
         [HttpGet("MonthlyMail")]
         public async Task<IActionResult> MonthlyMail()
         {
             await services.Mails.SendMonthlyStatAsync();
+            return Ok();
+        }
+
+        [HttpGet("Mail")]
+        public async Task<IActionResult> Mails(DateTime dateTime, CancellationToken token)
+        {
+            //var list = repos.Accounts.GetList();
+
+            await quarztService.ScheduleEmailReminder(dateTime, token);
+
             return Ok();
         }
 

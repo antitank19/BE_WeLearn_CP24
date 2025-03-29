@@ -10,6 +10,7 @@ using ServiceLayer.DbSeeding;
 using ServiceLayer.Services.Implementation;
 using ServiceLayer.Services.Interface;
 using System.Text.Json;
+using Utilities.ServiceExtensions.Scheduler;
 
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
@@ -82,6 +83,8 @@ builder.Services.AddCors(options =>
 });
 #endregion
 builder.Services.AddSignalR();
+
+builder.Services.AddSchedulerService(environment);
 
 var app = builder.Build();
 if (IsInMemory)
